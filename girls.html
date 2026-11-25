@@ -7,415 +7,143 @@
 <title>Girls Collection — ENTE</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;color:#24231f;background:#fff}
+
+header{
+height:75px;padding:0 6%;display:flex;align-items:center;
+justify-content:space-between;border-bottom:1px solid #eee
+}
+.logo{font-size:27px;font-weight:700;letter-spacing:5px;color:#24231f;text-decoration:none}
+nav{display:flex;gap:22px;align-items:center}
+nav a{text-decoration:none;color:#333;font-size:10px;letter-spacing:1px}
+.cart-button{border:0;background:none;cursor:pointer;font-size:11px;letter-spacing:1px;color:#24231f}
+
+.hero{padding:75px 6% 50px}
+.eyebrow{font-size:10px;letter-spacing:2px;color:#888;margin-bottom:15px}
+.hero h1{font-size:clamp(38px,6vw,65px);font-weight:400;letter-spacing:-2px}
+.description{margin-top:16px;font-size:13px;color:#777}
+
+.products{
+padding:0 6% 85px;display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 20px
+}
+.product-card{min-width:0}
+.product-image{
+position:relative;width:100%;aspect-ratio:3/4;
+background:#f5f4f1;overflow:hidden;cursor:pointer;touch-action:pan-y
+}
+.product-image img{
+width:100%;height:100%;object-fit:cover;display:block;
+transition:opacity .2s ease,transform .5s ease;
+user-select:none;-webkit-user-drag:none
+}
+.product-card:hover .product-image img{transform:scale(1.025)}
+.card-dots{
+position:absolute;bottom:12px;left:0;right:0;
+display:flex;justify-content:center;gap:7px;pointer-events:none
+}
+.card-dot{
+width:6px;height:6px;border-radius:50%;
+background:rgba(255,255,255,.65);border:1px solid #777
+}
+.card-dot.active{background:#24231f;border-color:#24231f}
+
+.product-info{padding-top:14px}
+.product-info h2{font-size:13px;font-weight:400;line-height:1.5}
+.product-category{margin-top:6px;font-size:11px;color:#888}
+.price{margin-top:12px;font-size:13px;font-weight:600}
+.add-button{
+width:100%;margin-top:13px;padding:14px 10px;
+background:#24231f;color:white;border:1px solid #24231f;
+font-size:10px;letter-spacing:1.5px;cursor:pointer;transition:.2s
+}
+.add-button:hover{background:#fff;color:#24231f}
+
+footer{
+border-top:1px solid #eee;padding:30px 6%;
+display:flex;justify-content:space-between;
+font-size:10px;letter-spacing:1px;color:#888
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #24231f;
-    background: #fff;
+/* GALLERY */
+.gallery-overlay{
+display:none;position:fixed;inset:0;z-index:1000;
+background:rgba(255,255,255,.98);overflow-y:auto;padding:25px
 }
-
-header {
-    height: 75px;
-    padding: 0 6%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #eee;
+.gallery-overlay.active{display:block}
+.gallery-header{
+display:flex;justify-content:space-between;align-items:center;
+max-width:1100px;margin:0 auto 25px
 }
-
-.logo {
-    font-size: 27px;
-    font-weight: 700;
-    letter-spacing: 5px;
-    color: #24231f;
-    text-decoration: none;
+.gallery-logo{font-size:22px;font-weight:700;letter-spacing:4px}
+.close-gallery{
+border:0;background:none;font-size:30px;cursor:pointer
 }
-
-nav {
-    display: flex;
-    gap: 22px;
-    align-items: center;
+.gallery-content{max-width:850px;margin:auto}
+.gallery-main{
+width:100%;max-height:72vh;display:flex;
+justify-content:center;background:#f7f6f3
 }
-
-nav a {
-    text-decoration: none;
-    color: #333;
-    font-size: 10px;
-    letter-spacing: 1px;
+.gallery-main img{max-width:100%;max-height:72vh;object-fit:contain}
+.gallery-thumbnails{display:flex;gap:12px;margin-top:18px}
+.gallery-thumbnails img{
+width:75px;height:95px;object-fit:cover;cursor:pointer;
+border:1px solid transparent;opacity:.65
 }
-
-.cart-button {
-    border: 0;
-    background: none;
-    cursor: pointer;
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: #24231f;
-}
-
-.hero {
-    padding: 75px 6% 50px;
-}
-
-.eyebrow {
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: #888;
-    margin-bottom: 15px;
-}
-
-.hero h1 {
-    font-size: clamp(38px, 6vw, 65px);
-    font-weight: 400;
-    letter-spacing: -2px;
-}
-
-.description {
-    margin-top: 16px;
-    font-size: 13px;
-    color: #777;
-}
-
-.products {
-    padding: 0 6% 85px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 35px 20px;
-}
-
-.product-card {
-    min-width: 0;
-}
-
-.product-image {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    background: #f5f4f1;
-    overflow: hidden;
-    cursor: pointer;
-    touch-action: pan-y;
-}
-
-.product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: opacity .2s ease, transform .5s ease;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-.product-card:hover .product-image img {
-    transform: scale(1.025);
-}
-
-.card-dots {
-    position: absolute;
-    bottom: 12px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-    pointer-events: none;
-}
-
-.card-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.65);
-    border: 1px solid #777;
-}
-
-.card-dot.active {
-    background: #24231f;
-    border-color: #24231f;
-}
-
-.product-info {
-    padding-top: 14px;
-}
-
-.product-info h2 {
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-.product-category {
-    margin-top: 6px;
-    font-size: 11px;
-    color: #888;
-}
-
-.price {
-    margin-top: 12px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.add-button {
-    width: 100%;
-    margin-top: 13px;
-    padding: 14px 10px;
-    background: #24231f;
-    color: white;
-    border: 1px solid #24231f;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.add-button:hover {
-    background: #fff;
-    color: #24231f;
-}
-
-footer {
-    border-top: 1px solid #eee;
-    padding: 30px 6%;
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: #888;
-}
-
-/* PRODUCT GALLERY */
-
-.gallery-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: rgba(255,255,255,.98);
-    overflow-y: auto;
-    padding: 25px;
-}
-
-.gallery-overlay.active {
-    display: block;
-}
-
-.gallery-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1100px;
-    margin: 0 auto 25px;
-}
-
-.gallery-logo {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 4px;
-}
-
-.close-gallery {
-    border: 0;
-    background: none;
-    font-size: 30px;
-    cursor: pointer;
-}
-
-.gallery-content {
-    max-width: 850px;
-    margin: auto;
-}
-
-.gallery-main {
-    width: 100%;
-    max-height: 72vh;
-    display: flex;
-    justify-content: center;
-    background: #f7f6f3;
-}
-
-.gallery-main img {
-    max-width: 100%;
-    max-height: 72vh;
-    object-fit: contain;
-}
-
-.gallery-thumbnails {
-    display: flex;
-    gap: 12px;
-    margin-top: 18px;
-}
-
-.gallery-thumbnails img {
-    width: 75px;
-    height: 95px;
-    object-fit: cover;
-    cursor: pointer;
-    border: 1px solid transparent;
-    opacity: .65;
-}
-
-.gallery-thumbnails img.selected {
-    border-color: #222;
-    opacity: 1;
-}
-
-.gallery-product-info {
-    margin-top: 25px;
-}
-
-.gallery-product-info h2 {
-    font-size: 16px;
-    font-weight: 400;
-}
-
-.gallery-product-info p {
-    font-size: 13px;
-    margin-top: 10px;
-}
+.gallery-thumbnails img.selected{border-color:#222;opacity:1}
+.gallery-product-info{margin-top:25px}
+.gallery-product-info h2{font-size:16px;font-weight:400}
+.gallery-product-info p{font-size:13px;margin-top:10px}
 
 /* CART */
-
-.cart-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    background: rgba(0,0,0,.35);
+.cart-overlay{
+display:none;position:fixed;inset:0;z-index:2000;
+background:rgba(0,0,0,.35)
 }
-
-.cart-overlay.active {
-    display: block;
+.cart-overlay.active{display:block}
+.cart-panel{
+background:#fff;width:min(420px,100%);height:100%;
+margin-left:auto;padding:28px;overflow-y:auto
 }
-
-.cart-panel {
-    background: #fff;
-    width: min(420px, 100%);
-    height: 100%;
-    margin-left: auto;
-    padding: 28px;
-    overflow-y: auto;
+.cart-header{
+display:flex;justify-content:space-between;align-items:center;
+border-bottom:1px solid #eee;padding-bottom:20px
 }
-
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
+.cart-header h2{font-size:17px;font-weight:400;letter-spacing:1px}
+.cart-close{border:0;background:none;font-size:26px;cursor:pointer}
+.cart-item{
+display:flex;gap:15px;padding:22px 0;border-bottom:1px solid #eee
 }
-
-.cart-header h2 {
-    font-size: 17px;
-    font-weight: 400;
-    letter-spacing: 1px;
+.cart-item img{
+width:85px;height:110px;object-fit:cover;background:#f5f4f1
 }
-
-.cart-close {
-    border: 0;
-    background: none;
-    font-size: 26px;
-    cursor: pointer;
+.cart-item-info{flex:1}
+.cart-item-info h3{font-size:12px;font-weight:400;line-height:1.5}
+.cart-item-info p{margin-top:10px;font-size:12px}
+.remove-button{
+margin-top:12px;border:0;background:none;text-decoration:underline;
+color:#888;font-size:11px;cursor:pointer
 }
-
-.cart-item {
-    display: flex;
-    gap: 15px;
-    padding: 22px 0;
-    border-bottom: 1px solid #eee;
+.cart-total{
+display:flex;justify-content:space-between;
+margin-top:25px;font-size:14px
 }
+.empty-cart{padding:35px 0;font-size:13px;color:#888}
 
-.cart-item img {
-    width: 85px;
-    height: 110px;
-    object-fit: cover;
-    background: #f5f4f1;
+@media(max-width:900px){
+.products{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
-.cart-item-info {
-    flex: 1;
-}
-
-.cart-item-info h3 {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-.cart-item-info p {
-    margin-top: 10px;
-    font-size: 12px;
-}
-
-.remove-button {
-    margin-top: 12px;
-    border: 0;
-    background: none;
-    text-decoration: underline;
-    color: #888;
-    font-size: 11px;
-    cursor: pointer;
-}
-
-.cart-total {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 25px;
-    font-size: 14px;
-}
-
-.empty-cart {
-    padding: 35px 0;
-    font-size: 13px;
-    color: #888;
-}
-
-@media (max-width: 700px) {
-    header {
-        height: 65px;
-        padding: 0 5%;
-    }
-
-    nav {
-        gap: 11px;
-    }
-
-    nav a {
-        font-size: 9px;
-    }
-
-    .cart-button {
-        font-size: 9px;
-    }
-
-    .hero {
-        padding: 55px 5% 40px;
-    }
-
-    .products {
-        padding: 0 5% 60px;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 28px 12px;
-    }
-
-    .product-info h2 {
-        font-size: 11px;
-    }
-
-    .add-button {
-        font-size: 9px;
-        padding: 12px 5px;
-    }
-
-    .gallery-overlay {
-        padding: 18px 14px;
-    }
+@media(max-width:700px){
+header{height:65px;padding:0 5%}
+nav{gap:11px}
+nav a{font-size:9px}
+.cart-button{font-size:9px}
+.hero{padding:55px 5% 40px}
+.products{padding:0 5% 60px;gap:28px 12px}
+.product-info h2{font-size:11px}
+.add-button{font-size:9px;padding:12px 5px}
+.gallery-overlay{padding:18px 14px}
 }
 </style>
 </head>
@@ -423,295 +151,317 @@ footer {
 <body>
 
 <header>
-    <a href="index.html" class="logo">ENTE</a>
-
-    <nav>
-        <a href="index.html">HOME</a>
-        <a href="girls.html">GIRLS</a>
-        <a href="boys.html">BOYS</a>
-        <a href="unisex.html">UNISEX</a>
-
-        <button class="cart-button" onclick="openCart()">
-            BAG (<span id="cartCount">0</span>)
-        </button>
-    </nav>
+<a href="index.html" class="logo">ENTE</a>
+<nav>
+<a href="index.html">HOME</a>
+<a href="girls.html">GIRLS</a>
+<a href="boys.html">BOYS</a>
+<a href="unisex.html">UNISEX</a>
+<button class="cart-button" onclick="openCart()">
+BAG (<span id="cartCount">0</span>)
+</button>
+</nav>
 </header>
 
 <section class="hero">
-    <p class="eyebrow">ENTE COLLECTION / 01</p>
-    <h1>Girls Collection</h1>
-    <p class="description">
-        Discover the latest pieces from ENTE.
-    </p>
+<p class="eyebrow">ENTE COLLECTION / 01</p>
+<h1>Girls Collection</h1>
+<p class="description">Discover the latest pieces from ENTE.</p>
 </section>
 
-<section class="products">
-
-    <article class="product-card">
-
-        <div class="product-image"
-             id="cardGallery"
-             onclick="handleCardClick()"
-             ontouchstart="cardTouchStart(event)"
-             ontouchend="cardTouchEnd(event)">
-
-            <img
-                id="cardProductImage"
-                src="images/girl-sample-01-front.jpg"
-                alt="RIPNDIP X ENTE T-Shirt">
-
-            <div class="card-dots">
-                <span class="card-dot active"></span>
-                <span class="card-dot"></span>
-            </div>
-
-        </div>
-
-        <div class="product-info">
-            <h2>RIPNDIP © X ENTE Logo Baskılı T-Shirt</h2>
-            <p class="product-category">Girls Collection</p>
-            <p class="price">890,00 TL</p>
-
-            <button class="add-button" onclick="addToCart(event)">
-                SEPETE EKLE
-            </button>
-        </div>
-
-    </article>
-
-</section>
+<section class="products" id="products"></section>
 
 <footer>
-    <span>ENTE</span>
-    <span>© 2026 ENTE</span>
+<span>ENTE</span>
+<span>© 2026 ENTE</span>
 </footer>
 
 <!-- PRODUCT GALLERY -->
-
 <div class="gallery-overlay" id="gallery">
-
-    <div class="gallery-header">
-        <span class="gallery-logo">ENTE</span>
-        <button class="close-gallery" onclick="closeGallery()">×</button>
-    </div>
-
-    <div class="gallery-content">
-
-        <div class="gallery-main">
-            <img
-                id="mainProductImage"
-                src="images/girl-sample-01-front.jpg"
-                alt="Product image">
-        </div>
-
-        <div class="gallery-thumbnails">
-
-            <img
-                src="images/girl-sample-01-front.jpg"
-                class="selected"
-                onclick="changeImage(this)"
-                alt="Front view">
-
-            <img
-                src="images/girl-sample-01-back.jpg"
-                onclick="changeImage(this)"
-                alt="Back view">
-
-        </div>
-
-        <div class="gallery-product-info">
-            <h2>RIPNDIP © X ENTE Logo Baskılı T-Shirt</h2>
-            <p>890,00 TL</p>
-        </div>
-
-    </div>
+<div class="gallery-header">
+<span class="gallery-logo">ENTE</span>
+<button class="close-gallery" onclick="closeGallery()">×</button>
+</div>
+<div class="gallery-content">
+<div class="gallery-main">
+<img id="mainProductImage" src="" alt="Product image">
+</div>
+<div class="gallery-thumbnails" id="galleryThumbnails"></div>
+<div class="gallery-product-info">
+<h2 id="galleryProductName"></h2>
+<p id="galleryProductPrice"></p>
+</div>
+</div>
 </div>
 
 <!-- CART -->
-
 <div class="cart-overlay" id="cart">
-
-    <div class="cart-panel">
-
-        <div class="cart-header">
-            <h2>YOUR BAG</h2>
-            <button class="cart-close" onclick="closeCart()">×</button>
-        </div>
-
-        <div id="cartItems"></div>
-
-        <div class="cart-total">
-            <span>TOPLAM</span>
-            <strong id="cartTotal">0,00 TL</strong>
-        </div>
-
-    </div>
+<div class="cart-panel">
+<div class="cart-header">
+<h2>YOUR BAG</h2>
+<button class="cart-close" onclick="closeCart()">×</button>
+</div>
+<div id="cartItems"></div>
+<div class="cart-total">
+<span>TOPLAM</span>
+<strong id="cartTotal">0,00 TL</strong>
+</div>
+</div>
 </div>
 
+<script src="products.js"></script>
+
 <script>
+const products = ENTE_PRODUCTS.girls;
+const productContainer = document.getElementById("products");
 
-/* PRODUCT DATA */
-
-const product = {
-    name: "RIPNDIP © X ENTE Logo Baskılı T-Shirt",
-    price: 890,
-    image: "images/girl-sample-01-front.jpg"
-};
-
-/* CARD IMAGE SLIDER */
-
-const cardImages = [
-    "images/girl-sample-01-front.jpg",
-    "images/girl-sample-01-back.jpg"
-];
-
-let cardImageIndex = 0;
+let activeProduct = null;
 let touchStartX = 0;
 let wasSwiped = false;
 
-function updateCardImage() {
-    document.getElementById("cardProductImage").src =
-        cardImages[cardImageIndex];
+function formatPrice(price){
+    return price.toLocaleString("tr-TR",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    }) + " TL";
+}
 
-    document.querySelectorAll(".card-dot").forEach((dot, index) => {
-        dot.classList.toggle(
-            "active",
-            index === cardImageIndex
-        );
+/* PRODUCTS */
+
+function renderProducts(){
+    productContainer.innerHTML = products.map((product,index)=>`
+        <article class="product-card">
+            <div class="product-image"
+                 ontouchstart="cardTouchStart(event)"
+                 ontouchend="cardTouchEnd(event,${index})"
+                 onclick="handleCardClick(${index})">
+
+                <img id="card-image-${index}"
+                     src="${product.images[0]}"
+                     alt="${product.name}">
+
+                <div class="card-dots">
+                    ${product.images.map((img,i)=>`
+                        <span class="card-dot ${i===0?'active':''}"></span>
+                    `).join("")}
+                </div>
+            </div>
+
+            <div class="product-info">
+                <h2>${product.name}</h2>
+                <p class="product-category">Girls Collection</p>
+                <p class="price">${formatPrice(product.price)}</p>
+                <button class="add-button"
+                        onclick="addToCart('${product.id}',event)">
+                    SEPETE EKLE
+                </button>
+            </div>
+        </article>
+    `).join("");
+}
+
+/* IMAGE SLIDER */
+
+function updateCardImage(index,imageIndex){
+    const product=products[index];
+
+    document.getElementById("card-image-"+index).src=
+        product.images[imageIndex];
+
+    const dots=document.querySelectorAll(".product-card")[index]
+        .querySelectorAll(".card-dot");
+
+    dots.forEach((dot,i)=>{
+        dot.classList.toggle("active",i===imageIndex);
     });
+
+    document.querySelectorAll(".product-card")[index]
+        .dataset.imageIndex=imageIndex;
 }
 
-function cardTouchStart(event) {
-    touchStartX = event.changedTouches[0].screenX;
-    wasSwiped = false;
+function cardTouchStart(event){
+    touchStartX=event.changedTouches[0].screenX;
+    wasSwiped=false;
 }
 
-function cardTouchEnd(event) {
-    const touchEndX = event.changedTouches[0].screenX;
-    const difference = touchStartX - touchEndX;
+function cardTouchEnd(event,index){
+    const endX=event.changedTouches[0].screenX;
+    const difference=touchStartX-endX;
 
-    if (Math.abs(difference) > 40) {
-        wasSwiped = true;
+    if(Math.abs(difference)>40){
+        wasSwiped=true;
 
-        if (difference > 0) {
-            cardImageIndex =
-                (cardImageIndex + 1) % cardImages.length;
-        } else {
-            cardImageIndex =
-                (cardImageIndex - 1 + cardImages.length) %
-                cardImages.length;
-        }
+        const current=Number(
+            document.querySelectorAll(".product-card")[index]
+            .dataset.imageIndex||0
+        );
 
-        updateCardImage();
+        const length=products[index].images.length;
+        const next=difference>0
+            ?(current+1)%length
+            :(current-1+length)%length;
+
+        updateCardImage(index,next);
     }
 }
 
-function handleCardClick() {
-    if (wasSwiped) {
-        wasSwiped = false;
+function handleCardClick(index){
+    if(wasSwiped){
+        wasSwiped=false;
         return;
     }
-
-    openGallery();
+    openGallery(index);
 }
 
-/* LARGE PRODUCT GALLERY */
+/* GALLERY */
 
-function openGallery() {
+function openGallery(index){
+    activeProduct=products[index];
+
+    document.getElementById("mainProductImage").src=
+        activeProduct.images[0];
+
+    document.getElementById("galleryProductName").textContent=
+        activeProduct.name;
+
+    document.getElementById("galleryProductPrice").textContent=
+        formatPrice(activeProduct.price);
+
+    document.getElementById("galleryThumbnails").innerHTML=
+        activeProduct.images.map((img,i)=>`
+            <img src="${img}"
+                 class="${i===0?'selected':''}"
+                 onclick="changeImage(${i})"
+                 alt="Product view ${i+1}">
+        `).join("");
+
     document.getElementById("gallery").classList.add("active");
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow="hidden";
 }
 
-function closeGallery() {
-    document.getElementById("gallery").classList.remove("active");
-    document.body.style.overflow = "";
-}
-
-function changeImage(element) {
-    document.getElementById("mainProductImage").src =
-        element.src;
+function changeImage(index){
+    document.getElementById("mainProductImage").src=
+        activeProduct.images[index];
 
     document.querySelectorAll(".gallery-thumbnails img")
-        .forEach(img => img.classList.remove("selected"));
-
-    element.classList.add("selected");
+        .forEach((img,i)=>{
+            img.classList.toggle("selected",i===index);
+        });
 }
 
-/* SHOPPING CART */
+function closeGallery(){
+    document.getElementById("gallery").classList.remove("active");
+    document.body.style.overflow="";
+}
 
-let cartQuantity = 0;
+/* SHARED CART */
 
-function addToCart(event) {
-    event.stopPropagation();
+function getCart(){
+    try{
+        return JSON.parse(localStorage.getItem("enteCart"))||[];
+    }catch(error){
+        return [];
+    }
+}
 
-    cartQuantity++;
+function saveCart(cart){
+    localStorage.setItem("enteCart",JSON.stringify(cart));
+}
+
+function addToCart(productId,event){
+    if(event) event.stopPropagation();
+
+    const product=products.find(p=>p.id===productId);
+    if(!product)return;
+
+    const cart=getCart();
+    const existing=cart.find(item=>item.id===productId);
+
+    if(existing){
+        existing.quantity++;
+    }else{
+        cart.push({
+            id:product.id,
+            name:product.name,
+            price:product.price,
+            image:product.images[0],
+            quantity:1
+        });
+    }
+
+    saveCart(cart);
     updateCart();
     openCart();
 }
 
-function updateCart() {
-    document.getElementById("cartCount").textContent =
-        cartQuantity;
+function updateCart(){
+    const cart=getCart();
 
-    const items = document.getElementById("cartItems");
+    const count=cart.reduce((sum,item)=>sum+item.quantity,0);
+    document.getElementById("cartCount").textContent=count;
 
-    if (cartQuantity === 0) {
-        items.innerHTML =
-            '<p class="empty-cart">Your bag is empty.</p>';
-    } else {
-        items.innerHTML = `
+    const total=cart.reduce(
+        (sum,item)=>sum+item.price*item.quantity,0
+    );
+
+    const items=document.getElementById("cartItems");
+
+    if(cart.length===0){
+        items.innerHTML='<p class="empty-cart">Your bag is empty.</p>';
+    }else{
+        items.innerHTML=cart.map(item=>`
             <div class="cart-item">
-                <img src="${product.image}" alt="Product">
-
+                <img src="${item.image}" alt="${item.name}">
                 <div class="cart-item-info">
-                    <h3>${product.name}</h3>
-                    <p>890,00 TL</p>
-                    <p>Adet: ${cartQuantity}</p>
-
+                    <h3>${item.name}</h3>
+                    <p>${formatPrice(item.price)}</p>
+                    <p>Adet: ${item.quantity}</p>
                     <button class="remove-button"
-                            onclick="removeFromCart()">
+                            onclick="removeFromCart('${item.id}')">
                         Ürünü kaldır
                     </button>
                 </div>
             </div>
-        `;
+        `).join("");
     }
 
-    document.getElementById("cartTotal").textContent =
-        (cartQuantity * product.price).toLocaleString("tr-TR", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }) + " TL";
+    document.getElementById("cartTotal").textContent=
+        formatPrice(total);
 }
 
-function removeFromCart() {
-    cartQuantity = 0;
+function removeFromCart(id){
+    const cart=getCart().filter(item=>item.id!==id);
+    saveCart(cart);
     updateCart();
 }
 
-function openCart() {
+function openCart(){
+    updateCart();
     document.getElementById("cart").classList.add("active");
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow="hidden";
 }
 
-function closeCart() {
+function closeCart(){
     document.getElementById("cart").classList.remove("active");
-    document.body.style.overflow = "";
+    document.body.style.overflow="";
 }
 
-/* KEYBOARD */
-
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
+document.addEventListener("keydown",function(event){
+    if(event.key==="Escape"){
         closeGallery();
         closeCart();
     }
 });
 
-updateCart();
+window.addEventListener("storage",function(event){
+    if(event.key==="enteCart"){
+        updateCart();
+    }
+});
 
+renderProducts();
+updateCart();
 </script>
 
 </body>
 </html>
-
