@@ -2,164 +2,95 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ENTE | Kids Collection</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      color: #222;
-      background: #fff;
-    }
-
-    header {
-      height: 75px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 6%;
-      border-bottom: 1px solid #eee;
-    }
-
-    .logo {
-      font-size: 30px;
-      letter-spacing: 7px;
-      font-weight: 600;
-    }
-
-    nav {
-      display: flex;
-      gap: 25px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #333;
-      font-size: 12px;
-    }
-
-    .hero {
-      min-height: 570px;
-      background: #e9e5df;
-      display: flex;
-      align-items: center;
-      padding: 8%;
-    }
-
-    .hero-content {
-      max-width: 450px;
-    }
-
-    .hero p {
-      font-size: 11px;
-      letter-spacing: 3px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-family: Georgia, serif;
-      font-size: clamp(42px, 7vw, 72px);
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 25px;
-    }
-
-    .hero a {
-      display: inline-block;
-      padding: 15px 28px;
-      background: #222;
-      color: white;
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 2px;
-    }
-
-    .section {
-      padding: 75px 6%;
-    }
-
-    .section h2 {
-      text-align: center;
-      font-family: Georgia, serif;
-      font-size: 34px;
-      font-weight: 400;
-      margin-bottom: 40px;
-    }
-
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .category {
-      min-height: 270px;
-      background: #eeeae5;
-      display: flex;
-      align-items: end;
-      padding: 25px;
-      font-family: Georgia, serif;
-      font-size: 25px;
-    }
-
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 45px 20px;
-      letter-spacing: 4px;
-      font-size: 20px;
-    }
-
-    @media(max-width: 600px) {
-      header { padding: 0 5%; }
-      .logo { font-size: 24px; }
-      nav { gap: 12px; }
-      nav a { font-size: 10px; }
-      .hero { min-height: 470px; }
-      .categories { grid-template-columns: 1fr; }
-      .category { min-height: 220px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENTE — Kidswear</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;color:#24231f;background:#fff}
+header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #eee}
+.logo{font-size:29px;letter-spacing:7px;font-weight:600}
+nav{display:flex;gap:30px}
+nav a{font-size:11px;text-decoration:none;color:#292929;letter-spacing:1.5px}
+.icons{font-size:19px}
+.hero{height:570px;background:#e9e4dc;display:flex;align-items:center;padding:8%}
+.hero-content{max-width:390px}
+.hero small{letter-spacing:3px;font-size:10px}
+.hero h1{font-size:54px;font-weight:400;line-height:1.1;margin:22px 0}
+.hero p{font-size:13px;line-height:1.8;color:#555}
+.shop{display:inline-block;margin-top:28px;background:#24231f;color:white;padding:15px 30px;text-decoration:none;font-size:11px;letter-spacing:2px}
+.section{padding:75px 6%}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.section h2{font-size:25px;font-weight:400;letter-spacing:1px}
+.section-head a{font-size:11px;color:#333}
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.category{height:350px;background:#e9e5df;display:flex;align-items:end;padding:22px;text-decoration:none;color:#24231f}
+.category:nth-child(2){background:#dedbd5}
+.category:nth-child(3){background:#eee9e2}
+.category span{font-size:15px;letter-spacing:2px}
+.about{background:#f5f3ef;text-align:center;padding:75px 20px}
+.about h2{font-size:27px;font-weight:400;margin-bottom:18px}
+.about p{font-size:13px;color:#666;line-height:1.9;max-width:470px;margin:auto}
+footer{padding:35px 6%;background:#24231f;color:#fff;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px}
+@media(max-width:650px){
+header{height:65px;padding:0 5%}
+.logo{font-size:24px}
+nav{gap:12px}
+nav a{font-size:9px}
+.icons{display:none}
+.hero{height:480px;padding:8%}
+.hero h1{font-size:43px}
+.categories{grid-template-columns:1fr}
+.category{height:300px}
+.section{padding:55px 5%}
+footer{gap:15px;flex-direction:column}
+}
+</style>
 </head>
 <body>
+<header>
+<div class="logo">ENTE</div>
+<nav>
+<a href="#new">NEW</a>
+<a href="#girl">GIRL</a>
+<a href="#boy">BOY</a>
+</nav>
+<div class="icons">⌕　♡　♧</div>
+</header>
 
-  <header>
-    <div class="logo">ENTE</div>
-    <nav>
-      <a href="#">NEW</a>
-      <a href="#">GIRL</a>
-      <a href="#">BOY</a>
-      <a href="#">COLLECTION</a>
-    </nav>
-  </header>
+<section class="hero">
+<div class="hero-content">
+<small>ENTE AUTUMN / WINTER 2026</small>
+<h1>Little things.<br>Big moments.</h1>
+<p>Çocukluğun en güzel anlarına eşlik eden, özenle seçilmiş parçalar.</p>
+<a class="shop" href="#collections">KOLEKSİYONU KEŞFET</a>
+</div>
+</section>
 
-  <main>
-    <section class="hero">
-      <div class="hero-content">
-        <p>ENTE KIDS COLLECTION</p>
-        <h1>Little details.<br>Big stories.</h1>
-        <a href="#categories">COLLECTION</a>
-      </div>
-    </section>
+<section class="section" id="collections">
+<div class="section-head">
+<h2>Collections</h2>
+<a href="#new">TÜMÜNÜ KEŞFET →</a>
+</div>
+<div class="categories">
+<a class="category" id="girl" href="#new"><span>GIRLS — 01</span></a>
+<a class="category" id="boy" href="#new"><span>BOYS — 02</span></a>
+<a class="category" id="new" href="#new"><span>NEW SEASON — 03</span></a>
+</div>
+</section>
 
-    <section class="section" id="categories">
-      <h2>Explore Collection</h2>
-      <div class="categories">
-        <div class="category">Girls</div>
-        <div class="category">Boys</div>
-        <div class="category">New Season</div>
-      </div>
-    </section>
-  </main>
+<section class="about">
+<h2>Made for little moments.</h2>
+<p>ENTE, çocukların özgürce keşfettiği ve büyüdüğü her ana eşlik etmek için tasarlandı. Sade çizgiler, zamansız parçalar ve küçük detaylar.</p>
+</section>
 
-  <footer>ENTE</footer>
-
+<footer>
+<div>ENTE © 2026</div>
+<div>CHILDREN'S CLOTHING</div>
+<div>ALL RIGHTS RESERVED</div>
+</footer>
 </body>
 </html>
+
+
+    
