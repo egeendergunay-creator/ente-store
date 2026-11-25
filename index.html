@@ -172,7 +172,6 @@ transform:translateY(-50%) scale(1.08);
 
 .card-arrow.prev{left:12px}
 .card-arrow.next{right:12px}
-
 .card-arrow.is-hidden{display:none}
 
 .product-name{font-size:13px;margin-top:13px;letter-spacing:1px}
@@ -182,7 +181,6 @@ transform:translateY(-50%) scale(1.08);
 background:#24231f;color:white;border:1px solid #24231f;
 padding:12px 17px;font-size:10px;letter-spacing:1px;cursor:pointer
 }
-.product-actions .details-button{background:white;color:#24231f}
 
 .about{background:#f5f3ef;text-align:center;padding:75px 20px}
 .about h2{font-size:27px;font-weight:400;margin-bottom:18px}
@@ -385,7 +383,7 @@ function renderProducts(){
         <p class="product-price">${product.price.toLocaleString("tr-TR")},00 TL</p>
 
         <div class="product-actions">
-          <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>  
+          <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>
         </div>
       </div>
     `;
@@ -609,7 +607,7 @@ window.addEventListener("resize",()=>{
 
 document.addEventListener("keydown",function(event){
   if(event.key==="Escape"){
-    closeGallery(); .M
+    closeGallery();
     closeCart();
   }
 });
