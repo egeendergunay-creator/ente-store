@@ -199,11 +199,11 @@ transform:scale(.85)
   width:40px;
   height:40px;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,1);
-  background:rgba(255,255,255,.95);
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
-  color:#24231f;
+  border:1px solid rgba(255,255,255,.55);
+  background:rgba(55,55,55,.72);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -211,26 +211,17 @@ transform:scale(.85)
   font-weight:500;
   cursor:pointer;
   z-index:20;
-  box-shadow:0 2px 12px rgba(0,0,0,.16);
-  transition:
-    background .25s ease,
-    transform .25s ease,
-    box-shadow .25s ease;
+  box-shadow:0 2px 12px rgba(0,0,0,.18);
+  transition:background .25s ease,transform .25s ease;
 }
 
 .card-arrow:hover{
-  background:#fff;
+  background:rgba(35,35,35,.9);
   transform:translateY(-50%) scale(1.08);
-  box-shadow:0 3px 15px rgba(0,0,0,.2);
 }
 
-.card-arrow.prev{
-  left:12px;
-}
-
-.card-arrow.next{
-  right:12px;
-}
+.card-arrow.prev{left:12px}
+.card-arrow.next{right:12px}
 
 .card-arrow.is-hidden{
   display:none;
