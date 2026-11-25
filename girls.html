@@ -1,1 +1,717 @@
 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Girls Collection — ENTE</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #24231f;
+    background: #fff;
+}
+
+header {
+    height: 75px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: #24231f;
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.cart-button {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #24231f;
+}
+
+.hero {
+    padding: 75px 6% 50px;
+}
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 65px);
+    font-weight: 400;
+    letter-spacing: -2px;
+}
+
+.description {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #777;
+}
+
+.products {
+    padding: 0 6% 85px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px 20px;
+}
+
+.product-card {
+    min-width: 0;
+}
+
+.product-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #f5f4f1;
+    overflow: hidden;
+    cursor: pointer;
+    touch-action: pan-y;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity .2s ease, transform .5s ease;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.025);
+}
+
+.card-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    pointer-events: none;
+}
+
+.card-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.65);
+    border: 1px solid #777;
+}
+
+.card-dot.active {
+    background: #24231f;
+    border-color: #24231f;
+}
+
+.product-info {
+    padding-top: 14px;
+}
+
+.product-info h2 {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.product-category {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #888;
+}
+
+.price {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.add-button {
+    width: 100%;
+    margin-top: 13px;
+    padding: 14px 10px;
+    background: #24231f;
+    color: white;
+    border: 1px solid #24231f;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.add-button:hover {
+    background: #fff;
+    color: #24231f;
+}
+
+footer {
+    border-top: 1px solid #eee;
+    padding: 30px 6%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+/* PRODUCT GALLERY */
+
+.gallery-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,.98);
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.gallery-overlay.active {
+    display: block;
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto 25px;
+}
+
+.gallery-logo {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
+}
+
+.close-gallery {
+    border: 0;
+    background: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.gallery-content {
+    max-width: 850px;
+    margin: auto;
+}
+
+.gallery-main {
+    width: 100%;
+    max-height: 72vh;
+    display: flex;
+    justify-content: center;
+    background: #f7f6f3;
+}
+
+.gallery-main img {
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+}
+
+.gallery-thumbnails {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.gallery-thumbnails img {
+    width: 75px;
+    height: 95px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid transparent;
+    opacity: .65;
+}
+
+.gallery-thumbnails img.selected {
+    border-color: #222;
+    opacity: 1;
+}
+
+.gallery-product-info {
+    margin-top: 25px;
+}
+
+.gallery-product-info h2 {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.gallery-product-info p {
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+/* CART */
+
+.cart-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0,0,0,.35);
+}
+
+.cart-overlay.active {
+    display: block;
+}
+
+.cart-panel {
+    background: #fff;
+    width: min(420px, 100%);
+    height: 100%;
+    margin-left: auto;
+    padding: 28px;
+    overflow-y: auto;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.cart-header h2 {
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.cart-close {
+    border: 0;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.cart-item {
+    display: flex;
+    gap: 15px;
+    padding: 22px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item img {
+    width: 85px;
+    height: 110px;
+    object-fit: cover;
+    background: #f5f4f1;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-info h3 {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.cart-item-info p {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.remove-button {
+    margin-top: 12px;
+    border: 0;
+    background: none;
+    text-decoration: underline;
+    color: #888;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.empty-cart {
+    padding: 35px 0;
+    font-size: 13px;
+    color: #888;
+}
+
+@media (max-width: 700px) {
+    header {
+        height: 65px;
+        padding: 0 5%;
+    }
+
+    nav {
+        gap: 11px;
+    }
+
+    nav a {
+        font-size: 9px;
+    }
+
+    .cart-button {
+        font-size: 9px;
+    }
+
+    .hero {
+        padding: 55px 5% 40px;
+    }
+
+    .products {
+        padding: 0 5% 60px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 12px;
+    }
+
+    .product-info h2 {
+        font-size: 11px;
+    }
+
+    .add-button {
+        font-size: 9px;
+        padding: 12px 5px;
+    }
+
+    .gallery-overlay {
+        padding: 18px 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <a href="index.html" class="logo">ENTE</a>
+
+    <nav>
+        <a href="index.html">HOME</a>
+        <a href="girls.html">GIRLS</a>
+        <a href="boys.html">BOYS</a>
+        <a href="unisex.html">UNISEX</a>
+
+        <button class="cart-button" onclick="openCart()">
+            BAG (<span id="cartCount">0</span>)
+        </button>
+    </nav>
+</header>
+
+<section class="hero">
+    <p class="eyebrow">ENTE COLLECTION / 01</p>
+    <h1>Girls Collection</h1>
+    <p class="description">
+        Discover the latest pieces from ENTE.
+    </p>
+</section>
+
+<section class="products">
+
+    <article class="product-card">
+
+        <div class="product-image"
+             id="cardGallery"
+             onclick="handleCardClick()"
+             ontouchstart="cardTouchStart(event)"
+             ontouchend="cardTouchEnd(event)">
+
+            <img
+                id="cardProductImage"
+                src="images/girl-sample-01-front.jpg"
+                alt="RIPNDIP X ENTE T-Shirt">
+
+            <div class="card-dots">
+                <span class="card-dot active"></span>
+                <span class="card-dot"></span>
+            </div>
+
+        </div>
+
+        <div class="product-info">
+            <h2>RIPNDIP © X ENTE Logo Baskılı T-Shirt</h2>
+            <p class="product-category">Girls Collection</p>
+            <p class="price">890,00 TL</p>
+
+            <button class="add-button" onclick="addToCart(event)">
+                SEPETE EKLE
+            </button>
+        </div>
+
+    </article>
+
+</section>
+
+<footer>
+    <span>ENTE</span>
+    <span>© 2026 ENTE</span>
+</footer>
+
+<!-- PRODUCT GALLERY -->
+
+<div class="gallery-overlay" id="gallery">
+
+    <div class="gallery-header">
+        <span class="gallery-logo">ENTE</span>
+        <button class="close-gallery" onclick="closeGallery()">×</button>
+    </div>
+
+    <div class="gallery-content">
+
+        <div class="gallery-main">
+            <img
+                id="mainProductImage"
+                src="images/girl-sample-01-front.jpg"
+                alt="Product image">
+        </div>
+
+        <div class="gallery-thumbnails">
+
+            <img
+                src="images/girl-sample-01-front.jpg"
+                class="selected"
+                onclick="changeImage(this)"
+                alt="Front view">
+
+            <img
+                src="images/girl-sample-01-back.jpg"
+                onclick="changeImage(this)"
+                alt="Back view">
+
+        </div>
+
+        <div class="gallery-product-info">
+            <h2>RIPNDIP © X ENTE Logo Baskılı T-Shirt</h2>
+            <p>890,00 TL</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- CART -->
+
+<div class="cart-overlay" id="cart">
+
+    <div class="cart-panel">
+
+        <div class="cart-header">
+            <h2>YOUR BAG</h2>
+            <button class="cart-close" onclick="closeCart()">×</button>
+        </div>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-total">
+            <span>TOPLAM</span>
+            <strong id="cartTotal">0,00 TL</strong>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+/* PRODUCT DATA */
+
+const product = {
+    name: "RIPNDIP © X ENTE Logo Baskılı T-Shirt",
+    price: 890,
+    image: "images/girl-sample-01-front.jpg"
+};
+
+/* CARD IMAGE SLIDER */
+
+const cardImages = [
+    "images/girl-sample-01-front.jpg",
+    "images/girl-sample-01-back.jpg"
+];
+
+let cardImageIndex = 0;
+let touchStartX = 0;
+let wasSwiped = false;
+
+function updateCardImage() {
+    document.getElementById("cardProductImage").src =
+        cardImages[cardImageIndex];
+
+    document.querySelectorAll(".card-dot").forEach((dot, index) => {
+        dot.classList.toggle(
+            "active",
+            index === cardImageIndex
+        );
+    });
+}
+
+function cardTouchStart(event) {
+    touchStartX = event.changedTouches[0].screenX;
+    wasSwiped = false;
+}
+
+function cardTouchEnd(event) {
+    const touchEndX = event.changedTouches[0].screenX;
+    const difference = touchStartX - touchEndX;
+
+    if (Math.abs(difference) > 40) {
+        wasSwiped = true;
+
+        if (difference > 0) {
+            cardImageIndex =
+                (cardImageIndex + 1) % cardImages.length;
+        } else {
+            cardImageIndex =
+                (cardImageIndex - 1 + cardImages.length) %
+                cardImages.length;
+        }
+
+        updateCardImage();
+    }
+}
+
+function handleCardClick() {
+    if (wasSwiped) {
+        wasSwiped = false;
+        return;
+    }
+
+    openGallery();
+}
+
+/* LARGE PRODUCT GALLERY */
+
+function openGallery() {
+    document.getElementById("gallery").classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closeGallery() {
+    document.getElementById("gallery").classList.remove("active");
+    document.body.style.overflow = "";
+}
+
+function changeImage(element) {
+    document.getElementById("mainProductImage").src =
+        element.src;
+
+    document.querySelectorAll(".gallery-thumbnails img")
+        .forEach(img => img.classList.remove("selected"));
+
+    element.classList.add("selected");
+}
+
+/* SHOPPING CART */
+
+let cartQuantity = 0;
+
+function addToCart(event) {
+    event.stopPropagation();
+
+    cartQuantity++;
+    updateCart();
+    openCart();
+}
+
+function updateCart() {
+    document.getElementById("cartCount").textContent =
+        cartQuantity;
+
+    const items = document.getElementById("cartItems");
+
+    if (cartQuantity === 0) {
+        items.innerHTML =
+            '<p class="empty-cart">Your bag is empty.</p>';
+    } else {
+        items.innerHTML = `
+            <div class="cart-item">
+                <img src="${product.image}" alt="Product">
+
+                <div class="cart-item-info">
+                    <h3>${product.name}</h3>
+                    <p>890,00 TL</p>
+                    <p>Adet: ${cartQuantity}</p>
+
+                    <button class="remove-button"
+                            onclick="removeFromCart()">
+                        Ürünü kaldır
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    document.getElementById("cartTotal").textContent =
+        (cartQuantity * product.price).toLocaleString("tr-TR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + " TL";
+}
+
+function removeFromCart() {
+    cartQuantity = 0;
+    updateCart();
+}
+
+function openCart() {
+    document.getElementById("cart").classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closeCart() {
+    document.getElementById("cart").classList.remove("active");
+    document.body.style.overflow = "";
+}
+
+/* KEYBOARD */
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeGallery();
+        closeCart();
+    }
+});
+
+updateCart();
+
+</script>
+
+</body>
+</html>
+
