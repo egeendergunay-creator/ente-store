@@ -31,12 +31,10 @@ grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 20px
 .product-card{min-width:0}
 .product-image{
 position:relative;width:100%;aspect-ratio:3/4;
-background:#f5f4f1;overflow:hidden;cursor:grab;
+background:#f5f4f1;overflow:hidden;cursor:pointer;
 touch-action:pan-y;
-user-select:none;
--webkit-user-select:none;
+user-select:none;-webkit-user-select:none;
 }
-.product-image:active{cursor:grabbing}
 .product-image img{
 width:100%;height:100%;object-fit:cover;display:block;
 transition:opacity .2s ease,transform .5s ease;
@@ -82,9 +80,7 @@ display:flex;justify-content:space-between;align-items:center;
 max-width:1100px;margin:0 auto 25px
 }
 .gallery-logo{font-size:22px;font-weight:700;letter-spacing:4px}
-.close-gallery{
-border:0;background:none;font-size:30px;cursor:pointer
-}
+.close-gallery{border:0;background:none;font-size:30px;cursor:pointer}
 .gallery-content{max-width:850px;margin:auto}
 .gallery-main{
 width:100%;max-height:72vh;display:flex;
@@ -221,8 +217,8 @@ const products = ENTE_PRODUCTS.girls;
 const productContainer = document.getElementById("products");
 
 let activeProduct = null;
-let startX = 0;
-let activePointerId = null;
+let touchStartX = 0;
+let touchStartY = 0;
 let suppressClickUntil = 0;
 
 function formatPrice(price){
@@ -238,9 +234,9 @@ function renderProducts(){
     productContainer.innerHTML = products.map((product,index)=>`
         <article class="product-card">
             <div class="product-image"
-                 onpointerdown="cardTouchStart(event)"
-                 onpointerup="cardTouchEnd(event,${index})"
-                 onpointercancel="cardTouchCancel(event)"
+                 ontouchstart="cardTouchStart(event)"
+                 ontouchend="cardTouchEnd(event,${index})"
+                 ontouchcancel="cardTouchCancel()"
                  onclick="handleCardClick(${index})">
 
                 <img id="card-image-${index}"
@@ -267,7 +263,45 @@ function renderProducts(){
     `).join("");
 }
 
-/* IMAGE SLIDER */
+/* TOUCH IMAGE SLIDER */
+
+function cardTouchStart(event){
+    if(event.touches.length !== 1) return;
+
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+}
+
+function cardTouchEnd(event,index){
+    if(!event.changedTouches.length) return;
+
+    const touch = event.changedTouches[0];
+
+    const differenceX = touchStartX - touch.clientX;
+    const differenceY = touchStartY - touch.clientY;
+
+    if(Math.abs(differenceX) < 45) return;
+    if(Math.abs(differenceX) <= Math.abs(differenceY)) return;
+
+    const product = products[index];
+    if(!product || product.images.length < 2) return;
+
+    suppressClickUntil = Date.now() + 700;
+
+    const card = document.querySelectorAll(".product-card")[index];
+    const current = Number(card.dataset.imageIndex || 0);
+
+    const next = differenceX > 0
+        ? (current + 1) % product.images.length
+        : (current - 1 + product.images.length) % product.images.length;
+
+    updateCardImage(index,next);
+}
+
+function cardTouchCancel(){
+    touchStartX = 0;
+    touchStartY = 0;
+}
 
 function updateCardImage(index,imageIndex){
     const product = products[index];
@@ -283,45 +317,8 @@ function updateCardImage(index,imageIndex){
     card.dataset.imageIndex = imageIndex;
 }
 
-function cardTouchStart(event){
-    if(event.pointerType === "mouse" && event.button !== 0) return;
-
-    startX = event.clientX;
-    activePointerId = event.pointerId;
-
-    event.currentTarget.setPointerCapture(event.pointerId);
-}
-
-function cardTouchEnd(event,index){
-    if(event.pointerId !== activePointerId) return;
-
-    const difference = startX - event.clientX;
-    activePointerId = null;
-
-    if(Math.abs(difference) < 35) return;
-
-    const length = products[index].images.length;
-    if(length < 2) return;
-
-    suppressClickUntil = Date.now() + 500;
-
-    const card = document.querySelectorAll(".product-card")[index];
-    const current = Number(card.dataset.imageIndex || 0);
-
-    const next = difference > 0
-        ? (current + 1) % length
-        : (current - 1 + length) % length;
-
-    updateCardImage(index,next);
-}
-
-function cardTouchCancel(event){
-    activePointerId = null;
-}
-
 function handleCardClick(index){
     if(Date.now() < suppressClickUntil) return;
-
     openGallery(index);
 }
 
