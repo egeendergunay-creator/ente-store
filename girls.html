@@ -906,5 +906,16 @@ renderProducts();
 updateCart();
 
 </script>
+<script>
+const testKey = "enteStorageTest";
+
+if(localStorage.getItem(testKey) === "saved") {
+    alert("TEST BAŞARILI: Chrome kayıtları koruyor.");
+    localStorage.removeItem(testKey);
+} else {
+    localStorage.setItem(testKey, "saved");
+    alert("İlk kayıt yapıldı. Şimdi sayfayı yenile.");
+}
+</script>
 </body>
 </html>
