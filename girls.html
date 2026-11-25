@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -30,17 +29,21 @@ grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 20px
 }
 .product-card{min-width:0}
 
-/* PRODUCT IMAGE SLIDER */
+/* PRODUCT SLIDER */
 .product-image{
 position:relative;width:100%;aspect-ratio:3/4;
 background:#f5f4f1;overflow-x:auto;overflow-y:hidden;
 display:flex;scroll-snap-type:x mandatory;
 scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
 overscroll-behavior-x:contain;touch-action:pan-x pan-y;
-scrollbar-width:none;cursor:pointer
+scrollbar-width:none;cursor:grab
 }
 .product-image::-webkit-scrollbar{display:none}
-
+.product-image.is-dragging{
+cursor:grabbing;
+scroll-snap-type:none;
+scroll-behavior:auto
+}
 .product-image img{
 flex:0 0 100%;width:100%;height:100%;object-fit:cover;
 display:block;scroll-snap-align:start;scroll-snap-stop:always;
@@ -59,19 +62,17 @@ border-radius:50%;padding:0;
 background:rgba(255,255,255,.8);
 border:1px solid #777;cursor:pointer
 }
-.card-dot.active{
-background:#24231f;border-color:#24231f
-}
+.card-dot.active{background:#24231f;border-color:#24231f}
 
 /* DESKTOP ARROWS */
 .card-arrow{
 position:absolute;top:50%;transform:translateY(-50%);
 width:36px;height:36px;border:0;border-radius:50%;
-background:rgba(255,255,255,.88);color:#24231f;
+background:rgba(255,255,255,.9);color:#24231f;
 display:flex;align-items:center;justify-content:center;
 font-size:23px;line-height:1;cursor:pointer;
 z-index:6;opacity:0;visibility:hidden;
-transition:opacity .2s,background .2s;
+transition:opacity .2s,background .2s
 }
 .card-arrow:hover{background:#fff}
 .card-arrow:disabled{opacity:0!important;pointer-events:none}
@@ -167,7 +168,6 @@ margin-top:25px;font-size:14px
 @media(max-width:900px){
 .products{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
 @media(max-width:700px){
 header{height:65px;padding:0 5%}
 nav{gap:11px}
@@ -258,12 +258,10 @@ function formatPrice(price){
 }
 
 /* PRODUCTS */
-
 function renderProducts(){
     productContainer.innerHTML = products.map((product,index)=>`
         <article class="product-card">
             <div class="product-image"
-                 onscroll="sliderScrolled(this)"
                  onclick="openProductFromCard(event,${index})">
 
                 ${product.images.map((img,i)=>`
@@ -303,34 +301,42 @@ function renderProducts(){
         </article>
     `).join("");
 
-    setupDesktopWheel();
-    productContainer.querySelectorAll(".product-image").forEach(updateSliderControls);
+    setupSliders();
 }
 
 /* SLIDER CONTROLS */
-
 function getImageIndex(slider){
     if(!slider.clientWidth) return 0;
     return Math.round(slider.scrollLeft / slider.clientWidth);
 }
 
 function updateSliderControls(slider){
-    const imageIndex = getImageIndex(slider);
+    const index = getImageIndex(slider);
     const dots = slider.querySelectorAll(".card-dot");
     const prev = slider.querySelector(".card-arrow.prev");
     const next = slider.querySelector(".card-arrow.next");
 
     dots.forEach((dot,i)=>{
-        dot.classList.toggle("active",i===imageIndex);
+        dot.classList.toggle("active",i===index);
     });
 
-    if(prev) prev.disabled = imageIndex <= 0;
-    if(next) next.disabled = imageIndex >= dots.length - 1;
+    if(prev) prev.disabled = index<=0;
+    if(next) next.disabled = index>=dots.length-1;
 }
 
-function sliderScrolled(slider){
-    updateSliderControls(slider);
-    swipeClickBlockedUntil = Date.now() + 350;
+function goToProductImage(event,productIndex,imageIndex){
+    event.preventDefault();
+    event.stopPropagation();
+
+    const slider = productContainer.children[productIndex]
+        .querySelector(".product-image");
+
+    slider.scrollTo({
+        left:imageIndex*slider.clientWidth,
+        behavior:"smooth"
+    });
+
+    swipeClickBlockedUntil = Date.now()+600;
 }
 
 function moveProductImage(event,direction){
@@ -338,65 +344,88 @@ function moveProductImage(event,direction){
     event.stopPropagation();
 
     const slider = event.currentTarget.closest(".product-image");
-    if(!slider) return;
-
-    const currentIndex = getImageIndex(slider);
+    const current = getImageIndex(slider);
     const total = slider.querySelectorAll("img").length;
-    const nextIndex = Math.max(0,Math.min(total-1,currentIndex+direction));
+    const next = Math.max(0,Math.min(total-1,current+direction));
 
     slider.scrollTo({
-        left:nextIndex * slider.clientWidth,
+        left:next*slider.clientWidth,
         behavior:"smooth"
     });
 
-    swipeClickBlockedUntil = Date.now() + 500;
+    swipeClickBlockedUntil = Date.now()+600;
 }
 
-function goToProductImage(event,productIndex,imageIndex){
-    event.preventDefault();
-    event.stopPropagation();
+/* MOUSE DRAG AND WHEEL */
+function setupSliders(){
+    document.querySelectorAll(".product-image").forEach(slider=>{
+        slider.addEventListener("scroll",()=>{
+            updateSliderControls(slider);
+        });
 
-    const card = productContainer.children[productIndex];
-    const slider = card.querySelector(".product-image");
+        let isDragging = false;
+        let startX = 0;
+        let startScroll = 0;
+        let hasMoved = false;
 
-    slider.scrollTo({
-        left:imageIndex * slider.clientWidth,
-        behavior:"smooth"
-    });
+        slider.addEventListener("pointerdown",event=>{
+            if(event.pointerType!=="mouse") return;
+            if(event.target.closest("button")) return;
+            if(event.button!==0) return;
 
-    swipeClickBlockedUntil = Date.now() + 500;
-}
+            isDragging = true;
+            hasMoved = false;
+            startX = event.clientX;
+            startScroll = slider.scrollLeft;
 
-/* DESKTOP MOUSE WHEEL */
+            slider.classList.add("is-dragging");
+            slider.setPointerCapture(event.pointerId);
+        });
 
-function setupDesktopWheel(){
-    productContainer.querySelectorAll(".product-image").forEach(slider=>{
+        slider.addEventListener("pointermove",event=>{
+            if(!isDragging) return;
+
+            const distance = event.clientX-startX;
+
+            if(Math.abs(distance)>5){
+                hasMoved = true;
+                event.preventDefault();
+                slider.scrollLeft = startScroll-distance;
+            }
+        });
+
+        function stopDragging(){
+            if(!isDragging) return;
+
+            isDragging = false;
+            slider.classList.remove("is-dragging");
+
+            if(hasMoved){
+                swipeClickBlockedUntil = Date.now()+500;
+            }
+        }
+
+        slider.addEventListener("pointerup",stopDragging);
+        slider.addEventListener("pointercancel",stopDragging);
+        slider.addEventListener("lostpointercapture",stopDragging);
+
         slider.addEventListener("wheel",event=>{
-            if(Math.abs(event.deltaY) > Math.abs(event.deltaX)){
-                const maxScroll = slider.scrollWidth - slider.clientWidth;
-                const nextPosition = slider.scrollLeft + event.deltaY;
-
-                if(nextPosition >= 0 && nextPosition <= maxScroll){
-                    event.preventDefault();
-                    slider.scrollLeft = nextPosition;
-                }
+            if(Math.abs(event.deltaY)>Math.abs(event.deltaX)){
+                event.preventDefault();
+                slider.scrollLeft+=event.deltaY;
             }
         },{passive:false});
     });
 }
 
-/* OPEN PRODUCT GALLERY */
-
+/* OPEN PRODUCT */
 function openProductFromCard(event,index){
-    if(event.target.closest(".card-arrow")) return;
-    if(event.target.closest(".card-dots")) return;
-    if(Date.now() < swipeClickBlockedUntil) return;
-
+    if(event.target.closest("button")) return;
+    if(Date.now()<swipeClickBlockedUntil) return;
     openGallery(index);
 }
 
 /* GALLERY */
-
 function openGallery(index){
     activeProduct = products[index];
 
@@ -436,8 +465,7 @@ function closeGallery(){
     document.body.style.overflow = "";
 }
 
-/* SHARED CART */
-
+/* CART */
 function getCart(){
     try{
         return JSON.parse(localStorage.getItem("enteCart")) || [];
@@ -478,8 +506,8 @@ function addToCart(productId,event){
 
 function updateCart(){
     const cart = getCart();
-
     const count = cart.reduce((sum,item)=>sum+item.quantity,0);
+
     document.getElementById("cartCount").textContent = count;
 
     const total = cart.reduce(
@@ -536,9 +564,7 @@ document.addEventListener("keydown",function(event){
 });
 
 window.addEventListener("storage",function(event){
-    if(event.key==="enteCart"){
-        updateCart();
-    }
+    if(event.key==="enteCart") updateCart();
 });
 
 renderProducts();
