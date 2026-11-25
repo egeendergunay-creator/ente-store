@@ -50,7 +50,6 @@ background:linear-gradient(to top,rgba(0,0,0,.48),rgba(0,0,0,0) 55%)
 .category span{position:relative;z-index:1;padding:22px;font-size:14px;letter-spacing:2px}
 .category:hover img{transform:scale(1.04)}
 
-/* PRODUCT SLIDER */
 .product-grid{
 display:grid;
 grid-template-columns:repeat(2,minmax(0,1fr));
@@ -211,13 +210,14 @@ border:0;background:none;font-size:27px;cursor:pointer;color:#24231f
 .cart-panel{
 display:none;position:fixed;z-index:30;right:0;top:0;height:100%;
 width:min(390px,100%);background:white;box-shadow:0 0 0 100vmax #0006;
-padding:25px
+padding:25px;overflow-y:auto
 }
 .cart-panel.open{display:block}
 .cart-top{display:flex;justify-content:space-between;align-items:center}
 .cart-item{display:flex;gap:15px;margin-top:30px}
 .cart-item img{width:85px;height:110px;object-fit:cover}
 .cart-item p{font-size:12px;line-height:1.8}
+.cart-item a{color:#888}
 .cart-total{border-top:1px solid #ddd;margin-top:25px;padding-top:18px;font-size:13px}
 
 @media(max-width:900px){
@@ -333,287 +333,467 @@ footer{gap:15px;flex-direction:column}
 </div>
 
 <script src="products.js"></script>
+
 <script>
+/* VARIABLES */
+
 const products = ENTE_PRODUCTS.girls;
 const grid = document.getElementById("girls-products");
-let cart = [];
+
 let swipeClickBlockedUntil = 0;
 
-function renderProducts(){
-  grid.innerHTML = products.map((product,index) => {
-    const images = Array.isArray(product.images) ? product.images : [];
+const CART_STORAGE_KEY = "enteCart";
 
-    return `
-      <div class="product">
-        <div class="product-image-wrap"
-             onclick="openProductFromCard(event,'${product.id}')">
+/* PRICE */
 
-          <div class="image-track"
-               data-product-index="${index}"
-               onscroll="sliderScrolled(this)">
-
-            ${images.map((img,i)=>`
-              <img class="product-image"
-                   src="${img}" alt="${product.name} - ${i+1}"
-                   draggable="false">
-            `).join("")}
-
-          </div>
-
-          <div class="image-dots">
-            ${images.map((img,i)=>`
-              <button type="button"
-                      class="image-dot ${i===0?'active':''}"
-                      aria-label="${i+1}. fotoğraf"
-                      onclick="changeImage(event,${index},${i})"></button>
-            `).join("")}
-          </div>
-
-          <button type="button" class="card-arrow prev is-hidden"
-                  aria-label="Önceki fotoğraf"
-                  onclick="moveProductImage(event,-1)">‹</button>
-
-          <button type="button" class="card-arrow next"
-                  aria-label="Sonraki fotoğraf"
-                  onclick="moveProductImage(event,1)">›</button>
-
-        </div>
-
-        <p class="product-name">${product.name}</p>
-        <p class="product-price">${product.price.toLocaleString("tr-TR")},00 TL</p>
-
-        <div class="product-actions">
-          <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  document.querySelectorAll(".image-track").forEach(track=>{
-    updateSliderControls(track);
-    setupMouseDrag(track);
-  });
+function formatPrice(price){
+return Number(price).toLocaleString("tr-TR",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+})+" TL";
 }
 
+/* SHARED CART */
+
+function getCart(){
+
+try{
+const saved = localStorage.getItem(CART_STORAGE_KEY);
+const cart = saved ? JSON.parse(saved) : [];
+
+return Array.isArray(cart) ? cart : [];
+
+}catch(error){
+console.error("Sepet okunamadı:",error);
+return [];
+}
+
+}
+
+function saveCart(cart){
+
+try{
+localStorage.setItem(CART_STORAGE_KEY,JSON.stringify(cart));
+return true;
+
+}catch(error){
+console.error("Sepet kaydedilemedi:",error);
+alert("Sepet kaydedilemedi.");
+return false;
+}
+
+}
+
+/* PRODUCTS */
+
+function renderProducts(){
+
+grid.innerHTML = products.map((product,index) => {
+
+const images = Array.isArray(product.images) ? product.images : [];
+
+return `
+<div class="product">
+
+<div class="product-image-wrap"
+onclick="openProductFromCard(event,'${product.id}')">
+
+<div class="image-track" data-product-index="${index}"
+onscroll="sliderScrolled(this)">
+
+${images.map((img,i)=>`
+<img class="product-image"
+src="${img}" alt="${product.name} - ${i+1}"
+draggable="false">
+`).join("")}
+
+</div>
+
+<div class="image-dots">
+${images.map((img,i)=>`
+<button type="button"
+class="image-dot ${i===0?'active':''}"
+aria-label="${i+1}. fotoğraf"
+onclick="changeImage(event,${index},${i})"></button>
+`).join("")}
+</div>
+
+<button type="button" class="card-arrow prev is-hidden"
+onclick="moveProductImage(event,-1)">‹</button>
+
+<button type="button" class="card-arrow next"
+onclick="moveProductImage(event,1)">›</button>
+
+</div>
+
+<p class="product-name">${product.name}</p>
+<p class="product-price">${formatPrice(product.price)}</p>
+
+<div class="product-actions">
+<button onclick="addToCart('${product.id}',event)">SEPETE EKLE</button>
+</div>
+
+</div>
+`;
+}).join("");
+
+document.querySelectorAll(".image-track").forEach(track=>{
+updateSliderControls(track);
+setupMouseDrag(track);
+});
+
+}
+
+/* IMAGE SLIDER */
+
 function getImageIndex(track){
-  const width = track.clientWidth;
-  if(!width) return 0;
 
-  const total = track.querySelectorAll(".product-image").length;
-  if(!total) return 0;
+const width = track.clientWidth;
+if(!width) return 0;
 
-  return Math.max(0,Math.min(
-    total-1,
-    Math.round(track.scrollLeft/width)
-  ));
+const total = track.querySelectorAll(".product-image").length;
+if(!total) return 0;
+
+return Math.max(0,Math.min(
+total-1,
+Math.round(track.scrollLeft/width)
+));
+
 }
 
 function updateSliderControls(track){
-  const wrap = track.closest(".product-image-wrap");
-  if(!wrap) return;
 
-  const total = track.querySelectorAll(".product-image").length;
-  const index = getImageIndex(track);
+const wrap = track.closest(".product-image-wrap");
+if(!wrap) return;
 
-  const dots = wrap.querySelectorAll(".image-dot");
-  const prev = wrap.querySelector(".card-arrow.prev");
-  const next = wrap.querySelector(".card-arrow.next");
+const total = track.querySelectorAll(".product-image").length;
+const index = getImageIndex(track);
 
-  dots.forEach((dot,i)=>{
-    dot.classList.toggle("active",i===index);
-  });
+const dots = wrap.querySelectorAll(".image-dot");
+const prev = wrap.querySelector(".card-arrow.prev");
+const next = wrap.querySelector(".card-arrow.next");
 
-  if(prev){
-    prev.classList.toggle("is-hidden",index===0 || total<=1);
-  }
+dots.forEach((dot,i)=>{
+dot.classList.toggle("active",i===index);
+});
 
-  if(next){
-    next.classList.toggle("is-hidden",index>=total-1 || total<=1);
-  }
+if(prev) prev.classList.toggle("is-hidden",index===0 || total<=1);
+if(next) next.classList.toggle("is-hidden",index>=total-1 || total<=1);
+
 }
 
 function sliderScrolled(track){
-  updateSliderControls(track);
+updateSliderControls(track);
 }
 
 function changeImage(event,productIndex,imageIndex){
-  event.stopPropagation();
 
-  const track = document.querySelector(
-    `.image-track[data-product-index="${productIndex}"]`
-  );
+event.stopPropagation();
 
-  if(!track) return;
+const track = document.querySelector(
+`.image-track[data-product-index="${productIndex}"]`
+);
 
-  track.scrollTo({
-    left:imageIndex*track.clientWidth,
-    behavior:"smooth"
-  });
+if(!track) return;
+
+track.scrollTo({
+left:imageIndex*track.clientWidth,
+behavior:"smooth"
+});
+
 }
 
 function moveProductImage(event,direction){
-  event.stopPropagation();
 
-  const wrap = event.currentTarget.closest(".product-image-wrap");
-  const track = wrap.querySelector(".image-track");
+event.stopPropagation();
 
-  if(!track) return;
+const wrap = event.currentTarget.closest(".product-image-wrap");
+const track = wrap.querySelector(".image-track");
 
-  const total = track.querySelectorAll(".product-image").length;
-  const current = getImageIndex(track);
-  const next = Math.max(0,Math.min(total-1,current+direction));
+if(!track) return;
 
-  track.scrollTo({
-    left:next*track.clientWidth,
-    behavior:"smooth"
-  });
+const total = track.querySelectorAll(".product-image").length;
+const current = getImageIndex(track);
+const next = Math.max(0,Math.min(total-1,current+direction));
+
+track.scrollTo({
+left:next*track.clientWidth,
+behavior:"smooth"
+});
+
 }
+
+/* MOUSE DRAG */
 
 function setupMouseDrag(track){
-  let startX = 0;
-  let startScroll = 0;
-  let dragging = false;
-  let moved = false;
 
-  track.addEventListener("pointerdown",event=>{
-    if(event.pointerType !== "mouse") return;
-    if(event.button !== 0) return;
+let startX = 0;
+let startScroll = 0;
+let dragging = false;
+let moved = false;
 
-    dragging = true;
-    moved = false;
-    startX = event.clientX;
-    startScroll = track.scrollLeft;
+track.addEventListener("pointerdown",event=>{
 
-    track.classList.add("dragging");
-    track.setPointerCapture(event.pointerId);
-  });
+if(event.pointerType!=="mouse" || event.button!==0) return;
 
-  track.addEventListener("pointermove",event=>{
-    if(!dragging) return;
+dragging = true;
+moved = false;
+startX = event.clientX;
+startScroll = track.scrollLeft;
 
-    const distance = event.clientX-startX;
+track.classList.add("dragging");
+track.setPointerCapture(event.pointerId);
 
-    if(Math.abs(distance)>4) moved = true;
+});
 
-    if(moved){
-      track.scrollLeft = startScroll-distance;
-    }
-  });
+track.addEventListener("pointermove",event=>{
 
-  function stopDragging(){
-    if(!dragging) return;
+if(!dragging) return;
 
-    dragging = false;
-    track.classList.remove("dragging");
+const distance = event.clientX-startX;
 
-    if(moved){
-      swipeClickBlockedUntil = Date.now()+350;
-    }
-  }
+if(Math.abs(distance)>4) moved = true;
 
-  track.addEventListener("pointerup",stopDragging);
-  track.addEventListener("pointercancel",stopDragging);
-  track.addEventListener("lostpointercapture",stopDragging);
+if(moved){
+track.scrollLeft = startScroll-distance;
 }
 
-function openProductFromCard(event,productId){
-  if(Date.now()<swipeClickBlockedUntil) return;
-  if(event.target.closest("button")) return;
+});
 
-  openGallery(productId);
+function stopDragging(){
+
+if(!dragging) return;
+
+dragging = false;
+track.classList.remove("dragging");
+
+if(moved){
+swipeClickBlockedUntil = Date.now()+350;
+}
+
+}
+
+track.addEventListener("pointerup",stopDragging);
+track.addEventListener("pointercancel",stopDragging);
+track.addEventListener("lostpointercapture",stopDragging);
+
+}
+
+/* GALLERY */
+
+function openProductFromCard(event,productId){
+
+if(Date.now()<swipeClickBlockedUntil) return;
+if(event.target.closest("button")) return;
+
+openGallery(productId);
+
 }
 
 function openGallery(productId){
-  const product=products.find(p=>p.id===productId);
-  if(!product) return;
 
-  const gallery=document.getElementById("gallery");
-  const main=document.getElementById("gallery-main-image");
-  const thumbs=document.getElementById("gallery-thumbs");
+const product = products.find(p=>p.id===productId);
+if(!product) return;
 
-  main.src=product.images[0];
-  thumbs.innerHTML=product.images.map((img,i)=>`
-    <img src="${img}" class="${i===0?'active':''}"
-         onclick="selectGalleryImage('${img}',this)">
-  `).join("");
+const gallery = document.getElementById("gallery");
+const main = document.getElementById("gallery-main-image");
+const thumbs = document.getElementById("gallery-thumbs");
 
-  gallery.classList.add("open");
-  document.body.style.overflow="hidden";
+main.src = product.images[0];
+
+thumbs.innerHTML = product.images.map((img,i)=>`
+<img src="${img}" class="${i===0?'active':''}"
+onclick="selectGalleryImage('${img}',this)">
+`).join("");
+
+gallery.classList.add("open");
+document.body.style.overflow="hidden";
+
 }
 
 function selectGalleryImage(src,element){
-  document.getElementById("gallery-main-image").src=src;
-  document.querySelectorAll(".gallery-thumbs img").forEach(img=>img.classList.remove("active"));
-  element.classList.add("active");
+
+document.getElementById("gallery-main-image").src=src;
+
+document.querySelectorAll(".gallery-thumbs img").forEach(img=>{
+img.classList.remove("active");
+});
+
+element.classList.add("active");
+
 }
 
 function closeGallery(){
-  document.getElementById("gallery").classList.remove("open");
-  document.body.style.overflow="";
+
+document.getElementById("gallery").classList.remove("open");
+document.body.style.overflow="";
+
 }
 
-function addToCart(productId){
-  const product=products.find(p=>p.id===productId);
-  if(!product) return;
+/* ADD TO SHARED CART */
 
-  const existing=cart.find(item=>item.id===productId);
-  if(existing) existing.quantity++;
-  else cart.push({...product,quantity:1});
+function addToCart(productId,event){
 
-  updateCart();
+if(event) event.stopPropagation();
+
+const product = products.find(p=>p.id===productId);
+if(!product) return;
+
+const cart = getCart();
+
+const existing = cart.find(item=>item.id===productId);
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+
+cart.push({
+id:product.id,
+name:product.name,
+price:product.price,
+image:product.images[0],
+quantity:1
+});
+
 }
+
+if(!saveCart(cart)) return;
+
+updateCart();
+openCart();
+
+}
+
+/* UPDATE CART */
 
 function updateCart(){
-  const count=cart.reduce((sum,item)=>sum+item.quantity,0);
-  document.getElementById("cart-count").textContent=count;
 
-  const total=cart.reduce((sum,item)=>sum+item.price*item.quantity,0);
+const cart = getCart();
 
-  document.getElementById("cart-content").innerHTML=cart.length ? `
-    ${cart.map(item=>`
-      <div class="cart-item">
-        <img src="${item.images[0]}" alt="">
-        <div>
-          <p>${item.name}</p>
-          <p>${item.price.toLocaleString("tr-TR")},00 TL</p>
-          <p>Adet: ${item.quantity}</p>
-          <p><a href="#" onclick="removeFromCart('${item.id}');return false">Ürünü kaldır</a></p>
-        </div>
-      </div>
-    `).join("")}
-    <div class="cart-total">TOPLAM: ${total.toLocaleString("tr-TR")},00 TL</div>
-  ` : "<p style='margin-top:30px;font-size:13px'>Sepetiniz şu anda boş.</p>";
+const count = cart.reduce(
+(sum,item)=>sum+Number(item.quantity||0),0
+);
+
+document.getElementById("cart-count").textContent=count;
+
+const total = cart.reduce(
+(sum,item)=>sum+Number(item.price||0)*Number(item.quantity||0),0
+);
+
+const content = document.getElementById("cart-content");
+
+if(!cart.length){
+
+content.innerHTML="<p style='margin-top:30px;font-size:13px'>Sepetiniz şu anda boş.</p>";
+
+}else{
+
+content.innerHTML=cart.map(item=>`
+
+<div class="cart-item">
+
+<img src="${item.image || (item.images && item.images[0]) || ''}" alt="${item.name}">
+
+<div>
+
+<p>${item.name}</p>
+
+<p>${formatPrice(item.price)}</p>
+
+<p>Adet: ${item.quantity}</p>
+
+<p>
+<a href="#" onclick="removeFromCart('${item.id}');return false">
+Ürünü kaldır
+</a>
+</p>
+
+</div>
+
+</div>
+
+`).join("");
+
 }
+
+content.innerHTML += cart.length
+? `<div class="cart-total">TOPLAM: ${formatPrice(total)}</div>`
+: "";
+
+}
+
+/* REMOVE PRODUCT */
 
 function removeFromCart(id){
-  cart=cart.filter(item=>item.id!==id);
-  updateCart();
+
+const cart = getCart().filter(item=>item.id!==id);
+
+if(!saveCart(cart)) return;
+
+updateCart();
+
 }
+
+/* OPEN / CLOSE CART */
 
 function openCart(){
-  document.getElementById("cart-panel").classList.add("open");
+
+updateCart();
+
+document.getElementById("cart-panel").classList.add("open");
+
 }
+
 function closeCart(){
-  document.getElementById("cart-panel").classList.remove("open");
+
+document.getElementById("cart-panel").classList.remove("open");
+
 }
+
+/* CROSS-PAGE CART SYNC */
+
+window.addEventListener("storage",event=>{
+
+if(event.key===CART_STORAGE_KEY){
+updateCart();
+}
+
+});
+
+/* RESIZE */
 
 window.addEventListener("resize",()=>{
-  document.querySelectorAll(".image-track").forEach(track=>{
-    const index=getImageIndex(track);
-    track.scrollLeft=index*track.clientWidth;
-    updateSliderControls(track);
-  });
+
+document.querySelectorAll(".image-track").forEach(track=>{
+
+const index=getImageIndex(track);
+
+track.scrollLeft=index*track.clientWidth;
+
+updateSliderControls(track);
+
 });
 
-document.addEventListener("keydown",function(event){
-  if(event.key==="Escape"){
-    closeGallery();
-    closeCart();
-  }
 });
+
+/* KEYBOARD */
+
+document.addEventListener("keydown",event=>{
+
+if(event.key==="Escape"){
+closeGallery();
+closeCart();
+}
+
+});
+
+/* START */
 
 renderProducts();
 updateCart();
+
 </script>
 
 </body>
