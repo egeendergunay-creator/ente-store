@@ -8,59 +8,260 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;color:#24231f;background:#fff}
 
-header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #eee}
-.logo{font-size:29px;letter-spacing:7px;font-weight:600}
-nav{display:flex;gap:30px}
-nav a{font-size:11px;text-decoration:none;color:#292929;letter-spacing:1.5px}
+body{
+font-family:Arial,Helvetica,sans-serif;
+color:#24231f;
+background:#fff;
+}
+
+header{
+height:75px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 6%;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+font-size:29px;
+letter-spacing:7px;
+font-weight:600;
+color:#24231f;
+text-decoration:none;
+}
+
+nav{display:flex;gap:25px}
+
+nav a{
+font-size:11px;
+text-decoration:none;
+color:#292929;
+letter-spacing:1.5px;
+}
+
 .icons{font-size:19px}
 
-.hero{height:570px;background:#e9e4dc;display:flex;align-items:center;padding:8%}
+.hero{
+height:570px;
+background:#e9e4dc;
+display:flex;
+align-items:center;
+padding:8%;
+}
+
 .hero-content{max-width:390px}
-.hero small{letter-spacing:3px;font-size:10px}
-.hero h1{font-size:54px;font-weight:400;line-height:1.1;margin:22px 0}
-.hero p{font-size:13px;line-height:1.8;color:#555}
-.shop{display:inline-block;margin-top:28px;background:#24231f;color:white;padding:15px 30px;text-decoration:none;font-size:11px;letter-spacing:2px}
+
+.hero small{
+letter-spacing:3px;
+font-size:10px;
+}
+
+.hero h1{
+font-size:54px;
+font-weight:400;
+line-height:1.1;
+margin:22px 0;
+}
+
+.hero p{
+font-size:13px;
+line-height:1.8;
+color:#555;
+}
+
+.shop{
+display:inline-block;
+margin-top:28px;
+background:#24231f;
+color:white;
+padding:15px 30px;
+text-decoration:none;
+font-size:11px;
+letter-spacing:2px;
+}
 
 .section{padding:75px 6%}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.section h2{font-size:25px;font-weight:400;letter-spacing:1px}
-.section-head a{font-size:11px;color:#333}
 
-.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.category{height:350px;background:#e9e5df;display:flex;align-items:end;padding:22px;text-decoration:none;color:#24231f}
-.category:nth-child(2){background:#dedbd5}
-.category:nth-child(3){background:#eee9e2}
-.category span{font-size:15px;letter-spacing:2px}
+.section-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.section h2{
+font-size:25px;
+font-weight:400;
+letter-spacing:1px;
+}
+
+.section-head a{
+font-size:11px;
+color:#333;
+}
+
+.categories{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.category{
+height:380px;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:flex-end;
+text-decoration:none;
+color:white;
+background:#e9e5df;
+}
+
+.category img{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform .6s ease;
+}
+
+.category::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(
+to top,
+rgba(0,0,0,.48),
+rgba(0,0,0,0) 55%
+);
+}
+
+.category span{
+position:relative;
+z-index:1;
+padding:22px;
+font-size:14px;
+letter-spacing:2px;
+}
+
+.category:hover img{
+transform:scale(1.04);
+}
 
 /* PRODUCT IMAGES */
+
 .product-section{padding:75px 6%}
-.product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.product img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
-.product-name{font-size:13px;margin-top:13px;letter-spacing:1px}
-.product-detail{font-size:11px;color:#777;margin-top:7px}
 
-.about{background:#f5f3ef;text-align:center;padding:75px 20px}
-.about h2{font-size:27px;font-weight:400;margin-bottom:18px}
-.about p{font-size:13px;color:#666;line-height:1.9;max-width:470px;margin:auto}
+.product-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+}
 
-footer{padding:35px 6%;background:#24231f;color:#fff;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px}
+.product img{
+width:100%;
+aspect-ratio:3/4;
+object-fit:cover;
+display:block;
+}
+
+.product-name{
+font-size:13px;
+margin-top:13px;
+letter-spacing:1px;
+}
+
+.product-detail{
+font-size:11px;
+color:#777;
+margin-top:7px;
+}
+
+.about{
+background:#f5f3ef;
+text-align:center;
+padding:75px 20px;
+}
+
+.about h2{
+font-size:27px;
+font-weight:400;
+margin-bottom:18px;
+}
+
+.about p{
+font-size:13px;
+color:#666;
+line-height:1.9;
+max-width:470px;
+margin:auto;
+}
+
+footer{
+padding:35px 6%;
+background:#24231f;
+color:#fff;
+display:flex;
+justify-content:space-between;
+font-size:11px;
+letter-spacing:1px;
+}
+
+@media(max-width:900px){
+.categories{
+grid-template-columns:repeat(2,1fr);
+}
+.category{height:340px}
+}
 
 @media(max-width:650px){
-header{height:65px;padding:0 5%}
+header{
+height:65px;
+padding:0 5%;
+}
+
 .logo{font-size:24px}
-nav{gap:12px}
+
+nav{gap:10px}
+
 nav a{font-size:9px}
+
 .icons{display:none}
-.hero{height:480px;padding:8%}
+
+.hero{
+height:480px;
+padding:8%;
+}
+
 .hero h1{font-size:43px}
-.categories{grid-template-columns:1fr}
-.category{height:300px}
-.section,.product-section{padding:55px 5%}
+
+.categories{
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+.category{height:260px}
+
+.category span{
+padding:14px;
+font-size:12px;
+}
+
+.section,.product-section{
+padding:55px 5%;
+}
+
 .product-grid{gap:10px}
+
 .product-name{font-size:11px}
-footer{gap:15px;flex-direction:column}
+
+footer{
+gap:15px;
+flex-direction:column;
+}
 }
 </style>
 </head>
@@ -68,12 +269,15 @@ footer{gap:15px;flex-direction:column}
 <body>
 
 <header>
-<div class="logo">ENTE</div>
+<a class="logo" href="index.html">ENTE</a>
+
 <nav>
-<a href="#new">NEW</a>
-<a href="#girl">GIRL</a>
-<a href="#boy">BOY</a>
+<a href="girls.html">GIRLS</a>
+<a href="boys.html">BOYS</a>
+<a href="unisex.html">UNISEX</a>
+<a href="new-season.html">NEW SEASON</a>
 </nav>
+
 <div class="icons">⌕　♡　♧</div>
 </header>
 
@@ -87,18 +291,39 @@ footer{gap:15px;flex-direction:column}
 </section>
 
 <section class="section" id="collections">
+
 <div class="section-head">
 <h2>Collections</h2>
-<a href="#new">TÜMÜNÜ KEŞFET →</a>
+<a href="new-season.html">TÜMÜNÜ KEŞFET →</a>
 </div>
+
 <div class="categories">
-<a class="category" id="girl" href="#girl-products"><span>GIRLS — 01</span></a>
-<a class="category" id="boy" href="#new"><span>BOYS — 02</span></a>
-<a class="category" id="new" href="#girl-products"><span>NEW SEASON — 03</span></a>
+
+<a class="category" href="girls.html">
+<img src="images/girls-category.webp" alt="Girls collection">
+<span>GIRLS</span>
+</a>
+
+<a class="category" href="boys.html">
+<img src="images/boys-category.webp" alt="Boys collection">
+<span>BOYS</span>
+</a>
+
+<a class="category" href="unisex.html">
+<img src="images/unisex-category.jpg" alt="Unisex collection">
+<span>UNISEX</span>
+</a>
+
+<a class="category" href="new-season.html">
+<img src="images/new-season-category.jpg" alt="New season collection">
+<span>NEW SEASON</span>
+</a>
+
 </div>
 </section>
 
 <section class="product-section" id="girl-products">
+
 <div class="section-head">
 <h2>Girls — Selected Pieces</h2>
 </div>
@@ -133,4 +358,3 @@ footer{gap:15px;flex-direction:column}
 
 </body>
 </html>
-
