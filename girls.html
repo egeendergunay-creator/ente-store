@@ -31,12 +31,17 @@ grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 20px
 .product-card{min-width:0}
 .product-image{
 position:relative;width:100%;aspect-ratio:3/4;
-background:#f5f4f1;overflow:hidden;cursor:pointer;touch-action:pan-y
+background:#f5f4f1;overflow:hidden;cursor:grab;
+touch-action:pan-y;
+user-select:none;
+-webkit-user-select:none;
 }
+.product-image:active{cursor:grabbing}
 .product-image img{
 width:100%;height:100%;object-fit:cover;display:block;
 transition:opacity .2s ease,transform .5s ease;
-user-select:none;-webkit-user-drag:none
+user-select:none;-webkit-user-drag:none;
+pointer-events:none;
 }
 .product-card:hover .product-image img{transform:scale(1.025)}
 .card-dots{
@@ -216,8 +221,9 @@ const products = ENTE_PRODUCTS.girls;
 const productContainer = document.getElementById("products");
 
 let activeProduct = null;
-let touchStartX = 0;
-let wasSwiped = false;
+let startX = 0;
+let activePointerId = null;
+let suppressClickUntil = 0;
 
 function formatPrice(price){
     return price.toLocaleString("tr-TR",{
@@ -232,8 +238,9 @@ function renderProducts(){
     productContainer.innerHTML = products.map((product,index)=>`
         <article class="product-card">
             <div class="product-image"
-                 ontouchstart="cardTouchStart(event)"
-                 ontouchend="cardTouchEnd(event,${index})"
+                 onpointerdown="cardTouchStart(event)"
+                 onpointerup="cardTouchEnd(event,${index})"
+                 onpointercancel="cardTouchCancel(event)"
                  onclick="handleCardClick(${index})">
 
                 <img id="card-image-${index}"
@@ -263,71 +270,76 @@ function renderProducts(){
 /* IMAGE SLIDER */
 
 function updateCardImage(index,imageIndex){
-    const product=products[index];
+    const product = products[index];
+    const card = document.querySelectorAll(".product-card")[index];
 
-    document.getElementById("card-image-"+index).src=
+    document.getElementById("card-image-"+index).src =
         product.images[imageIndex];
 
-    const dots=document.querySelectorAll(".product-card")[index]
-        .querySelectorAll(".card-dot");
-
-    dots.forEach((dot,i)=>{
+    card.querySelectorAll(".card-dot").forEach((dot,i)=>{
         dot.classList.toggle("active",i===imageIndex);
     });
 
-    document.querySelectorAll(".product-card")[index]
-        .dataset.imageIndex=imageIndex;
+    card.dataset.imageIndex = imageIndex;
 }
 
 function cardTouchStart(event){
-    touchStartX=event.changedTouches[0].screenX;
-    wasSwiped=false;
+    if(event.pointerType === "mouse" && event.button !== 0) return;
+
+    startX = event.clientX;
+    activePointerId = event.pointerId;
+
+    event.currentTarget.setPointerCapture(event.pointerId);
 }
 
 function cardTouchEnd(event,index){
-    const endX=event.changedTouches[0].screenX;
-    const difference=touchStartX-endX;
+    if(event.pointerId !== activePointerId) return;
 
-    if(Math.abs(difference)>40){
-        wasSwiped=true;
+    const difference = startX - event.clientX;
+    activePointerId = null;
 
-        const current=Number(
-            document.querySelectorAll(".product-card")[index]
-            .dataset.imageIndex||0
-        );
+    if(Math.abs(difference) < 35) return;
 
-        const length=products[index].images.length;
-        const next=difference>0
-            ?(current+1)%length
-            :(current-1+length)%length;
+    const length = products[index].images.length;
+    if(length < 2) return;
 
-        updateCardImage(index,next);
-    }
+    suppressClickUntil = Date.now() + 500;
+
+    const card = document.querySelectorAll(".product-card")[index];
+    const current = Number(card.dataset.imageIndex || 0);
+
+    const next = difference > 0
+        ? (current + 1) % length
+        : (current - 1 + length) % length;
+
+    updateCardImage(index,next);
+}
+
+function cardTouchCancel(event){
+    activePointerId = null;
 }
 
 function handleCardClick(index){
-    if(wasSwiped){
-        wasSwiped=false;
-        return;
-    }
+    if(Date.now() < suppressClickUntil) return;
+
     openGallery(index);
 }
 
 /* GALLERY */
 
 function openGallery(index){
-    activeProduct=products[index];
+    activeProduct = products[index];
 
-    document.getElementById("mainProductImage").src=
+    document.getElementById("mainProductImage").src =
         activeProduct.images[0];
 
-    document.getElementById("galleryProductName").textContent=
+    document.getElementById("galleryProductName").textContent =
         activeProduct.name;
 
-    document.getElementById("galleryProductPrice").textContent=
+    document.getElementById("galleryProductPrice").textContent =
         formatPrice(activeProduct.price);
 
-    document.getElementById("galleryThumbnails").innerHTML=
+    document.getElementById("galleryThumbnails").innerHTML =
         activeProduct.images.map((img,i)=>`
             <img src="${img}"
                  class="${i===0?'selected':''}"
@@ -336,11 +348,11 @@ function openGallery(index){
         `).join("");
 
     document.getElementById("gallery").classList.add("active");
-    document.body.style.overflow="hidden";
+    document.body.style.overflow = "hidden";
 }
 
 function changeImage(index){
-    document.getElementById("mainProductImage").src=
+    document.getElementById("mainProductImage").src =
         activeProduct.images[index];
 
     document.querySelectorAll(".gallery-thumbnails img")
@@ -351,14 +363,14 @@ function changeImage(index){
 
 function closeGallery(){
     document.getElementById("gallery").classList.remove("active");
-    document.body.style.overflow="";
+    document.body.style.overflow = "";
 }
 
 /* SHARED CART */
 
 function getCart(){
     try{
-        return JSON.parse(localStorage.getItem("enteCart"))||[];
+        return JSON.parse(localStorage.getItem("enteCart")) || [];
     }catch(error){
         return [];
     }
@@ -371,11 +383,11 @@ function saveCart(cart){
 function addToCart(productId,event){
     if(event) event.stopPropagation();
 
-    const product=products.find(p=>p.id===productId);
+    const product = products.find(p=>p.id===productId);
     if(!product)return;
 
-    const cart=getCart();
-    const existing=cart.find(item=>item.id===productId);
+    const cart = getCart();
+    const existing = cart.find(item=>item.id===productId);
 
     if(existing){
         existing.quantity++;
@@ -395,21 +407,21 @@ function addToCart(productId,event){
 }
 
 function updateCart(){
-    const cart=getCart();
+    const cart = getCart();
 
-    const count=cart.reduce((sum,item)=>sum+item.quantity,0);
-    document.getElementById("cartCount").textContent=count;
+    const count = cart.reduce((sum,item)=>sum+item.quantity,0);
+    document.getElementById("cartCount").textContent = count;
 
-    const total=cart.reduce(
+    const total = cart.reduce(
         (sum,item)=>sum+item.price*item.quantity,0
     );
 
-    const items=document.getElementById("cartItems");
+    const items = document.getElementById("cartItems");
 
     if(cart.length===0){
-        items.innerHTML='<p class="empty-cart">Your bag is empty.</p>';
+        items.innerHTML = '<p class="empty-cart">Your bag is empty.</p>';
     }else{
-        items.innerHTML=cart.map(item=>`
+        items.innerHTML = cart.map(item=>`
             <div class="cart-item">
                 <img src="${item.image}" alt="${item.name}">
                 <div class="cart-item-info">
@@ -425,12 +437,12 @@ function updateCart(){
         `).join("");
     }
 
-    document.getElementById("cartTotal").textContent=
+    document.getElementById("cartTotal").textContent =
         formatPrice(total);
 }
 
 function removeFromCart(id){
-    const cart=getCart().filter(item=>item.id!==id);
+    const cart = getCart().filter(item=>item.id!==id);
     saveCart(cart);
     updateCart();
 }
@@ -438,12 +450,12 @@ function removeFromCart(id){
 function openCart(){
     updateCart();
     document.getElementById("cart").classList.add("active");
-    document.body.style.overflow="hidden";
+    document.body.style.overflow = "hidden";
 }
 
 function closeCart(){
     document.getElementById("cart").classList.remove("active");
-    document.body.style.overflow="";
+    document.body.style.overflow = "";
 }
 
 document.addEventListener("keydown",function(event){
