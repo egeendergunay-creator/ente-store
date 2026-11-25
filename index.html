@@ -385,8 +385,7 @@ function renderProducts(){
         <p class="product-price">${product.price.toLocaleString("tr-TR")},00 TL</p>
 
         <div class="product-actions">
-          <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>
-          <button class="details-button" onclick="openGallery('${product.id}')">ÜRÜNÜ İNCELE</button>
+          <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>  
         </div>
       </div>
     `;
@@ -610,7 +609,7 @@ window.addEventListener("resize",()=>{
 
 document.addEventListener("keydown",function(event){
   if(event.key==="Escape"){
-    closeGallery();
+    closeGallery(); .M
     closeCart();
   }
 });
