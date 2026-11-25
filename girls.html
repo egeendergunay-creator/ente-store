@@ -39,11 +39,13 @@ overscroll-behavior-x:contain;touch-action:pan-x pan-y;
 scrollbar-width:none;cursor:grab
 }
 .product-image::-webkit-scrollbar{display:none}
+
 .product-image.is-dragging{
 cursor:grabbing;
 scroll-snap-type:none;
 scroll-behavior:auto
 }
+
 .product-image img{
 flex:0 0 100%;width:100%;height:100%;object-fit:cover;
 display:block;scroll-snap-align:start;scroll-snap-stop:always;
@@ -54,14 +56,17 @@ user-select:none;-webkit-user-drag:none;pointer-events:none
 .card-dots{
 position:absolute;bottom:13px;left:0;right:0;
 display:flex;justify-content:center;align-items:center;
-gap:8px;z-index:5;pointer-events:auto
+gap:8px;z-index:10;pointer-events:auto
 }
+
 .card-dot{
 width:7px;height:7px;min-width:7px;flex:0 0 7px;
 border-radius:50%;padding:0;
 background:rgba(255,255,255,.8);
-border:1px solid #777;cursor:pointer
+border:1px solid #777;cursor:pointer;
+pointer-events:auto
 }
+
 .card-dot.active{background:#24231f;border-color:#24231f}
 
 /* DESKTOP ARROWS */
@@ -69,18 +74,25 @@ border:1px solid #777;cursor:pointer
 position:absolute;top:50%;transform:translateY(-50%);
 width:36px;height:36px;border:0;border-radius:50%;
 background:rgba(255,255,255,.9);color:#24231f;
-display:flex;align-items:center;justify-content:center;
+align-items:center;justify-content:center;
 font-size:23px;line-height:1;cursor:pointer;
-z-index:6;opacity:0;visibility:hidden;
-transition:opacity .2s,background .2s
+z-index:8;opacity:0;visibility:hidden;
+transition:opacity .2s,background .2s;
+display:flex
 }
+
 .card-arrow:hover{background:#fff}
-.card-arrow:disabled{opacity:0!important;pointer-events:none}
+
+/* Sadece gerekli ok görünür */
+.card-arrow.is-hidden{
+display:none!important
+}
+
 .card-arrow.prev{left:12px}
 .card-arrow.next{right:12px}
 
 @media(hover:hover) and (pointer:fine){
-.product-card:hover .card-arrow{
+.product-card:hover .card-arrow:not(.is-hidden){
 opacity:1;visibility:visible
 }
 }
@@ -89,6 +101,7 @@ opacity:1;visibility:visible
 .product-info h2{font-size:13px;font-weight:400;line-height:1.5}
 .product-category{margin-top:6px;font-size:11px;color:#888}
 .price{margin-top:12px;font-size:13px;font-weight:600}
+
 .add-button{
 width:100%;margin-top:13px;padding:14px 10px;
 background:#24231f;color:white;border:1px solid #24231f;
@@ -108,24 +121,28 @@ display:none;position:fixed;inset:0;z-index:1000;
 background:rgba(255,255,255,.98);overflow-y:auto;padding:25px
 }
 .gallery-overlay.active{display:block}
+
 .gallery-header{
 display:flex;justify-content:space-between;align-items:center;
 max-width:1100px;margin:0 auto 25px
 }
 .gallery-logo{font-size:22px;font-weight:700;letter-spacing:4px}
 .close-gallery{border:0;background:none;font-size:30px;cursor:pointer}
+
 .gallery-content{max-width:850px;margin:auto}
 .gallery-main{
 width:100%;max-height:72vh;display:flex;
 justify-content:center;background:#f7f6f3
 }
 .gallery-main img{max-width:100%;max-height:72vh;object-fit:contain}
+
 .gallery-thumbnails{display:flex;gap:12px;margin-top:18px}
 .gallery-thumbnails img{
 width:75px;height:95px;object-fit:cover;cursor:pointer;
 border:1px solid transparent;opacity:.65
 }
 .gallery-thumbnails img.selected{border-color:#222;opacity:1}
+
 .gallery-product-info{margin-top:25px}
 .gallery-product-info h2{font-size:16px;font-weight:400}
 .gallery-product-info p{font-size:13px;margin-top:10px}
@@ -136,16 +153,19 @@ display:none;position:fixed;inset:0;z-index:2000;
 background:rgba(0,0,0,.35)
 }
 .cart-overlay.active{display:block}
+
 .cart-panel{
 background:#fff;width:min(420px,100%);height:100%;
 margin-left:auto;padding:28px;overflow-y:auto
 }
+
 .cart-header{
 display:flex;justify-content:space-between;align-items:center;
 border-bottom:1px solid #eee;padding-bottom:20px
 }
 .cart-header h2{font-size:17px;font-weight:400;letter-spacing:1px}
 .cart-close{border:0;background:none;font-size:26px;cursor:pointer}
+
 .cart-item{
 display:flex;gap:15px;padding:22px 0;border-bottom:1px solid #eee
 }
@@ -155,10 +175,12 @@ width:85px;height:110px;object-fit:cover;background:#f5f4f1
 .cart-item-info{flex:1}
 .cart-item-info h3{font-size:12px;font-weight:400;line-height:1.5}
 .cart-item-info p{margin-top:10px;font-size:12px}
+
 .remove-button{
 margin-top:12px;border:0;background:none;text-decoration:underline;
 color:#888;font-size:11px;cursor:pointer
 }
+
 .cart-total{
 display:flex;justify-content:space-between;
 margin-top:25px;font-size:14px
@@ -168,6 +190,7 @@ margin-top:25px;font-size:14px
 @media(max-width:900px){
 .products{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
 @media(max-width:700px){
 header{height:65px;padding:0 5%}
 nav{gap:11px}
@@ -247,6 +270,7 @@ BAG (<span id="cartCount">0</span>)
 <script>
 const products = ENTE_PRODUCTS.girls;
 const productContainer = document.getElementById("products");
+
 let activeProduct = null;
 let swipeClickBlockedUntil = 0;
 
@@ -280,11 +304,13 @@ function renderProducts(){
                     `).join("")}
                 </div>
 
-                <button type="button" class="card-arrow prev"
+                <button type="button"
+                        class="card-arrow prev is-hidden"
                         aria-label="Önceki fotoğraf"
                         onclick="moveProductImage(event,-1)">‹</button>
 
-                <button type="button" class="card-arrow next"
+                <button type="button"
+                        class="card-arrow next"
                         aria-label="Sonraki fotoğraf"
                         onclick="moveProductImage(event,1)">›</button>
             </div>
@@ -307,11 +333,20 @@ function renderProducts(){
 /* SLIDER CONTROLS */
 function getImageIndex(slider){
     if(!slider.clientWidth) return 0;
-    return Math.round(slider.scrollLeft / slider.clientWidth);
+
+    return Math.max(
+        0,
+        Math.min(
+            slider.querySelectorAll("img").length-1,
+            Math.round(slider.scrollLeft/slider.clientWidth)
+        )
+    );
 }
 
 function updateSliderControls(slider){
     const index = getImageIndex(slider);
+    const total = slider.querySelectorAll("img").length;
+
     const dots = slider.querySelectorAll(".card-dot");
     const prev = slider.querySelector(".card-arrow.prev");
     const next = slider.querySelector(".card-arrow.next");
@@ -320,10 +355,16 @@ function updateSliderControls(slider){
         dot.classList.toggle("active",i===index);
     });
 
-    if(prev) prev.disabled = index<=0;
-    if(next) next.disabled = index>=dots.length-1;
+    if(prev){
+        prev.classList.toggle("is-hidden",index===0 || total<=1);
+    }
+
+    if(next){
+        next.classList.toggle("is-hidden",index>=total-1 || total<=1);
+    }
 }
 
+/* DOT CLICK */
 function goToProductImage(event,productIndex,imageIndex){
     event.preventDefault();
     event.stopPropagation();
@@ -331,38 +372,53 @@ function goToProductImage(event,productIndex,imageIndex){
     const slider = productContainer.children[productIndex]
         .querySelector(".product-image");
 
+    if(!slider) return;
+
     slider.scrollTo({
         left:imageIndex*slider.clientWidth,
         behavior:"smooth"
     });
 
-    swipeClickBlockedUntil = Date.now()+600;
+    swipeClickBlockedUntil = Date.now()+700;
 }
 
+/* ARROWS */
 function moveProductImage(event,direction){
     event.preventDefault();
     event.stopPropagation();
 
     const slider = event.currentTarget.closest(".product-image");
+
+    if(!slider) return;
+
     const current = getImageIndex(slider);
     const total = slider.querySelectorAll("img").length;
-    const next = Math.max(0,Math.min(total-1,current+direction));
+
+    const nextIndex = Math.max(
+        0,
+        Math.min(total-1,current+direction)
+    );
 
     slider.scrollTo({
-        left:next*slider.clientWidth,
+        left:nextIndex*slider.clientWidth,
         behavior:"smooth"
     });
 
-    swipeClickBlockedUntil = Date.now()+600;
+    swipeClickBlockedUntil = Date.now()+700;
 }
 
-/* MOUSE DRAG AND WHEEL */
+/* SLIDER SETUP */
 function setupSliders(){
     document.querySelectorAll(".product-image").forEach(slider=>{
+
+        updateSliderControls(slider);
+
+        /* Fotoğraf değişince okları ve noktaları güncelle */
         slider.addEventListener("scroll",()=>{
             updateSliderControls(slider);
         });
 
+        /* MOUSE DRAG */
         let isDragging = false;
         let startX = 0;
         let startScroll = 0;
@@ -375,6 +431,7 @@ function setupSliders(){
 
             isDragging = true;
             hasMoved = false;
+
             startX = event.clientX;
             startScroll = slider.scrollLeft;
 
@@ -409,12 +466,11 @@ function setupSliders(){
         slider.addEventListener("pointercancel",stopDragging);
         slider.addEventListener("lostpointercapture",stopDragging);
 
-        slider.addEventListener("wheel",event=>{
-            if(Math.abs(event.deltaY)>Math.abs(event.deltaX)){
-                event.preventDefault();
-                slider.scrollLeft+=event.deltaY;
-            }
-        },{passive:false});
+        /*
+          Fare tekerleği için özel işlem YOK.
+          Normal tekerlek sayfayı kaydırır.
+          Fotoğraf değişimi oklar, noktalar ve sürükleme ile yapılır.
+        */
     });
 }
 
@@ -422,6 +478,7 @@ function setupSliders(){
 function openProductFromCard(event,index){
     if(event.target.closest("button")) return;
     if(Date.now()<swipeClickBlockedUntil) return;
+
     openGallery(index);
 }
 
@@ -556,6 +613,7 @@ function closeCart(){
     document.body.style.overflow = "";
 }
 
+/* KEYBOARD */
 document.addEventListener("keydown",function(event){
     if(event.key==="Escape"){
         closeGallery();
@@ -563,10 +621,12 @@ document.addEventListener("keydown",function(event){
     }
 });
 
+/* CART SYNC */
 window.addEventListener("storage",function(event){
     if(event.key==="enteCart") updateCart();
 });
 
+/* START */
 renderProducts();
 updateCart();
 </script>
