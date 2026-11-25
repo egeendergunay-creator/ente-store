@@ -5,33 +5,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENTE — Kidswear</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;color:#24231f;background:#fff}
+
 header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #eee}
 .logo{font-size:29px;letter-spacing:7px;font-weight:600}
 nav{display:flex;gap:30px}
 nav a{font-size:11px;text-decoration:none;color:#292929;letter-spacing:1.5px}
 .icons{font-size:19px}
+
 .hero{height:570px;background:#e9e4dc;display:flex;align-items:center;padding:8%}
 .hero-content{max-width:390px}
 .hero small{letter-spacing:3px;font-size:10px}
 .hero h1{font-size:54px;font-weight:400;line-height:1.1;margin:22px 0}
 .hero p{font-size:13px;line-height:1.8;color:#555}
 .shop{display:inline-block;margin-top:28px;background:#24231f;color:white;padding:15px 30px;text-decoration:none;font-size:11px;letter-spacing:2px}
+
 .section{padding:75px 6%}
 .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
 .section h2{font-size:25px;font-weight:400;letter-spacing:1px}
 .section-head a{font-size:11px;color:#333}
+
 .categories{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
 .category{height:350px;background:#e9e5df;display:flex;align-items:end;padding:22px;text-decoration:none;color:#24231f}
 .category:nth-child(2){background:#dedbd5}
 .category:nth-child(3){background:#eee9e2}
 .category span{font-size:15px;letter-spacing:2px}
+
+/* PRODUCT IMAGES */
+.product-section{padding:75px 6%}
+.product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.product img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.product-name{font-size:13px;margin-top:13px;letter-spacing:1px}
+.product-detail{font-size:11px;color:#777;margin-top:7px}
+
 .about{background:#f5f3ef;text-align:center;padding:75px 20px}
 .about h2{font-size:27px;font-weight:400;margin-bottom:18px}
 .about p{font-size:13px;color:#666;line-height:1.9;max-width:470px;margin:auto}
+
 footer{padding:35px 6%;background:#24231f;color:#fff;display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px}
+
 @media(max-width:650px){
 header{height:65px;padding:0 5%}
 .logo{font-size:24px}
@@ -42,12 +57,16 @@ nav a{font-size:9px}
 .hero h1{font-size:43px}
 .categories{grid-template-columns:1fr}
 .category{height:300px}
-.section{padding:55px 5%}
+.section,.product-section{padding:55px 5%}
+.product-grid{gap:10px}
+.product-name{font-size:11px}
 footer{gap:15px;flex-direction:column}
 }
 </style>
 </head>
+
 <body>
+
 <header>
 <div class="logo">ENTE</div>
 <nav>
@@ -73,9 +92,31 @@ footer{gap:15px;flex-direction:column}
 <a href="#new">TÜMÜNÜ KEŞFET →</a>
 </div>
 <div class="categories">
-<a class="category" id="girl" href="#new"><span>GIRLS — 01</span></a>
+<a class="category" id="girl" href="#girl-products"><span>GIRLS — 01</span></a>
 <a class="category" id="boy" href="#new"><span>BOYS — 02</span></a>
-<a class="category" id="new" href="#new"><span>NEW SEASON — 03</span></a>
+<a class="category" id="new" href="#girl-products"><span>NEW SEASON — 03</span></a>
+</div>
+</section>
+
+<section class="product-section" id="girl-products">
+<div class="section-head">
+<h2>Girls — Selected Pieces</h2>
+</div>
+
+<div class="product-grid">
+
+<div class="product">
+<img src="images/girl-sample-01-front.jpg" alt="Girls sample front">
+<p class="product-name">GIRL SAMPLE 01</p>
+<p class="product-detail">Front View</p>
+</div>
+
+<div class="product">
+<img src="images/girl-sample-01-back.jpg" alt="Girls sample back">
+<p class="product-name">GIRL SAMPLE 01</p>
+<p class="product-detail">Back View</p>
+</div>
+
 </div>
 </section>
 
@@ -89,8 +130,7 @@ footer{gap:15px;flex-direction:column}
 <div>CHILDREN'S CLOTHING</div>
 <div>ALL RIGHTS RESERVED</div>
 </footer>
+
 </body>
 </html>
 
-
-    
