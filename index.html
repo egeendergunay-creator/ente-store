@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -52,31 +51,129 @@ background:linear-gradient(to top,rgba(0,0,0,.48),rgba(0,0,0,0) 55%)
 .category:hover img{transform:scale(1.04)}
 
 /* PRODUCT SLIDER */
-.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.product-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:20px
+}
 .product{max-width:470px;min-width:0}
+
 .product-image-wrap{
-position:relative;width:100%;aspect-ratio:3/4;
-overflow-x:auto;overflow-y:hidden;display:flex;
-scroll-snap-type:x mandatory;scroll-behavior:smooth;
--webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
-touch-action:pan-x pan-y;scrollbar-width:none;background:#f5f5f3
+position:relative;
+width:100%;
+aspect-ratio:3/4;
+overflow:hidden;
+background:#f5f5f3;
 }
-.product-image-wrap::-webkit-scrollbar{display:none}
+
+.image-track{
+width:100%;
+height:100%;
+display:flex;
+overflow-x:auto;
+overflow-y:hidden;
+scroll-snap-type:x mandatory;
+scroll-behavior:smooth;
+-webkit-overflow-scrolling:touch;
+overscroll-behavior-x:contain;
+touch-action:pan-x pan-y;
+scrollbar-width:none;
+cursor:grab;
+}
+
+.image-track::-webkit-scrollbar{display:none}
+.image-track.dragging{
+cursor:grabbing;
+scroll-behavior:auto;
+scroll-snap-type:none;
+}
+
 .product-image{
-flex:0 0 100%;width:100%;height:100%;
-object-fit:cover;display:block;scroll-snap-align:start;
-scroll-snap-stop:always;cursor:pointer;user-select:none;
--webkit-user-drag:none
+flex:0 0 100%;
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+scroll-snap-align:start;
+scroll-snap-stop:always;
+user-select:none;
+-webkit-user-drag:none;
+pointer-events:none;
 }
+
 .image-dots{
-position:absolute;bottom:13px;left:0;right:0;
-display:flex;justify-content:center;gap:7px;pointer-events:none
+position:absolute;
+bottom:14px;
+left:0;
+right:0;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:7px;
+z-index:10;
+pointer-events:auto;
 }
+
 .image-dot{
-width:6px;height:6px;border-radius:50%;
-background:#ffffff80;border:1px solid #777;padding:0
+width:6px;
+height:6px;
+min-width:6px;
+flex:0 0 6px;
+border-radius:20px;
+padding:0;
+background:rgba(255,255,255,.85);
+border:1px solid rgba(50,50,50,.35);
+cursor:pointer;
+transition:
+width .35s cubic-bezier(.22,1,.36,1),
+flex-basis .35s cubic-bezier(.22,1,.36,1),
+background .3s ease,
+border-color .3s ease,
+transform .3s ease;
 }
-.image-dot.active{background:white;border-color:white}
+
+.image-dot.active{
+width:21px;
+min-width:21px;
+flex-basis:21px;
+background:#24231f;
+border-color:#24231f;
+}
+
+.image-dot:active{transform:scale(.85)}
+
+.card-arrow{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:40px;
+height:40px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,.55);
+background:rgba(55,55,55,.72);
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:21px;
+font-weight:500;
+cursor:pointer;
+z-index:20;
+box-shadow:0 2px 12px rgba(0,0,0,.18);
+transition:background .25s ease,transform .25s ease;
+}
+
+.card-arrow:hover{
+background:rgba(35,35,35,.9);
+transform:translateY(-50%) scale(1.08);
+}
+
+.card-arrow.prev{left:12px}
+.card-arrow.next{right:12px}
+
+.card-arrow.is-hidden{display:none}
 
 .product-name{font-size:13px;margin-top:13px;letter-spacing:1px}
 .product-price{font-size:12px;margin-top:8px}
@@ -129,6 +226,7 @@ padding:25px
 .categories{grid-template-columns:repeat(2,1fr)}
 .category{height:340px}
 }
+
 @media(max-width:650px){
 header{height:65px;padding:0 5%}
 .logo{font-size:24px}
@@ -145,6 +243,7 @@ nav a{font-size:9px}
 .product-name{font-size:11px}
 .product-actions{flex-direction:column}
 .product-actions button{padding:11px 8px}
+.card-arrow{display:none}
 footer{gap:15px;flex-direction:column}
 }
 </style>
@@ -243,61 +342,188 @@ let cart = [];
 let swipeClickBlockedUntil = 0;
 
 function renderProducts(){
-  grid.innerHTML = products.map((product,index) => `
-    <div class="product">
-      <div class="product-image-wrap"
-           data-product-index="${index}"
-           onscroll="sliderScrolled(this,${index})"
-           onclick="openProductFromCard(event,'${product.id}')">
-        ${product.images.map((img,i)=>`
-          <img class="product-image"
-               src="${img}" alt="${product.name} - ${i+1}"
-               draggable="false">
-        `).join("")}
-        <div class="image-dots">
-          ${product.images.map((img,i)=>`
-            <span class="image-dot ${i===0?'active':''}"></span>
-          `).join("")}
+  grid.innerHTML = products.map((product,index) => {
+    const images = Array.isArray(product.images) ? product.images : [];
+
+    return `
+      <div class="product">
+        <div class="product-image-wrap"
+             onclick="openProductFromCard(event,'${product.id}')">
+
+          <div class="image-track"
+               data-product-index="${index}"
+               onscroll="sliderScrolled(this)">
+
+            ${images.map((img,i)=>`
+              <img class="product-image"
+                   src="${img}" alt="${product.name} - ${i+1}"
+                   draggable="false">
+            `).join("")}
+
+          </div>
+
+          <div class="image-dots">
+            ${images.map((img,i)=>`
+              <button type="button"
+                      class="image-dot ${i===0?'active':''}"
+                      aria-label="${i+1}. fotoğraf"
+                      onclick="changeImage(event,${index},${i})"></button>
+            `).join("")}
+          </div>
+
+          <button type="button" class="card-arrow prev is-hidden"
+                  aria-label="Önceki fotoğraf"
+                  onclick="moveProductImage(event,-1)">‹</button>
+
+          <button type="button" class="card-arrow next"
+                  aria-label="Sonraki fotoğraf"
+                  onclick="moveProductImage(event,1)">›</button>
+
+        </div>
+
+        <p class="product-name">${product.name}</p>
+        <p class="product-price">${product.price.toLocaleString("tr-TR")},00 TL</p>
+
+        <div class="product-actions">
+          <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>
+          <button class="details-button" onclick="openGallery('${product.id}')">ÜRÜNÜ İNCELE</button>
         </div>
       </div>
-      <p class="product-name">${product.name}</p>
-      <p class="product-price">${product.price.toLocaleString("tr-TR")},00 TL</p>
-      <div class="product-actions">
-        <button onclick="addToCart('${product.id}')">SEPETE EKLE</button>
-        <button class="details-button" onclick="openGallery('${product.id}')">ÜRÜNÜ İNCELE</button>
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
+
+  document.querySelectorAll(".image-track").forEach(track=>{
+    updateSliderControls(track);
+    setupMouseDrag(track);
+  });
 }
 
-function sliderScrolled(element,index){
-  const width = element.clientWidth;
-  if(!width) return;
+function getImageIndex(track){
+  const width = track.clientWidth;
+  if(!width) return 0;
 
-  const imageIndex = Math.round(element.scrollLeft / width);
-  const dots = element.querySelectorAll(".image-dot");
+  const total = track.querySelectorAll(".product-image").length;
+  if(!total) return 0;
+
+  return Math.max(0,Math.min(
+    total-1,
+    Math.round(track.scrollLeft/width)
+  ));
+}
+
+function updateSliderControls(track){
+  const wrap = track.closest(".product-image-wrap");
+  if(!wrap) return;
+
+  const total = track.querySelectorAll(".product-image").length;
+  const index = getImageIndex(track);
+
+  const dots = wrap.querySelectorAll(".image-dot");
+  const prev = wrap.querySelector(".card-arrow.prev");
+  const next = wrap.querySelector(".card-arrow.next");
 
   dots.forEach((dot,i)=>{
-    dot.classList.toggle("active",i===imageIndex);
+    dot.classList.toggle("active",i===index);
   });
 
-  swipeClickBlockedUntil = Date.now() + 350;
+  if(prev){
+    prev.classList.toggle("is-hidden",index===0 || total<=1);
+  }
+
+  if(next){
+    next.classList.toggle("is-hidden",index>=total-1 || total<=1);
+  }
+}
+
+function sliderScrolled(track){
+  updateSliderControls(track);
+}
+
+function changeImage(event,productIndex,imageIndex){
+  event.stopPropagation();
+
+  const track = document.querySelector(
+    `.image-track[data-product-index="${productIndex}"]`
+  );
+
+  if(!track) return;
+
+  track.scrollTo({
+    left:imageIndex*track.clientWidth,
+    behavior:"smooth"
+  });
+}
+
+function moveProductImage(event,direction){
+  event.stopPropagation();
+
+  const wrap = event.currentTarget.closest(".product-image-wrap");
+  const track = wrap.querySelector(".image-track");
+
+  if(!track) return;
+
+  const total = track.querySelectorAll(".product-image").length;
+  const current = getImageIndex(track);
+  const next = Math.max(0,Math.min(total-1,current+direction));
+
+  track.scrollTo({
+    left:next*track.clientWidth,
+    behavior:"smooth"
+  });
+}
+
+function setupMouseDrag(track){
+  let startX = 0;
+  let startScroll = 0;
+  let dragging = false;
+  let moved = false;
+
+  track.addEventListener("pointerdown",event=>{
+    if(event.pointerType !== "mouse") return;
+    if(event.button !== 0) return;
+
+    dragging = true;
+    moved = false;
+    startX = event.clientX;
+    startScroll = track.scrollLeft;
+
+    track.classList.add("dragging");
+    track.setPointerCapture(event.pointerId);
+  });
+
+  track.addEventListener("pointermove",event=>{
+    if(!dragging) return;
+
+    const distance = event.clientX-startX;
+
+    if(Math.abs(distance)>4) moved = true;
+
+    if(moved){
+      track.scrollLeft = startScroll-distance;
+    }
+  });
+
+  function stopDragging(){
+    if(!dragging) return;
+
+    dragging = false;
+    track.classList.remove("dragging");
+
+    if(moved){
+      swipeClickBlockedUntil = Date.now()+350;
+    }
+  }
+
+  track.addEventListener("pointerup",stopDragging);
+  track.addEventListener("pointercancel",stopDragging);
+  track.addEventListener("lostpointercapture",stopDragging);
 }
 
 function openProductFromCard(event,productId){
-  if(Date.now() < swipeClickBlockedUntil) return;
-  if(event.target.closest(".image-dots")) return;
+  if(Date.now()<swipeClickBlockedUntil) return;
+  if(event.target.closest("button")) return;
+
   openGallery(productId);
-}
-
-function changeImage(productIndex,imageIndex){
-  const slider = document.querySelectorAll(".product-image-wrap")[productIndex];
-  if(!slider) return;
-
-  slider.scrollTo({
-    left: imageIndex * slider.clientWidth,
-    behavior:"smooth"
-  });
 }
 
 function openGallery(productId){
@@ -373,6 +599,14 @@ function openCart(){
 function closeCart(){
   document.getElementById("cart-panel").classList.remove("open");
 }
+
+window.addEventListener("resize",()=>{
+  document.querySelectorAll(".image-track").forEach(track=>{
+    const index=getImageIndex(track);
+    track.scrollLeft=index*track.clientWidth;
+    updateSliderControls(track);
+  });
+});
 
 document.addEventListener("keydown",function(event){
   if(event.key==="Escape"){
