@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boys Collection — ENTE</title>
+<title>Erkek Çocuk Koleksiyonu — ENTE</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -460,20 +461,20 @@ padding:12px 5px
 <header>
 <a href="index.html" class="logo">ENTE</a>
 <nav>
-<a href="index.html">HOME</a>
-<a href="girls.html">GIRLS</a>
-<a href="boys.html">BOYS</a>
+<a href="index.html">ANA SAYFA</a>
+<a href="girls.html">KIZ ÇOCUK</a>
+<a href="boys.html">ERKEK ÇOCUK</a>
 <a href="unisex.html">UNISEX</a>
 <button class="cart-button" onclick="openCart()">
-BAG (<span id="cartCount">0</span>)
+SEPETİM (<span id="cartCount">0</span>)
 </button>
 </nav>
 </header>
 
 <section class="hero">
-<p class="eyebrow">ENTE COLLECTION / 02</p>
-<h1>Boys Collection</h1>
-<p class="description">Discover the latest pieces from ENTE.</p>
+<p class="eyebrow">ENTE KOLEKSİYON / 02</p>
+<h1>Erkek Çocuk Koleksiyonu</h1>
+<p class="description">ENTE'nin en yeni parçalarını keşfedin.</p>
 </section>
 
 <section class="products" id="products"></section>
@@ -490,7 +491,7 @@ BAG (<span id="cartCount">0</span>)
 </div>
 <div class="gallery-content">
 <div class="gallery-main">
-<img id="mainProductImage" src="" alt="Product image">
+<img id="mainProductImage" src="" alt="Ürün görseli">
 </div>
 <div class="gallery-thumbnails" id="galleryThumbnails"></div>
 <div class="gallery-product-info">
@@ -503,7 +504,7 @@ BAG (<span id="cartCount">0</span>)
 <div class="cart-overlay" id="cart">
 <div class="cart-panel">
 <div class="cart-header">
-<h2>YOUR BAG</h2>
+<h2>SEPETİM</h2>
 <button class="cart-close" onclick="closeCart()">×</button>
 </div>
 <div id="cartItems"></div>
@@ -517,7 +518,7 @@ BAG (<span id="cartCount">0</span>)
 <script src="products.js"></script>
 
 <script>
-/* VARIABLES */
+/* DEĞİŞKENLER */
 
 const products =
 (typeof ENTE_PRODUCTS !== "undefined" && ENTE_PRODUCTS.boys)
@@ -529,7 +530,7 @@ const productContainer = document.getElementById("products");
 let activeProduct = null;
 let swipeClickBlockedUntil = 0;
 
-/* PRICE */
+/* FİYAT */
 
 function formatPrice(price){
 return price.toLocaleString("tr-TR",{
@@ -538,13 +539,13 @@ maximumFractionDigits:2
 })+" TL";
 }
 
-/* PRODUCTS */
+/* ÜRÜNLER */
 
 function renderProducts(){
 
 if(!products.length){
 productContainer.innerHTML =
-'<p class="empty-products">Boys Collection ürünleri yakında burada.</p>';
+'<p class="empty-products">Erkek çocuk koleksiyonu ürünleri yakında burada.</p>';
 return;
 }
 
@@ -573,7 +574,7 @@ onclick="moveProductImage(event,1)">›</button>
 
 <div class="product-info">
 <h2>${product.name}</h2>
-<p class="product-category">Boys Collection</p>
+<p class="product-category">Erkek Çocuk</p>
 <p class="price">${formatPrice(product.price)}</p>
 <button class="add-button" onclick="addToCart('${product.id}',event)">
 SEPETE EKLE
@@ -585,7 +586,7 @@ SEPETE EKLE
 setupSliders();
 }
 
-/* IMAGE INDEX */
+/* GÖRSEL SIRASI */
 
 function getImageIndex(track){
 if(!track.clientWidth) return 0;
@@ -595,7 +596,7 @@ return Math.max(0,Math.min(total-1,
 Math.round(track.scrollLeft/track.clientWidth)));
 }
 
-/* SLIDER CONTROLS */
+/* KAYDIRMA KONTROLLERİ */
 
 function updateSliderControls(track){
 
@@ -656,7 +657,7 @@ behavior:"smooth"
 });
 }
 
-/* SLIDER SETUP */
+/* KAYDIRMA SİSTEMİ */
 
 function setupSliders(){
 
@@ -720,7 +721,7 @@ track.addEventListener("lostpointercapture",stopDragging);
 });
 }
 
-/* PRODUCT GALLERY */
+/* ÜRÜN GALERİSİ */
 
 function openProductFromCard(event,index){
 
@@ -743,7 +744,7 @@ document.getElementById("galleryProductPrice").textContent=formatPrice(activePro
 document.getElementById("galleryThumbnails").innerHTML=
 activeProduct.images.map((img,i)=>`
 <img src="${img}" class="${i===0?'selected':''}"
-onclick="changeImage(${i})" alt="Product view ${i+1}">
+onclick="changeImage(${i})" alt="Ürün görünümü ${i+1}">
 `).join("");
 
 document.getElementById("gallery").classList.add("active");
@@ -767,7 +768,7 @@ document.getElementById("gallery").classList.remove("active");
 document.body.style.overflow="";
 }
 
-/* CART — SHARED PERSISTENT STORAGE */
+/* SEPET — ORTAK KALICI DEPOLAMA */
 
 const CART_STORAGE_KEY="enteCart";
 
@@ -850,7 +851,7 @@ const items=document.getElementById("cartItems");
 
 if(cart.length===0){
 
-items.innerHTML='<p class="empty-cart">Your bag is empty.</p>';
+items.innerHTML='<p class="empty-cart">Sepetiniz boş.</p>';
 
 }else{
 
@@ -896,7 +897,7 @@ document.getElementById("cart").classList.remove("active");
 document.body.style.overflow="";
 }
 
-/* KEYBOARD */
+/* KLAVYE */
 
 document.addEventListener("keydown",event=>{
 
@@ -907,7 +908,7 @@ closeCart();
 
 });
 
-/* CART SYNC */
+/* SEPET SENKRONİZASYONU */
 
 window.addEventListener("storage",event=>{
 
@@ -917,7 +918,7 @@ updateCart();
 
 });
 
-/* START */
+/* BAŞLAT */
 
 renderProducts();
 updateCart();
@@ -925,3 +926,4 @@ updateCart();
 </script>
 </body>
 </html>
+```
