@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENTE — Kidswear</title>
+<title>ENTE — Çocuk Giyim</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -71,9 +71,7 @@ display:none;
 border:1px solid #fff;
 }
 
-.cart-button.has-items .cart-dot{
-display:block;
-}
+.cart-button.has-items .cart-dot{display:block}
 
 /* HERO */
 .hero{
@@ -459,7 +457,6 @@ font-size:13px
 
 /* MOBILE */
 @media(max-width:650px){
-
 header{
 height:65px;
 padding:0 5%;
@@ -517,18 +514,17 @@ footer{gap:15px;flex-direction:column}
 <body>
 
 <header>
-
 <a class="logo" href="index.html">ENTE</a>
 
 <nav>
-<a href="girls.html">GIRLS</a>
-<a href="boys.html">BOYS</a>
+<a href="girls.html">KIZ ÇOCUK</a>
+<a href="boys.html">ERKEK ÇOCUK</a>
 <a href="unisex.html">UNISEX</a>
-<a href="new-season.html">NEW SEASON</a>
+<a href="new-season.html">YENİ SEZON</a>
 </nav>
 
 <button class="cart-button" id="cart-button"
-onclick="openCart()" aria-label="Sepeti aç">
+onclick="openCart()" aria-label="Sepetimi aç">
 
 <svg viewBox="0 0 24 24" fill="none"
 stroke="currentColor" stroke-width="1.7"
@@ -537,19 +533,16 @@ stroke-linecap="round" stroke-linejoin="round">
 <path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/>
 <circle cx="9.5" cy="20" r="1.2"/>
 <circle cx="18" cy="20" r="1.2"/>
-
 </svg>
 
 <span class="cart-dot"></span>
-
 </button>
-
 </header>
 
 <section class="hero">
 <div class="hero-content">
-<small>ENTE AUTUMN / WINTER 2026</small>
-<h1>Little things.<br>Big moments.</h1>
+<small>ENTE İLKBAHAR / YAZ 2026</small>
+<h1>Küçük detaylar.<br>Büyük anlar.</h1>
 <p>Çocukluğun en güzel anlarına eşlik eden, özenle seçilmiş parçalar.</p>
 <a class="shop" href="#collections">KOLEKSİYONU KEŞFET</a>
 </div>
@@ -558,30 +551,30 @@ stroke-linecap="round" stroke-linejoin="round">
 <section class="section" id="collections">
 
 <div class="section-head">
-<h2>Collections</h2>
+<h2>Koleksiyonlar</h2>
 <a href="new-season.html">TÜMÜNÜ KEŞFET →</a>
 </div>
 
 <div class="categories">
 
 <a class="category" href="girls.html">
-<img src="images/girls-category.webp" alt="Girls collection">
-<span>GIRLS</span>
+<img src="images/girls-category.webp" alt="Kız çocuk koleksiyonu">
+<span>KIZ ÇOCUK</span>
 </a>
 
 <a class="category" href="boys.html">
-<img src="images/boys-category.webp" alt="Boys collection">
-<span>BOYS</span>
+<img src="images/boys-category.webp" alt="Erkek çocuk koleksiyonu">
+<span>ERKEK ÇOCUK</span>
 </a>
 
 <a class="category" href="unisex.html">
-<img src="images/unisex-category.jpg" alt="Unisex collection">
+<img src="images/unisex-category.jpg" alt="Unisex koleksiyonu">
 <span>UNISEX</span>
 </a>
 
 <a class="category" href="new-season.html">
-<img src="images/new-season-category.jpg" alt="New season collection">
-<span>NEW SEASON</span>
+<img src="images/new-season-category.jpg" alt="Yeni sezon koleksiyonu">
+<span>YENİ SEZON</span>
 </a>
 
 </div>
@@ -590,7 +583,7 @@ stroke-linecap="round" stroke-linejoin="round">
 <section class="product-section" id="girl-products">
 
 <div class="section-head">
-<h2>Girls — Selected Pieces</h2>
+<h2>Kız Çocuk — Öne Çıkanlar</h2>
 <a href="girls.html">TÜMÜNÜ KEŞFET →</a>
 </div>
 
@@ -599,39 +592,37 @@ stroke-linecap="round" stroke-linejoin="round">
 </section>
 
 <section class="about">
-<h2>Made for little moments.</h2>
+<h2>Küçük anlar için tasarlandı.</h2>
 <p>ENTE, çocukların özgürce keşfettiği ve büyüdüğü her ana eşlik etmek için tasarlandı. Sade çizgiler, zamansız parçalar ve küçük detaylar.</p>
 </section>
 
 <footer>
 <div>ENTE © 2026</div>
-<div>CHILDREN'S CLOTHING</div>
-<div>ALL RIGHTS RESERVED</div>
+<div>ÇOCUK GİYİM</div>
+<div>TÜM HAKLARI SAKLIDIR</div>
 </footer>
 
 <!-- GALLERY -->
-
 <div class="gallery" id="gallery">
 
 <div class="gallery-top">
 <strong>ENTE</strong>
-<button onclick="closeGallery()">×</button>
+<button onclick="closeGallery()" aria-label="Galeriyi kapat">×</button>
 </div>
 
 <div class="gallery-main">
-<img id="gallery-main-image" src="" alt="Product image">
+<img id="gallery-main-image" src="" alt="Ürün görseli">
 <div class="gallery-thumbs" id="gallery-thumbs"></div>
 </div>
 
 </div>
 
 <!-- CART -->
-
 <div class="cart-panel" id="cart-panel">
 
 <div class="cart-top">
-<strong>YOUR BAG</strong>
-<button onclick="closeCart()">×</button>
+<strong>SEPETİM</strong>
+<button onclick="closeCart()" aria-label="Sepeti kapat">×</button>
 </div>
 
 <div id="cart-content"></div>
@@ -693,6 +684,7 @@ return true;
 
 console.error("Sepet kaydedilemedi:",error);
 alert("Sepet kaydedilemedi.");
+
 return false;
 
 }
@@ -921,7 +913,7 @@ main.src = product.images[0];
 
 thumbs.innerHTML = product.images.map((img,i)=>`
 <img src="${img}" class="${i===0?'active':''}"
-onclick="selectGalleryImage('${img}',this)">
+onclick="selectGalleryImage('${img}',this)" alt="Ürün görseli ${i+1}">
 `).join("");
 
 gallery.classList.add("open");
