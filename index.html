@@ -1,40 +1,1489 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENTE — Çocuk Giyim</title>
-<style>
-:root{--cream:#FAF8F5;--sage:#A3B18A;--sage-light:#DCE2D8;--charcoal:#2B2D2F;--muted:#77756F;--border:#E8E4DE;--terracotta:#B8795B;--terracotta-hover:#A86B50}
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:Arial,Helvetica,sans-serif;color:var(--charcoal);background:var(--cream)}
-header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;background:var(--cream)}.logo{font-size:27px;letter-spacing:7px;font-weight:600;color:var(--charcoal);text-decoration:none}nav{display:flex;gap:30px}nav a{font-size:10px;text-decoration:none;color:var(--charcoal);letter-spacing:1.5px;transition:color .2s}nav a:hover{color:var(--terracotta)}.cart-button{position:relative;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:0;background:none;color:var(--charcoal);cursor:pointer}.cart-button svg{width:24px;height:24px}.cart-dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--terracotta);display:none;border:1px solid var(--cream)}.cart-button.has-items .cart-dot{display:block}
-.hero{min-height:570px;display:flex;align-items:center;padding:8%;position:relative;background:linear-gradient(90deg,rgba(25,25,22,.48),rgba(25,25,22,.20) 48%,rgba(25,25,22,.02)),url("images/new-season-category.jpg") center 48%/cover no-repeat;color:white}.hero-content{max-width:470px;position:relative;z-index:1}.hero-label{display:inline-block;letter-spacing:3px;font-size:10px;margin-bottom:22px}.hero h1{font-size:clamp(38px,5vw,62px);font-weight:400;line-height:1.08;margin-bottom:20px}.hero p{font-size:14px;line-height:1.8;max-width:350px;color:rgba(255,255,255,.9)}.shop{display:inline-block;margin-top:30px;background:var(--terracotta);color:white;padding:15px 28px;text-decoration:none;font-size:10px;letter-spacing:2px;transition:background .25s}.shop:hover{background:var(--terracotta-hover)}
-.section,.product-section{padding:75px 6%}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;gap:15px}.section h2,.product-section h2{font-size:24px;font-weight:400;letter-spacing:1px}.section-head a{font-size:10px;color:var(--charcoal);text-decoration:none;letter-spacing:1px}.section-head a:hover{color:var(--terracotta)}.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.category{height:430px;position:relative;overflow:hidden;display:flex;align-items:flex-end;text-decoration:none;color:white;background:var(--sage-light)}.category img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s}.category:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.48),transparent 60%)}.category span{position:relative;z-index:1;padding:25px;font-size:13px;letter-spacing:2px}.category:hover img{transform:scale(1.04)}
-.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}.product{min-width:0}.product-image-wrap{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#F0EFEB;cursor:pointer}.image-track{width:100%;height:100%;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;touch-action:pan-x pan-y}.image-track::-webkit-scrollbar{display:none}.product-image{flex:0 0 100%;width:100%;height:100%;object-fit:cover;display:block;scroll-snap-align:start;pointer-events:none;user-select:none}.image-dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:7px;z-index:10}.image-dot{width:6px;height:6px;border-radius:20px;padding:0;background:#fffd;border:1px solid #3338;cursor:pointer}.image-dot.active{width:21px;background:var(--charcoal);border-color:var(--charcoal)}.card-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid #ffffff8c;background:#373737a6;color:white;font-size:21px;cursor:pointer;z-index:20}.card-arrow.prev{left:10px}.card-arrow.next{right:10px}.card-arrow.is-hidden{display:none}.product-name{display:block;color:inherit;text-decoration:none;font-size:12px;margin-top:13px;letter-spacing:.5px;line-height:1.5}.product-colors{display:flex;align-items:center;gap:8px;margin-top:10px;min-height:18px}.color-swatch{width:15px;height:15px;min-width:15px;border-radius:50%;border:1px solid #c9c4bc;background:var(--swatch);padding:0;cursor:pointer;display:block}.color-swatch:hover{outline:1px solid var(--charcoal);outline-offset:2px}.product-price{font-size:12px;margin-top:8px}.old-price{color:#999;text-decoration:line-through;margin-right:7px}.sale-price{color:var(--terracotta)}.sale-label{position:absolute;top:12px;left:12px;z-index:15;background:var(--terracotta);color:white;padding:7px 10px;font-size:9px;letter-spacing:1px}
-.about{background:#F0EEE8;text-align:center;padding:80px 20px}.about h2{font-size:27px;font-weight:400;margin-bottom:18px}.about p{font-size:13px;color:var(--muted);line-height:1.9;max-width:500px;margin:auto}footer{padding:35px 6%;background:var(--charcoal);color:white;display:flex;justify-content:space-between;font-size:10px;letter-spacing:1px}
-.cart-panel{display:none;position:fixed;z-index:110;right:0;top:0;height:100%;width:min(390px,100%);background:white;box-shadow:0 0 0 100vmax #0006;padding:25px;overflow-y:auto}.cart-panel.open{display:block}.cart-top{display:flex;justify-content:space-between;align-items:center}.cart-top button{border:0;background:none;font-size:27px;cursor:pointer;color:var(--charcoal)}.cart-item{display:flex;gap:15px;margin-top:25px;align-items:center}.cart-item img{width:85px;height:110px;object-fit:cover}.cart-item p{font-size:12px;line-height:1.8}.cart-item button{margin-top:6px;border:0;background:none;color:var(--terracotta);font-size:11px;cursor:pointer}.cart-total{border-top:1px solid var(--border);margin-top:25px;padding-top:18px;font-size:13px}
-@media(max-width:1000px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.category{height:350px}}@media(max-width:650px){header{height:65px;padding:0 5%}.logo{font-size:22px;letter-spacing:5px}nav{gap:10px}nav a{font-size:8px;letter-spacing:.5px}.cart-button{width:30px}.cart-button svg{width:21px;height:21px}.hero{min-height:440px;padding:8%;background-position:center}.hero h1{font-size:42px}.hero p{font-size:12px}.categories{gap:10px}.category{height:260px}.category span{padding:14px;font-size:11px}.section,.product-section{padding:55px 5%}.section h2,.product-section h2{font-size:19px}.section-head a{font-size:9px}.product-grid{gap:15px 10px}.product-name{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.product-colors{margin-top:8px;gap:7px}.color-swatch{width:13px;height:13px;min-width:13px}.card-arrow{display:none}footer{gap:15px;flex-direction:column}}@media(max-width:380px){nav{gap:7px}nav a{font-size:7px}.hero h1{font-size:36px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ENTE — Çocuk Giyim</title>
+
+    <style>
+        :root {
+            --cream: #FAF8F5;
+            --sage: #A3B18A;
+            --sage-light: #DCE2D8;
+            --charcoal: #2B2D2F;
+            --muted: #77756F;
+            --border: #E8E4DE;
+            --terracotta: #B8795B;
+            --terracotta-hover: #A86B50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--charcoal);
+            background: var(--cream);
+        }
+
+        /* HEADER */
+
+        header {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--cream);
+        }
+
+        .logo {
+            font-size: 27px;
+            letter-spacing: 7px;
+            font-weight: 600;
+            color: var(--charcoal);
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 10px;
+            text-decoration: none;
+            color: var(--charcoal);
+            letter-spacing: 1.5px;
+            transition: color .2s;
+        }
+
+        nav a:hover {
+            color: var(--terracotta);
+        }
+
+        .cart-button {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            background: none;
+            color: var(--charcoal);
+            cursor: pointer;
+        }
+
+        .cart-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .cart-dot {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--terracotta);
+            display: none;
+            border: 1px solid var(--cream);
+        }
+
+        .cart-button.has-items .cart-dot {
+            display: block;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 570px;
+            display: flex;
+            align-items: center;
+            padding: 8%;
+            position: relative;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(25, 25, 22, .48),
+                    rgba(25, 25, 22, .20) 48%,
+                    rgba(25, 25, 22, .02)
+                ),
+                url("images/new-season-category.jpg")
+                center 48% / cover no-repeat;
+
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 470px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            display: inline-block;
+            letter-spacing: 3px;
+            font-size: 10px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 62px);
+            font-weight: 400;
+            line-height: 1.08;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 350px;
+            color: rgba(255, 255, 255, .9);
+        }
+
+        .shop {
+            display: inline-block;
+            margin-top: 30px;
+            background: var(--terracotta);
+            color: white;
+            padding: 15px 28px;
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 2px;
+            transition: background .25s;
+        }
+
+        .shop:hover {
+            background: var(--terracotta-hover);
+        }
+
+        /* SECTIONS */
+
+        .section,
+        .product-section {
+            padding: 75px 6%;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .section h2,
+        .product-section h2 {
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .section-head a {
+            font-size: 10px;
+            color: var(--charcoal);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .section-head a:hover {
+            color: var(--terracotta);
+        }
+
+        /* CATEGORY CARDS */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .category {
+            height: 430px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            text-decoration: none;
+            color: white;
+            background: var(--sage-light);
+        }
+
+        .category img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .7s;
+        }
+
+        .category:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, .48),
+                transparent 60%
+            );
+        }
+
+        .category span {
+            position: relative;
+            z-index: 1;
+            padding: 25px;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+
+        .category:hover img {
+            transform: scale(1.04);
+        }
+
+        /* PRODUCT GRID */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .product {
+            min-width: 0;
+        }
+
+        .product-image-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: #F0EFEB;
+            cursor: pointer;
+        }
+
+        .image-track {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            touch-action: pan-x pan-y;
+        }
+
+        .image-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-image {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            scroll-snap-align: start;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* IMAGE DOTS */
+
+        .image-dots {
+            position: absolute;
+            bottom: 14px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            z-index: 10;
+        }
+
+        .image-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 20px;
+            padding: 0;
+            background: #fffd;
+            border: 1px solid #3338;
+            cursor: pointer;
+        }
+
+        .image-dot.active {
+            width: 21px;
+            background: var(--charcoal);
+            border-color: var(--charcoal);
+        }
+
+        /* IMAGE ARROWS */
+
+        .card-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #ffffff8c;
+            background: #373737a6;
+            color: white;
+            font-size: 21px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .card-arrow.prev {
+            left: 10px;
+        }
+
+        .card-arrow.next {
+            right: 10px;
+        }
+
+        .card-arrow.is-hidden {
+            display: none;
+        }
+
+        /* PRODUCT DETAILS */
+
+        .product-name {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+            font-size: 12px;
+            margin-top: 13px;
+            letter-spacing: .5px;
+            line-height: 1.5;
+        }
+
+        .product-colors {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            min-height: 18px;
+        }
+
+        .color-swatch {
+            width: 15px;
+            height: 15px;
+            min-width: 15px;
+            border-radius: 50%;
+            border: 1px solid #c9c4bc;
+            background: var(--swatch);
+            padding: 0;
+            cursor: pointer;
+            display: block;
+        }
+
+        .color-swatch:hover {
+            outline: 1px solid var(--charcoal);
+            outline-offset: 2px;
+        }
+
+        .product-price {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .old-price {
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 7px;
+        }
+
+        .sale-price {
+            color: var(--terracotta);
+        }
+
+        .sale-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 15;
+            background: var(--terracotta);
+            color: white;
+            padding: 7px 10px;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        /* ABOUT */
+
+        .about {
+            background: #F0EEE8;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .about h2 {
+            font-size: 27px;
+            font-weight: 400;
+            margin-bottom: 18px;
+        }
+
+        .about p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.9;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 35px 6%;
+            background: var(--charcoal);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* SHOPPING CART */
+
+        .cart-panel {
+            display: none;
+            position: fixed;
+            z-index: 110;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: min(390px, 100%);
+            background: white;
+            box-shadow: 0 0 0 100vmax #0006;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .cart-panel.open {
+            display: block;
+        }
+
+        .cart-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-top button {
+            border: 0;
+            background: none;
+            font-size: 27px;
+            cursor: pointer;
+            color: var(--charcoal);
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .cart-item img {
+            width: 85px;
+            height: 110px;
+            object-fit: cover;
+        }
+
+        .cart-item p {
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .cart-item button {
+            margin-top: 6px;
+            border: 0;
+            background: none;
+            color: var(--terracotta);
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            border-top: 1px solid var(--border);
+            margin-top: 25px;
+            padding-top: 18px;
+            font-size: 13px;
+        }
+
+        /* TABLET */
+
+        @media (max-width: 1000px) {
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .category {
+                height: 350px;
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 650px) {
+            header {
+                height: 65px;
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 22px;
+                letter-spacing: 5px;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 8px;
+                letter-spacing: .5px;
+            }
+
+            .cart-button {
+                width: 30px;
+            }
+
+            .cart-button svg {
+                width: 21px;
+                height: 21px;
+            }
+
+            .hero {
+                min-height: 440px;
+                padding: 8%;
+                background-position: center;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 12px;
+            }
+
+            .categories {
+                gap: 10px;
+            }
+
+            .category {
+                height: 260px;
+            }
+
+            .category span {
+                padding: 14px;
+                font-size: 11px;
+            }
+
+            .section,
+            .product-section {
+                padding: 55px 5%;
+            }
+
+            .section h2,
+            .product-section h2 {
+                font-size: 19px;
+            }
+
+            .section-head a {
+                font-size: 9px;
+            }
+
+            .product-grid {
+                gap: 15px 10px;
+            }
+
+            .product-name {
+                font-size: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .product-colors {
+                margin-top: 8px;
+                gap: 7px;
+            }
+
+            .color-swatch {
+                width: 13px;
+                height: 13px;
+                min-width: 13px;
+            }
+
+            .card-arrow {
+                display: none;
+            }
+
+            footer {
+                gap: 15px;
+                flex-direction: column;
+            }
+        }
+
+        /* SMALL MOBILE */
+
+        @media (max-width: 380px) {
+            nav {
+                gap: 7px;
+            }
+
+            nav a {
+                font-size: 7px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header><a class="logo" href="index.html">ENTE</a><nav><a href="girls.html">KIZ ÇOCUK</a><a href="boys.html">ERKEK ÇOCUK</a><a href="#sale-products">İNDİRİMDEKİLER</a></nav><button class="cart-button" id="cart-button" onclick="openCart()" aria-label="Sepeti aç"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/></svg><span class="cart-dot"></span></button></header>
-<section class="hero"><div class="hero-content"><small class="hero-label">ENTE İLKBAHAR / YAZ 2026</small><h1>Küçük detaylar.<br>Büyük anlar.</h1><p>Çocuklar için özenle seçilmiş parçalar.</p><a class="shop" href="#collections">KOLEKSİYONU KEŞFET</a></div></section>
-<section class="section" id="collections"><div class="section-head"><h2>KOLEKSİYONLAR</h2></div><div class="categories"><a class="category" href="girls.html"><img src="images/girls-category.webp" alt="Kız çocuk koleksiyonu"><span>KIZ ÇOCUK</span></a><a class="category" href="boys.html"><img src="images/boys-category.webp" alt="Erkek çocuk koleksiyonu"><span>ERKEK ÇOCUK</span></a></div></section>
-<section class="product-section" id="new-products"><div class="section-head"><h2>EN YENİ ÜRÜNLERİ KEŞFET</h2><a href="girls.html">TÜM ÜRÜNLER →</a></div><div class="product-grid" id="newest-products"></div></section>
-<section class="product-section" id="sale-products"><div class="section-head"><h2>İNDİRİMDEKİLER</h2><a href="#sale-products">ÜRÜNLERİ KEŞFET →</a></div><div class="product-grid" id="discount-products"></div></section>
-<section class="about"><h2>Çocukluğun en güzel anlarına.</h2><p>ENTE, çocukların özgürce keşfettiği ve büyüdüğü her ana eşlik etmek için tasarlandı. Sade çizgiler, zamansız parçalar ve küçük detaylar.</p></section>
-<footer><div>ENTE © 2026</div><div>ÇOCUK GİYİM</div><div>TÜM HAKLARI SAKLIDIR</div></footer>
-<aside class="cart-panel" id="cart-panel"><div class="cart-top"><strong>SEPETİM</strong><button onclick="closeCart()" aria-label="Sepeti kapat">×</button></div><div id="cart-content"></div></aside>
-<script src="products.js"></script><script>
-const CART_STORAGE_KEY="enteCart";let swipeClickBlockedUntil=0;const allProducts=[...(ENTE_PRODUCTS.girls||[]),...(ENTE_PRODUCTS.boys||[])];
-function formatPrice(price){return Number(price).toLocaleString("tr-TR",{minimumFractionDigits:2,maximumFractionDigits:2})+" TL"}function getProductPrice(product){return product.salePrice&&product.salePrice<product.price?product.salePrice:product.price}
-function getCart(){try{const saved=localStorage.getItem(CART_STORAGE_KEY);const cart=saved?JSON.parse(saved):[];return Array.isArray(cart)?cart:[]}catch(error){console.error(error);return []}}
-function saveCart(cart){try{localStorage.setItem(CART_STORAGE_KEY,JSON.stringify(cart));return true}catch(error){console.error(error);alert("Sepet kaydedilemedi.");return false}}
-function getProductColors(product){return typeof enteGetProductColors==='function'?enteGetProductColors(product):(product.color?[product.color]:[])}
-function renderColorDots(product){const colors=getProductColors(product);if(!colors.length)return '';return `<div class="product-colors" aria-label="Mevcut renkler">${colors.map((color,i)=>`<button type="button" class="color-swatch" style="--swatch:${color.hex||'#bdbdbd'}" aria-label="${color.name||'Ürün rengi'}" onclick="openColorFromCard(event,'${color.productId||product.id}','${encodeURIComponent(color.name||'')}')"></button>`).join('')}</div>`}
-function renderProductCard(product){const images=Array.isArray(product.images)?product.images:[];const price=getProductPrice(product);const isOnSale=price<product.price;return `<article class="product"><div class="product-image-wrap" onclick="openProductFromCard(event,'${product.id}')"><div class="image-track" onscroll="sliderScrolled(this)">${images.map((img,i)=>`<img class="product-image" src="${img}" alt="${product.name} - ${i+1}" draggable="false">`).join("")}</div>${isOnSale?'<span class="sale-label">İNDİRİM</span>':''}<div class="image-dots">${images.map((img,i)=>`<button class="image-dot ${i===0?'active':''}" aria-label="${i+1}. fotoğraf" onclick="changeImage(event,${i})"></button>`).join("")}</div><button class="card-arrow prev is-hidden" onclick="moveProductImage(event,-1)">‹</button><button class="card-arrow next" onclick="moveProductImage(event,1)">›</button></div><a class="product-name" href="product.html?id=${encodeURIComponent(product.id)}" title="${product.name}">${product.name}</a><p class="product-price">${isOnSale?`<span class="old-price">${formatPrice(product.price)}</span><span class="sale-price">${formatPrice(price)}</span>`:formatPrice(price)}</p>${renderColorDots(product)}</article>`}
-function renderProducts(){const newest=[...allProducts].reverse();const sale=allProducts.filter(p=>p.salePrice&&p.salePrice<p.price);document.getElementById("newest-products").innerHTML=newest.length?newest.map(renderProductCard).join(""):"<p>Henüz ürün eklenmedi.</p>";document.getElementById("discount-products").innerHTML=sale.length?sale.map(renderProductCard).join(""):'<p>Şu anda indirimli ürün bulunmuyor.</p>';document.querySelectorAll(".image-track").forEach(setupMouseDrag)}
-function getImageIndex(track){return track.clientWidth?Math.max(0,Math.min(track.querySelectorAll(".product-image").length-1,Math.round(track.scrollLeft/track.clientWidth))):0}function updateSliderControls(track){const wrap=track.closest(".product-image-wrap");if(!wrap)return;const index=getImageIndex(track),total=track.querySelectorAll(".product-image").length;wrap.querySelectorAll(".image-dot").forEach((dot,i)=>dot.classList.toggle("active",i===index));wrap.querySelector(".card-arrow.prev")?.classList.toggle("is-hidden",index===0||total<=1);wrap.querySelector(".card-arrow.next")?.classList.toggle("is-hidden",index>=total-1||total<=1)}function sliderScrolled(track){updateSliderControls(track)}function changeImage(event,index){event.stopPropagation();const track=event.currentTarget.closest(".product-image-wrap").querySelector(".image-track");track.scrollTo({left:index*track.clientWidth,behavior:"smooth"})}function moveProductImage(event,direction){event.stopPropagation();const track=event.currentTarget.closest(".product-image-wrap").querySelector(".image-track");track.scrollTo({left:Math.max(0,Math.min(track.scrollWidth-track.clientWidth,track.scrollLeft+direction*track.clientWidth)),behavior:"smooth"})}
-function setupMouseDrag(track){updateSliderControls(track);track.addEventListener("scroll",()=>updateSliderControls(track));let startX=0,startScroll=0,dragging=false,moved=false;track.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse"||e.button!==0)return;dragging=true;moved=false;startX=e.clientX;startScroll=track.scrollLeft;track.setPointerCapture(e.pointerId)});track.addEventListener("pointermove",e=>{if(!dragging)return;const distance=e.clientX-startX;if(Math.abs(distance)>4)moved=true;if(moved)track.scrollLeft=startScroll-distance});function stop(){if(!dragging)return;dragging=false;if(moved)swipeClickBlockedUntil=Date.now()+350}track.addEventListener("pointerup",stop);track.addEventListener("pointercancel",stop);track.addEventListener("lostpointercapture",stop)}
-function openProductFromCard(event,id){if(Date.now()<swipeClickBlockedUntil||event.target.closest("button"))return;location.href="product.html?id="+encodeURIComponent(id)}function openColorFromCard(event,id,colorName){event.preventDefault();event.stopPropagation();location.href="product.html?id="+encodeURIComponent(id)+(colorName?'&color='+colorName:'')}
-function updateCartButton(){document.getElementById("cart-button").classList.toggle("has-items",getCart().some(item=>item.quantity>0))}function renderCart(){const cart=getCart(),content=document.getElementById("cart-content");if(!cart.length){content.innerHTML="<p style='margin-top:30px;font-size:13px'>Sepetiniz şu anda boş.</p>";return}let total=0;content.innerHTML=cart.map((item,index)=>{total+=Number(item.price||0)*Number(item.quantity||0);return `<div class="cart-item"><img src="${item.image||item.images?.[0]||''}" alt="${item.name||'Ürün'}"><div><p><strong>${item.name||'Ürün'}</strong></p><p>${formatPrice(item.price||0)}</p><p>Beden: ${item.size||'—'} · Renk: ${item.color||'—'}</p><p>Adet: ${item.quantity||1}</p><button onclick="removeFromCart(${index})">SEPETTEN KALDIR</button></div></div>`}).join("")+`<div class="cart-total"><strong>TOPLAM: ${formatPrice(total)}</strong></div>`}function removeFromCart(index){const cart=getCart();cart.splice(index,1);if(saveCart(cart)){updateCartButton();renderCart()}}function openCart(){document.getElementById("cart-panel").classList.add("open");renderCart()}function closeCart(){document.getElementById("cart-panel").classList.remove("open")}window.addEventListener("storage",e=>{if(e.key===CART_STORAGE_KEY)updateCartButton()});renderProducts();updateCartButton();
-</script></body></html>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <a class="logo" href="index.html">
+            ENTE
+        </a>
+
+        <nav>
+            <a href="girls.html">KIZ ÇOCUK</a>
+            <a href="boys.html">ERKEK ÇOCUK</a>
+            <a href="#sale-products">İNDİRİMDEKİLER</a>
+        </nav>
+
+        <button
+            class="cart-button"
+            id="cart-button"
+            onclick="openCart()"
+            aria-label="Sepeti aç"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/>
+                <circle cx="9.5" cy="20" r="1.2"/>
+                <circle cx="18" cy="20" r="1.2"/>
+            </svg>
+
+            <span class="cart-dot"></span>
+        </button>
+
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <small class="hero-label">
+                ENTE İLKBAHAR / YAZ 2026
+            </small>
+
+            <h1>
+                Küçük detaylar.<br>
+                Büyük anlar.
+            </h1>
+
+            <p>
+                Çocuklar için özenle seçilmiş parçalar.
+            </p>
+
+            <a class="shop" href="#collections">
+                KOLEKSİYONU KEŞFET
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- COLLECTIONS -->
+
+    <section class="section" id="collections">
+
+        <div class="section-head">
+            <h2>KOLEKSİYONLAR</h2>
+        </div>
+
+        <div class="categories">
+
+            <a class="category" href="girls.html">
+                <img
+                    src="images/girls-category.webp"
+                    alt="Kız çocuk koleksiyonu"
+                >
+
+                <span>KIZ ÇOCUK</span>
+            </a>
+
+            <a class="category" href="boys.html">
+                <img
+                    src="images/boys-category.webp"
+                    alt="Erkek çocuk koleksiyonu"
+                >
+
+                <span>ERKEK ÇOCUK</span>
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- NEW PRODUCTS -->
+
+    <section class="product-section" id="new-products">
+
+        <div class="section-head">
+
+            <h2>EN YENİ ÜRÜNLERİ KEŞFET</h2>
+
+            <a href="girls.html">
+                TÜM ÜRÜNLER →
+            </a>
+
+        </div>
+
+        <div class="product-grid" id="newest-products"></div>
+
+    </section>
+
+    <!-- SALE PRODUCTS -->
+
+    <section class="product-section" id="sale-products">
+
+        <div class="section-head">
+
+            <h2>İNDİRİMDEKİLER</h2>
+
+            <a href="#sale-products">
+                ÜRÜNLERİ KEŞFET →
+            </a>
+
+        </div>
+
+        <div class="product-grid" id="discount-products"></div>
+
+    </section>
+
+    <!-- ABOUT -->
+
+    <section class="about">
+
+        <h2>Çocukluğun en güzel anlarına.</h2>
+
+        <p>
+            ENTE, çocukların özgürce keşfettiği ve büyüdüğü
+            her ana eşlik etmek için tasarlandı.
+            Sade çizgiler, zamansız parçalar ve küçük detaylar.
+        </p>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div>ENTE © 2026</div>
+
+        <div>ÇOCUK GİYİM</div>
+
+        <div>TÜM HAKLARI SAKLIDIR</div>
+
+    </footer>
+
+    <!-- SHOPPING CART -->
+
+    <aside class="cart-panel" id="cart-panel">
+
+        <div class="cart-top">
+
+            <strong>SEPETİM</strong>
+
+            <button
+                onclick="closeCart()"
+                aria-label="Sepeti kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div id="cart-content"></div>
+
+    </aside>
+
+    <!-- JAVASCRIPT -->
+
+    <script src="products.js"></script>
+
+    <script>
+
+        // GENERAL SETTINGS
+
+        const CART_STORAGE_KEY = "enteCart";
+
+        let swipeClickBlockedUntil = 0;
+
+        const allProducts = [
+            ...(ENTE_PRODUCTS.girls || []),
+            ...(ENTE_PRODUCTS.boys || [])
+        ];
+
+
+        // PRICE FUNCTIONS
+
+        function formatPrice(price) {
+
+            return Number(price).toLocaleString("tr-TR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + " TL";
+
+        }
+
+
+        function getProductPrice(product) {
+
+            return product.salePrice &&
+                product.salePrice < product.price
+                ? product.salePrice
+                : product.price;
+
+        }
+
+
+        // CART STORAGE
+
+        function getCart() {
+
+            try {
+
+                const saved = localStorage.getItem(CART_STORAGE_KEY);
+
+                const cart = saved
+                    ? JSON.parse(saved)
+                    : [];
+
+                return Array.isArray(cart) ? cart : [];
+
+            } catch (error) {
+
+                console.error(error);
+
+                return [];
+
+            }
+
+        }
+
+
+        function saveCart(cart) {
+
+            try {
+
+                localStorage.setItem(
+                    CART_STORAGE_KEY,
+                    JSON.stringify(cart)
+                );
+
+                return true;
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("Sepet kaydedilemedi.");
+
+                return false;
+
+            }
+
+        }
+
+
+        // PRODUCT COLORS
+
+        function getProductColors(product) {
+
+            return typeof enteGetProductColors === "function"
+                ? enteGetProductColors(product)
+                : (product.color ? [product.color] : []);
+
+        }
+
+
+        function renderColorDots(product) {
+
+            const colors = getProductColors(product);
+
+            if (!colors.length) return "";
+
+            return `
+                <div
+                    class="product-colors"
+                    aria-label="Mevcut renkler"
+                >
+
+                    ${colors.map((color, i) => `
+
+                        <button
+                            type="button"
+                            class="color-swatch"
+                            style="--swatch:${color.hex || '#bdbdbd'}"
+                            aria-label="${color.name || 'Ürün rengi'}"
+                            onclick="openColorFromCard(
+                                event,
+                                '${color.productId || product.id}',
+                                '${encodeURIComponent(color.name || '')}'
+                            )"
+                        ></button>
+
+                    `).join("")}
+
+                </div>
+            `;
+
+        }
+
+
+        // PRODUCT CARDS
+
+        function renderProductCard(product) {
+
+            const images = Array.isArray(product.images)
+                ? product.images
+                : [];
+
+            const price = getProductPrice(product);
+
+            const isOnSale = price < product.price;
+
+            return `
+
+                <article class="product">
+
+                    <div
+                        class="product-image-wrap"
+                        onclick="openProductFromCard(event, '${product.id}')"
+                    >
+
+                        <div
+                            class="image-track"
+                            onscroll="sliderScrolled(this)"
+                        >
+
+                            ${images.map((img, i) => `
+
+                                <img
+                                    class="product-image"
+                                    src="${img}"
+                                    alt="${product.name} - ${i + 1}"
+                                    draggable="false"
+                                >
+
+                            `).join("")}
+
+                        </div>
+
+
+                        ${isOnSale
+                            ? '<span class="sale-label">İNDİRİM</span>'
+                            : ''
+                        }
+
+
+                        <div class="image-dots">
+
+                            ${images.map((img, i) => `
+
+                                <button
+                                    class="image-dot ${i === 0 ? 'active' : ''}"
+                                    aria-label="${i + 1}. fotoğraf"
+                                    onclick="changeImage(event, ${i})"
+                                ></button>
+
+                            `).join("")}
+
+                        </div>
+
+
+                        <button
+                            class="card-arrow prev is-hidden"
+                            onclick="moveProductImage(event, -1)"
+                        >
+                            ‹
+                        </button>
+
+                        <button
+                            class="card-arrow next"
+                            onclick="moveProductImage(event, 1)"
+                        >
+                            ›
+                        </button>
+
+                    </div>
+
+
+                    <a
+                        class="product-name"
+                        href="product.html?id=${encodeURIComponent(product.id)}"
+                        title="${product.name}"
+                    >
+                        ${product.name}
+                    </a>
+
+
+                    <p class="product-price">
+
+                        ${isOnSale
+                            ? `
+                                <span class="old-price">
+                                    ${formatPrice(product.price)}
+                                </span>
+
+                                <span class="sale-price">
+                                    ${formatPrice(price)}
+                                </span>
+                            `
+                            : formatPrice(price)
+                        }
+
+                    </p>
+
+
+                    ${renderColorDots(product)}
+
+                </article>
+
+            `;
+
+        }
+
+
+        // RENDER PRODUCTS
+
+        function renderProducts() {
+
+            const newest = [...allProducts].reverse();
+
+            const sale = allProducts.filter(
+                p => p.salePrice && p.salePrice < p.price
+            );
+
+
+            document.getElementById("newest-products").innerHTML =
+                newest.length
+                    ? newest.map(renderProductCard).join("")
+                    : "<p>Henüz ürün eklenmedi.</p>";
+
+
+            document.getElementById("discount-products").innerHTML =
+                sale.length
+                    ? sale.map(renderProductCard).join("")
+                    : "<p>Şu anda indirimli ürün bulunmuyor.</p>";
+
+
+            document.querySelectorAll(".image-track").forEach(
+                setupMouseDrag
+            );
+
+        }
+
+
+        // IMAGE SLIDER
+
+        function getImageIndex(track) {
+
+            return track.clientWidth
+                ? Math.max(
+                    0,
+                    Math.min(
+                        track.querySelectorAll(".product-image").length - 1,
+                        Math.round(track.scrollLeft / track.clientWidth)
+                    )
+                )
+                : 0;
+
+        }
+
+
+        function updateSliderControls(track) {
+
+            const wrap = track.closest(".product-image-wrap");
+
+            if (!wrap) return;
+
+            const index = getImageIndex(track);
+
+            const total = track.querySelectorAll(".product-image").length;
+
+
+            wrap.querySelectorAll(".image-dot").forEach((dot, i) => {
+
+                dot.classList.toggle("active", i === index);
+
+            });
+
+
+            wrap.querySelector(".card-arrow.prev")
+                ?.classList.toggle(
+                    "is-hidden",
+                    index === 0 || total <= 1
+                );
+
+
+            wrap.querySelector(".card-arrow.next")
+                ?.classList.toggle(
+                    "is-hidden",
+                    index >= total - 1 || total <= 1
+                );
+
+        }
+
+
+        function sliderScrolled(track) {
+
+            updateSliderControls(track);
+
+        }
+
+
+        function changeImage(event, index) {
+
+            event.stopPropagation();
+
+            const track = event.currentTarget
+                .closest(".product-image-wrap")
+                .querySelector(".image-track");
+
+
+            track.scrollTo({
+                left: index * track.clientWidth,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        function moveProductImage(event, direction) {
+
+            event.stopPropagation();
+
+            const track = event.currentTarget
+                .closest(".product-image-wrap")
+                .querySelector(".image-track");
+
+
+            track.scrollTo({
+
+                left: Math.max(
+                    0,
+                    Math.min(
+                        track.scrollWidth - track.clientWidth,
+                        track.scrollLeft + direction * track.clientWidth
+                    )
+                ),
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+
+        // MOUSE DRAG
+
+        function setupMouseDrag(track) {
+
+            updateSliderControls(track);
+
+            track.addEventListener("scroll", () => {
+                updateSliderControls(track);
+            });
+
+
+            let startX = 0;
+            let startScroll = 0;
+            let dragging = false;
+            let moved = false;
+
+
+            track.addEventListener("pointerdown", e => {
+
+                if (e.pointerType !== "mouse" || e.button !== 0) {
+                    return;
+                }
+
+                dragging = true;
+                moved = false;
+
+                startX = e.clientX;
+                startScroll = track.scrollLeft;
+
+                track.setPointerCapture(e.pointerId);
+
+            });
+
+
+            track.addEventListener("pointermove", e => {
+
+                if (!dragging) return;
+
+                const distance = e.clientX - startX;
+
+                if (Math.abs(distance) > 4) {
+                    moved = true;
+                }
+
+                if (moved) {
+                    track.scrollLeft = startScroll - distance;
+                }
+
+            });
+
+
+            function stop() {
+
+                if (!dragging) return;
+
+                dragging = false;
+
+                if (moved) {
+                    swipeClickBlockedUntil = Date.now() + 350;
+                }
+
+            }
+
+
+            track.addEventListener("pointerup", stop);
+
+            track.addEventListener("pointercancel", stop);
+
+            track.addEventListener("lostpointercapture", stop);
+
+        }
+
+
+        // PRODUCT PAGE NAVIGATION
+
+        function openProductFromCard(event, id) {
+
+            if (Date.now() < swipeClickBlockedUntil) return;
+
+            if (event.target.closest("button")) return;
+
+            location.href =
+                "product.html?id=" + encodeURIComponent(id);
+
+        }
+
+
+        function openColorFromCard(event, id, colorName) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            location.href =
+                "product.html?id=" + encodeURIComponent(id) +
+                (colorName ? "&color=" + colorName : "");
+
+        }
+
+
+        // CART BUTTON
+
+        function updateCartButton() {
+
+            document.getElementById("cart-button")
+                .classList.toggle(
+                    "has-items",
+                    getCart().some(item => item.quantity > 0)
+                );
+
+        }
+
+
+        // RENDER CART
+
+        function renderCart() {
+
+            const cart = getCart();
+
+            const content = document.getElementById("cart-content");
+
+
+            if (!cart.length) {
+
+                content.innerHTML = `
+                    <p style="margin-top:30px;font-size:13px">
+                        Sepetiniz şu anda boş.
+                    </p>
+                `;
+
+                return;
+
+            }
+
+
+            let total = 0;
+
+
+            content.innerHTML = cart.map((item, index) => {
+
+                total +=
+                    Number(item.price || 0) *
+                    Number(item.quantity || 0);
+
+
+                return `
+
+                    <div class="cart-item">
+
+                        <img
+                            src="${item.image || item.images?.[0] || ''}"
+                            alt="${item.name || 'Ürün'}"
+                        >
+
+                        <div>
+
+                            <p>
+                                <strong>
+                                    ${item.name || 'Ürün'}
+                                </strong>
+                            </p>
+
+                            <p>
+                                ${formatPrice(item.price || 0)}
+                            </p>
+
+                            <p>
+                                Beden: ${item.size || '—'}
+                                ·
+                                Renk: ${item.color || '—'}
+                            </p>
+
+                            <p>
+                                Adet: ${item.quantity || 1}
+                            </p>
+
+                            <button onclick="removeFromCart(${index})">
+                                SEPETTEN KALDIR
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("") + `
+
+                <div class="cart-total">
+
+                    <strong>
+                        TOPLAM: ${formatPrice(total)}
+                    </strong>
+
+                </div>
+
+            `;
+
+        }
+
+
+        // REMOVE FROM CART
+
+        function removeFromCart(index) {
+
+            const cart = getCart();
+
+            cart.splice(index, 1);
+
+
+            if (saveCart(cart)) {
+
+                updateCartButton();
+
+                renderCart();
+
+            }
+
+        }
+
+
+        // OPEN AND CLOSE CART
+
+        function openCart() {
+
+            document.getElementById("cart-panel")
+                .classList.add("open");
+
+            renderCart();
+
+        }
+
+
+        function closeCart() {
+
+            document.getElementById("cart-panel")
+                .classList.remove("open");
+
+        }
+
+
+        // STORAGE LISTENER
+
+        window.addEventListener("storage", e => {
+
+            if (e.key === CART_STORAGE_KEY) {
+                updateCartButton();
+            }
+
+        });
+
+
+        // INITIALIZE WEBSITE
+
+        renderProducts();
+
+        updateCartButton();
+
+    </script>
+
+</body>
+
+</html>
