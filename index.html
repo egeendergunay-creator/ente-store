@@ -1,1489 +1,934 @@
+
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>ENTE — Çocuk Giyim</title>
-
-    <style>
-        :root {
-            --cream: #FAF8F5;
-            --sage: #A3B18A;
-            --sage-light: #DCE2D8;
-            --charcoal: #2B2D2F;
-            --muted: #77756F;
-            --border: #E8E4DE;
-            --terracotta: #B8795B;
-            --terracotta-hover: #A86B50;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            color: var(--charcoal);
-            background: var(--cream);
-        }
-
-        /* HEADER */
-
-        header {
-            height: 76px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 6%;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: var(--cream);
-        }
-
-        .logo {
-            font-size: 27px;
-            letter-spacing: 7px;
-            font-weight: 600;
-            color: var(--charcoal);
-            text-decoration: none;
-        }
-
-        nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        nav a {
-            font-size: 10px;
-            text-decoration: none;
-            color: var(--charcoal);
-            letter-spacing: 1.5px;
-            transition: color .2s;
-        }
-
-        nav a:hover {
-            color: var(--terracotta);
-        }
-
-        .cart-button {
-            position: relative;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 0;
-            background: none;
-            color: var(--charcoal);
-            cursor: pointer;
-        }
-
-        .cart-button svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .cart-dot {
-            position: absolute;
-            top: 3px;
-            right: 3px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--terracotta);
-            display: none;
-            border: 1px solid var(--cream);
-        }
-
-        .cart-button.has-items .cart-dot {
-            display: block;
-        }
-
-        /* HERO */
-
-        .hero {
-            min-height: 570px;
-            display: flex;
-            align-items: center;
-            padding: 8%;
-            position: relative;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(25, 25, 22, .48),
-                    rgba(25, 25, 22, .20) 48%,
-                    rgba(25, 25, 22, .02)
-                ),
-                url("images/new-season-category.jpg")
-                center 48% / cover no-repeat;
-
-            color: white;
-        }
-
-        .hero-content {
-            max-width: 470px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-label {
-            display: inline-block;
-            letter-spacing: 3px;
-            font-size: 10px;
-            margin-bottom: 22px;
-        }
-
-        .hero h1 {
-            font-size: clamp(38px, 5vw, 62px);
-            font-weight: 400;
-            line-height: 1.08;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 14px;
-            line-height: 1.8;
-            max-width: 350px;
-            color: rgba(255, 255, 255, .9);
-        }
-
-        .shop {
-            display: inline-block;
-            margin-top: 30px;
-            background: var(--terracotta);
-            color: white;
-            padding: 15px 28px;
-            text-decoration: none;
-            font-size: 10px;
-            letter-spacing: 2px;
-            transition: background .25s;
-        }
-
-        .shop:hover {
-            background: var(--terracotta-hover);
-        }
-
-        /* SECTIONS */
-
-        .section,
-        .product-section {
-            padding: 75px 6%;
-        }
-
-        .section-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 15px;
-        }
-
-        .section h2,
-        .product-section h2 {
-            font-size: 24px;
-            font-weight: 400;
-            letter-spacing: 1px;
-        }
-
-        .section-head a {
-            font-size: 10px;
-            color: var(--charcoal);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-
-        .section-head a:hover {
-            color: var(--terracotta);
-        }
-
-        /* CATEGORY CARDS */
-
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-        .category {
-            height: 430px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            text-decoration: none;
-            color: white;
-            background: var(--sage-light);
-        }
-
-        .category img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform .7s;
-        }
-
-        .category:after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to top,
-                rgba(0, 0, 0, .48),
-                transparent 60%
-            );
-        }
-
-        .category span {
-            position: relative;
-            z-index: 1;
-            padding: 25px;
-            font-size: 13px;
-            letter-spacing: 2px;
-        }
-
-        .category:hover img {
-            transform: scale(1.04);
-        }
-
-        /* PRODUCT GRID */
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 22px;
-        }
-
-        .product {
-            min-width: 0;
-        }
-
-        .product-image-wrap {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            overflow: hidden;
-            background: #F0EFEB;
-            cursor: pointer;
-        }
-
-        .image-track {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            touch-action: pan-x pan-y;
-        }
-
-        .image-track::-webkit-scrollbar {
-            display: none;
-        }
-
-        .product-image {
-            flex: 0 0 100%;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            scroll-snap-align: start;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        /* IMAGE DOTS */
-
-        .image-dots {
-            position: absolute;
-            bottom: 14px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 7px;
-            z-index: 10;
-        }
-
-        .image-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 20px;
-            padding: 0;
-            background: #fffd;
-            border: 1px solid #3338;
-            cursor: pointer;
-        }
-
-        .image-dot.active {
-            width: 21px;
-            background: var(--charcoal);
-            border-color: var(--charcoal);
-        }
-
-        /* IMAGE ARROWS */
-
-        .card-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 1px solid #ffffff8c;
-            background: #373737a6;
-            color: white;
-            font-size: 21px;
-            cursor: pointer;
-            z-index: 20;
-        }
-
-        .card-arrow.prev {
-            left: 10px;
-        }
-
-        .card-arrow.next {
-            right: 10px;
-        }
-
-        .card-arrow.is-hidden {
-            display: none;
-        }
-
-        /* PRODUCT DETAILS */
-
-        .product-name {
-            display: block;
-            color: inherit;
-            text-decoration: none;
-            font-size: 12px;
-            margin-top: 13px;
-            letter-spacing: .5px;
-            line-height: 1.5;
-        }
-
-        .product-colors {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            min-height: 18px;
-        }
-
-        .color-swatch {
-            width: 15px;
-            height: 15px;
-            min-width: 15px;
-            border-radius: 50%;
-            border: 1px solid #c9c4bc;
-            background: var(--swatch);
-            padding: 0;
-            cursor: pointer;
-            display: block;
-        }
-
-        .color-swatch:hover {
-            outline: 1px solid var(--charcoal);
-            outline-offset: 2px;
-        }
-
-        .product-price {
-            font-size: 12px;
-            margin-top: 8px;
-        }
-
-        .old-price {
-            color: #999;
-            text-decoration: line-through;
-            margin-right: 7px;
-        }
-
-        .sale-price {
-            color: var(--terracotta);
-        }
-
-        .sale-label {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            z-index: 15;
-            background: var(--terracotta);
-            color: white;
-            padding: 7px 10px;
-            font-size: 9px;
-            letter-spacing: 1px;
-        }
-
-        /* ABOUT */
-
-        .about {
-            background: #F0EEE8;
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .about h2 {
-            font-size: 27px;
-            font-weight: 400;
-            margin-bottom: 18px;
-        }
-
-        .about p {
-            font-size: 13px;
-            color: var(--muted);
-            line-height: 1.9;
-            max-width: 500px;
-            margin: auto;
-        }
-
-        /* FOOTER */
-
-        footer {
-            padding: 35px 6%;
-            background: var(--charcoal);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* SHOPPING CART */
-
-        .cart-panel {
-            display: none;
-            position: fixed;
-            z-index: 110;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: min(390px, 100%);
-            background: white;
-            box-shadow: 0 0 0 100vmax #0006;
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        .cart-panel.open {
-            display: block;
-        }
-
-        .cart-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-top button {
-            border: 0;
-            background: none;
-            font-size: 27px;
-            cursor: pointer;
-            color: var(--charcoal);
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            align-items: center;
-        }
-
-        .cart-item img {
-            width: 85px;
-            height: 110px;
-            object-fit: cover;
-        }
-
-        .cart-item p {
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        .cart-item button {
-            margin-top: 6px;
-            border: 0;
-            background: none;
-            color: var(--terracotta);
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .cart-total {
-            border-top: 1px solid var(--border);
-            margin-top: 25px;
-            padding-top: 18px;
-            font-size: 13px;
-        }
-
-        /* TABLET */
-
-        @media (max-width: 1000px) {
-            .product-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .category {
-                height: 350px;
-            }
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 650px) {
-            header {
-                height: 65px;
-                padding: 0 5%;
-            }
-
-            .logo {
-                font-size: 22px;
-                letter-spacing: 5px;
-            }
-
-            nav {
-                gap: 10px;
-            }
-
-            nav a {
-                font-size: 8px;
-                letter-spacing: .5px;
-            }
-
-            .cart-button {
-                width: 30px;
-            }
-
-            .cart-button svg {
-                width: 21px;
-                height: 21px;
-            }
-
-            .hero {
-                min-height: 440px;
-                padding: 8%;
-                background-position: center;
-            }
-
-            .hero h1 {
-                font-size: 42px;
-            }
-
-            .hero p {
-                font-size: 12px;
-            }
-
-            .categories {
-                gap: 10px;
-            }
-
-            .category {
-                height: 260px;
-            }
-
-            .category span {
-                padding: 14px;
-                font-size: 11px;
-            }
-
-            .section,
-            .product-section {
-                padding: 55px 5%;
-            }
-
-            .section h2,
-            .product-section h2 {
-                font-size: 19px;
-            }
-
-            .section-head a {
-                font-size: 9px;
-            }
-
-            .product-grid {
-                gap: 15px 10px;
-            }
-
-            .product-name {
-                font-size: 10px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .product-colors {
-                margin-top: 8px;
-                gap: 7px;
-            }
-
-            .color-swatch {
-                width: 13px;
-                height: 13px;
-                min-width: 13px;
-            }
-
-            .card-arrow {
-                display: none;
-            }
-
-            footer {
-                gap: 15px;
-                flex-direction: column;
-            }
-        }
-
-        /* SMALL MOBILE */
-
-        @media (max-width: 380px) {
-            nav {
-                gap: 7px;
-            }
-
-            nav a {
-                font-size: 7px;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENTE — Çocuk Giyim</title>
+
+<style>
+:root {
+  --cream:#FAF8F5;
+  --sage:#A3B18A;
+  --sage-light:#DCE2D8;
+  --charcoal:#2B2D2F;
+  --muted:#77756F;
+  --border:#E8E4DE;
+  --terracotta:#B8795B;
+  --terracotta-hover:#A86B50;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;color:var(--charcoal);background:var(--cream)}
+button{font-family:inherit}
+
+/* HEADER */
+
+header{
+  height:76px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;background:var(--cream)
+}
+.logo{font-size:27px;letter-spacing:7px;font-weight:600;color:var(--charcoal);text-decoration:none}
+nav{display:flex;gap:30px}
+nav a{font-size:10px;text-decoration:none;color:var(--charcoal);letter-spacing:1.5px;transition:color .2s}
+nav a:hover{color:var(--terracotta)}
+.cart-button{
+  position:relative;width:38px;height:38px;display:flex;align-items:center;
+  justify-content:center;border:0;background:none;color:var(--charcoal);cursor:pointer
+}
+.cart-button svg{width:24px;height:24px}
+.cart-dot{
+  position:absolute;top:3px;right:3px;width:8px;height:8px;
+  border-radius:50%;background:var(--terracotta);display:none;border:1px solid var(--cream)
+}
+.cart-button.has-items .cart-dot{display:block}
+
+/* HERO */
+
+.hero{
+  min-height:570px;display:flex;align-items:center;padding:8%;position:relative;
+  background:linear-gradient(90deg,rgba(25,25,22,.48),rgba(25,25,22,.20) 48%,rgba(25,25,22,.02)),
+  url("images/hero-banner.png") center 48%/cover no-repeat;color:white
+}
+.hero-content{max-width:470px;position:relative;z-index:1}
+.hero-label{display:inline-block;letter-spacing:3px;font-size:10px;margin-bottom:22px}
+.hero h1{font-size:clamp(38px,5vw,62px);font-weight:400;line-height:1.08;margin-bottom:20px}
+.hero p{font-size:14px;line-height:1.8;max-width:350px;color:rgba(255,255,255,.9)}
+.shop{
+  display:inline-block;margin-top:30px;background:var(--terracotta);color:white;
+  padding:15px 28px;text-decoration:none;font-size:10px;letter-spacing:2px;transition:background .25s
+}
+.shop:hover{background:var(--terracotta-hover)}
+
+/* SECTIONS */
+
+.section,.product-section{padding:75px 6%}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;gap:15px}
+.section h2,.product-section h2{font-size:24px;font-weight:400;letter-spacing:1px}
+.section-head a{font-size:10px;color:var(--charcoal);text-decoration:none;letter-spacing:1px}
+.section-head a:hover{color:var(--terracotta)}
+
+/* CATEGORIES */
+
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.category{
+  height:430px;position:relative;overflow:hidden;display:flex;align-items:flex-end;
+  text-decoration:none;color:white;background:var(--sage-light)
+}
+.category img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.category:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.48),transparent 60%)
+}
+.category span{position:relative;z-index:1;padding:25px;font-size:13px;letter-spacing:2px}
+.category:hover img{transform:scale(1.04)}
+
+/* PRODUCT CARDS */
+
+.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.product{min-width:0}
+.product-image-wrap{
+  position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;
+  background:#F0EFEB;cursor:pointer
+}
+.image-track{
+  width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab
+}
+.image-track::-webkit-scrollbar{display:none}
+.product-image{
+  flex:0 0 100%;width:100%;height:100%;object-fit:cover;
+  display:block;scroll-snap-align:start;user-select:none;
+  -webkit-user-drag:none;pointer-events:none
+}
+.image-dots{
+  position:absolute;bottom:14px;left:0;right:0;display:flex;
+  justify-content:center;align-items:center;gap:7px;z-index:10
+}
+.image-dot{
+  width:6px;height:6px;min-width:6px;border-radius:20px;padding:0;
+  background:rgba(255,255,255,.85);border:1px solid rgba(50,50,50,.35);cursor:pointer
+}
+.image-dot.active{width:21px;background:var(--charcoal);border-color:var(--charcoal)}
+.card-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;
+  border-radius:50%;border:1px solid #ffffff8c;background:#373737a6;color:white;
+  display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;z-index:20
+}
+.card-arrow.prev{left:10px}
+.card-arrow.next{right:10px}
+.card-arrow.is-hidden{display:none}
+.product-name{font-size:12px;margin-top:13px;letter-spacing:.5px;line-height:1.5}
+.product-price{font-size:12px;margin-top:8px}
+.old-price{color:#999;text-decoration:line-through;margin-right:7px}
+.sale-price{color:var(--terracotta)}
+.product-actions{display:flex;gap:10px;margin-top:13px}
+.product-actions button{
+  width:100%;background:var(--terracotta);color:white;border:1px solid var(--terracotta);
+  padding:12px 17px;font-size:10px;letter-spacing:1px;cursor:pointer;transition:background .2s
+}
+.product-actions button:hover{background:var(--terracotta-hover)}
+.sale-label{
+  position:absolute;top:12px;left:12px;z-index:15;background:var(--terracotta);
+  color:white;padding:7px 10px;font-size:9px;letter-spacing:1px
+}
+
+/* ABOUT AND FOOTER */
+
+.about{background:#F0EEE8;text-align:center;padding:80px 20px}
+.about h2{font-size:27px;font-weight:400;margin-bottom:18px}
+.about p{font-size:13px;color:var(--muted);line-height:1.9;max-width:500px;margin:auto}
+footer{
+  padding:35px 6%;background:var(--charcoal);color:white;display:flex;
+  justify-content:space-between;font-size:10px;letter-spacing:1px
+}
+
+/* PRODUCT DETAIL */
+
+.detail-overlay{
+  display:none;position:fixed;inset:0;background:var(--cream);
+  z-index:100;overflow-y:auto
+}
+.detail-overlay.open{display:block}
+.detail-header{
+  height:70px;padding:0 5%;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--cream);z-index:5
+}
+.detail-header strong{letter-spacing:5px;font-size:20px}
+.detail-close{
+  border:0;background:none;font-size:30px;cursor:pointer;color:var(--charcoal)
+}
+.detail-layout{
+  max-width:1150px;margin:45px auto;padding:0 30px;
+  display:grid;grid-template-columns:1.15fr .85fr;gap:65px
+}
+.detail-gallery{min-width:0}
+.detail-main-image{
+  width:100%;aspect-ratio:3/4;object-fit:contain;background:#F0EFEB;display:block
+}
+.detail-thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.detail-thumbs img{
+  width:65px;height:80px;object-fit:cover;cursor:pointer;opacity:.6;
+  border:1px solid transparent
+}
+.detail-thumbs img.active{opacity:1;border-color:var(--charcoal)}
+.detail-info{padding-top:15px}
+.detail-category{font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:18px}
+.detail-title{font-size:25px;font-weight:400;line-height:1.4;margin-bottom:15px}
+.detail-price{font-size:17px;margin-bottom:30px}
+.detail-label{
+  font-size:11px;letter-spacing:1.5px;font-weight:600;
+  margin:25px 0 13px;display:flex;justify-content:space-between
+}
+.detail-label span{font-weight:400;color:var(--muted);letter-spacing:0}
+.size-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.size-option{
+  min-height:43px;background:transparent;border:1px solid var(--border);
+  color:var(--charcoal);cursor:pointer;font-size:12px;transition:.2s
+}
+.size-option:hover{border-color:var(--charcoal)}
+.size-option.selected{background:var(--charcoal);color:white;border-color:var(--charcoal)}
+.color-options{display:flex;gap:12px;align-items:center}
+.color-option{
+  display:flex;align-items:center;gap:9px;padding:9px 13px;
+  background:transparent;border:1px solid var(--border);cursor:pointer;
+  font-size:11px;color:var(--charcoal)
+}
+.color-option.selected{border:1px solid var(--charcoal);background:white}
+.color-swatch{width:17px;height:17px;border-radius:50%;border:1px solid #0002}
+.detail-add{
+  width:100%;padding:17px;background:var(--terracotta);color:white;
+  border:1px solid var(--terracotta);font-size:11px;letter-spacing:2px;
+  cursor:pointer;margin-top:30px;transition:.2s
+}
+.detail-add:hover{background:var(--terracotta-hover)}
+.detail-description{
+  margin-top:25px;font-size:12px;line-height:1.9;color:var(--muted);
+  border-top:1px solid var(--border);padding-top:20px
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;top:90px;right:25px;z-index:300;
+  background:var(--charcoal);color:white;padding:16px 22px;
+  font-size:12px;letter-spacing:.3px;box-shadow:0 8px 25px #0002;
+  opacity:0;transform:translateY(-15px);pointer-events:none;
+  transition:opacity .3s,transform .3s
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* CART */
+
+.cart-backdrop{
+  display:none;position:fixed;inset:0;background:#0006;z-index:110
+}
+.cart-backdrop.open{display:block}
+.cart-panel{
+  position:fixed;z-index:120;right:0;top:0;height:100%;
+  width:min(410px,100%);background:white;padding:25px;
+  overflow-y:auto;transform:translateX(105%);transition:transform .3s ease
+}
+.cart-panel.open{transform:translateX(0)}
+.cart-top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:20px;border-bottom:1px solid var(--border)
+}
+.cart-top strong{letter-spacing:1px;font-size:14px}
+.cart-top button{border:0;background:none;font-size:27px;cursor:pointer;color:var(--charcoal)}
+.cart-item{display:flex;gap:15px;margin-top:22px;align-items:center}
+.cart-item img{width:85px;height:110px;object-fit:cover;background:#f0efeb}
+.cart-item-info{flex:1}
+.cart-item p{font-size:11px;line-height:1.8}
+.cart-item-name{font-weight:600}
+.cart-item button{
+  margin-top:7px;border:0;background:none;color:var(--terracotta);
+  font-size:10px;cursor:pointer
+}
+.cart-quantity{display:flex;align-items:center;gap:12px;margin-top:7px}
+.cart-quantity button{
+  width:24px;height:24px;border:1px solid var(--border);
+  background:white;color:var(--charcoal);font-size:15px;margin:0
+}
+.cart-quantity span{font-size:12px}
+.cart-total{
+  border-top:1px solid var(--border);margin-top:25px;
+  padding-top:18px;font-size:13px;display:flex;justify-content:space-between
+}
+.cart-empty{margin-top:30px;font-size:13px;color:var(--muted);line-height:1.8}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .category{height:350px}
+  .detail-layout{gap:35px}
+}
+@media(max-width:650px){
+  header{height:65px;padding:0 5%}
+  .logo{font-size:22px;letter-spacing:5px}
+  nav{gap:10px}
+  nav a{font-size:8px;letter-spacing:.5px}
+  .cart-button{width:30px}
+  .cart-button svg{width:21px;height:21px}
+  .hero{min-height:440px;padding:8%;background-position:center}
+  .hero h1{font-size:42px}
+  .hero p{font-size:12px}
+  .categories{gap:10px}
+  .category{height:260px}
+  .category span{padding:14px;font-size:11px}
+  .section,.product-section{padding:55px 5%}
+  .section h2,.product-section h2{font-size:19px}
+  .section-head a{font-size:9px}
+  .product-grid{gap:20px 10px}
+  .product-name{font-size:10px}
+  .product-actions button{padding:11px 6px;font-size:9px}
+  .card-arrow{display:none}
+  footer{gap:15px;flex-direction:column}
+  .detail-layout{grid-template-columns:1fr;gap:25px;margin:20px auto;padding:0 18px}
+  .detail-info{padding-top:0}
+  .detail-title{font-size:21px}
+  .detail-main-image{max-height:520px}
+  .detail-header{height:60px}
+  .toast{right:12px;left:12px;text-align:center;top:75px}
+}
+@media(max-width:380px){
+  nav{gap:7px}
+  nav a{font-size:7px}
+  .hero h1{font-size:36px}
+}
+</style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
+<header>
+  <a class="logo" href="index.html">ENTE</a>
 
-    <header>
+  <nav>
+    <a href="girls.html">KIZ ÇOCUK</a>
+    <a href="boys.html">ERKEK ÇOCUK</a>
+    <a href="#sale-products">İNDİRİMDEKİLER</a>
+  </nav>
 
-        <a class="logo" href="index.html">
-            ENTE
-        </a>
+  <button class="cart-button" id="cart-button" onclick="openCart()" aria-label="Sepeti aç">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/>
+      <circle cx="9.5" cy="20" r="1.2"/>
+      <circle cx="18" cy="20" r="1.2"/>
+    </svg>
+    <span class="cart-dot"></span>
+  </button>
+</header>
 
-        <nav>
-            <a href="girls.html">KIZ ÇOCUK</a>
-            <a href="boys.html">ERKEK ÇOCUK</a>
-            <a href="#sale-products">İNDİRİMDEKİLER</a>
-        </nav>
+<section class="hero">
+  <div class="hero-content">
+    <small class="hero-label">ENTE İLKBAHAR / YAZ 2026</small>
+    <h1>Küçük detaylar.<br>Büyük anlar.</h1>
+    <p>Çocuklar için özenle seçilmiş parçalar.</p>
+    <a class="shop" href="#collections">KOLEKSİYONU KEŞFET</a>
+  </div>
+</section>
 
-        <button
-            class="cart-button"
-            id="cart-button"
-            onclick="openCart()"
-            aria-label="Sepeti aç"
-        >
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/>
-                <circle cx="9.5" cy="20" r="1.2"/>
-                <circle cx="18" cy="20" r="1.2"/>
-            </svg>
+<section class="section" id="collections">
+  <div class="section-head">
+    <h2>KOLEKSİYONLAR</h2>
+  </div>
 
-            <span class="cart-dot"></span>
-        </button>
+  <div class="categories">
+    <a class="category" href="girls.html">
+      <img src="images/girls-category.webp" alt="Kız çocuk koleksiyonu">
+      <span>KIZ ÇOCUK</span>
+    </a>
+    <a class="category" href="boys.html">
+      <img src="images/boys-category.webp" alt="Erkek çocuk koleksiyonu">
+      <span>ERKEK ÇOCUK</span>
+    </a>
+  </div>
+</section>
 
-    </header>
+<section class="product-section" id="new-products">
+  <div class="section-head">
+    <h2>EN YENİ ÜRÜNLERİ KEŞFET</h2>
+    <a href="girls.html">TÜM ÜRÜNLER →</a>
+  </div>
+  <div class="product-grid" id="newest-products"></div>
+</section>
 
-    <!-- HERO -->
+<section class="product-section" id="sale-products">
+  <div class="section-head">
+    <h2>İNDİRİMDEKİLER</h2>
+    <a href="#sale-products">ÜRÜNLERİ KEŞFET →</a>
+  </div>
+  <div class="product-grid" id="discount-products"></div>
+</section>
 
-    <section class="hero">
+<section class="about">
+  <h2>Çocukluğun en güzel anlarına.</h2>
+  <p>
+    ENTE, çocukların özgürce keşfettiği ve büyüdüğü her ana
+    eşlik etmek için tasarlandı. Sade çizgiler, zamansız
+    parçalar ve küçük detaylar.
+  </p>
+</section>
 
-        <div class="hero-content">
+<footer>
+  <div>ENTE © 2026</div>
+  <div>ÇOCUK GİYİM</div>
+  <div>TÜM HAKLARI SAKLIDIR</div>
+</footer>
 
-            <small class="hero-label">
-                ENTE İLKBAHAR / YAZ 2026
-            </small>
+<!-- PRODUCT DETAIL -->
 
-            <h1>
-                Küçük detaylar.<br>
-                Büyük anlar.
-            </h1>
+<div class="detail-overlay" id="detail-overlay">
+  <div class="detail-header">
+    <strong>ENTE</strong>
+    <button class="detail-close" onclick="closeDetail()" aria-label="Kapat">×</button>
+  </div>
 
-            <p>
-                Çocuklar için özenle seçilmiş parçalar.
-            </p>
+  <div class="detail-layout">
+    <div class="detail-gallery">
+      <img id="detail-main-image" class="detail-main-image" src="" alt="Ürün görseli">
+      <div class="detail-thumbs" id="detail-thumbs"></div>
+    </div>
 
-            <a class="shop" href="#collections">
-                KOLEKSİYONU KEŞFET
-            </a>
+    <div class="detail-info">
+      <p class="detail-category">ENTE KOLEKSİYONU</p>
+      <h1 class="detail-title" id="detail-title"></h1>
+      <p class="detail-price" id="detail-price"></p>
 
+      <div class="detail-label">
+        <span>BEDEN SEÇİN</span>
+        <span>12 beden seçeneği</span>
+      </div>
+      <div class="size-grid" id="size-grid"></div>
+
+      <div class="detail-label">
+        <span>RENK</span>
+        <span id="selected-color-name"></span>
+      </div>
+      <div class="color-options" id="color-options"></div>
+
+      <button class="detail-add" onclick="addSelectedProductToCart()">
+        SEPETE EKLE
+      </button>
+
+      <div class="detail-description">
+        ENTE çocuk koleksiyonundan özenle seçilmiş bir parça.
+        Ürün görsellerini inceleyebilir, bedeninizi seçerek
+        sepetinize ekleyebilirsiniz.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast">Ürün sepetinize eklendi.</div>
+
+<!-- CART -->
+
+<div class="cart-backdrop" id="cart-backdrop" onclick="closeCart()"></div>
+
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-top">
+    <strong>SEPETİM</strong>
+    <button onclick="closeCart()" aria-label="Sepeti kapat">×</button>
+  </div>
+  <div id="cart-content"></div>
+</div>
+
+<script src="products.js"></script>
+
+<script>
+/* AYARLAR */
+
+const CART_STORAGE_KEY = "enteCart";
+
+const SIZES = [
+  "1-2","2-3","3-4","4-5","5-6","6-7",
+  "7-8","8-9","9-10","10-11","12-13","13-14"
+];
+
+let allProducts = [
+  ...(ENTE_PRODUCTS.girls || []),
+  ...(ENTE_PRODUCTS.boys || [])
+];
+
+let selectedProduct = null;
+let selectedSize = null;
+let selectedColor = null;
+let toastTimer = null;
+
+/* FİYAT */
+
+function formatPrice(price) {
+  return Number(price).toLocaleString("tr-TR", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  }) + " TL";
+}
+
+function getProductPrice(product) {
+  return product.salePrice && product.salePrice < product.price
+    ? product.salePrice
+    : product.price;
+}
+
+/* ÜRÜN RENKLERİ */
+
+function getProductColor(product) {
+  const text = (product.id + " " + product.name).toLocaleLowerCase("tr");
+
+  if (text.includes("girl-sample-01") || text.includes("ripndip")) {
+    return {
+      name:"Sarı",
+      hex:"#E6C83E"
+    };
+  }
+
+  if (text.includes("boy-sample-01") || text.includes("pitcher")) {
+    return {
+      name:"Açık mavi",
+      hex:"#A9D5E8"
+    };
+  }
+
+  return {
+    name:product.color || "Standart",
+    hex:product.colorHex || "#D8D8D8"
+  };
+}
+
+/* SEPET VERİSİ */
+
+function getCart() {
+  try {
+    const saved = localStorage.getItem(CART_STORAGE_KEY);
+    const cart = saved ? JSON.parse(saved) : [];
+    return Array.isArray(cart) ? cart : [];
+  } catch(error) {
+    console.error("Sepet okunamadı:",error);
+    return [];
+  }
+}
+
+function saveCart(cart) {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY,JSON.stringify(cart));
+    return true;
+  } catch(error) {
+    console.error("Sepet kaydedilemedi:",error);
+    alert("Sepet kaydedilemedi.");
+    return false;
+  }
+}
+
+/* ÜRÜN KARTLARI */
+
+function renderProductCard(product) {
+  const images = Array.isArray(product.images) ? product.images : [];
+  const price = getProductPrice(product);
+  const isOnSale = price < product.price;
+
+  return `
+    <div class="product">
+      <div class="product-image-wrap" onclick="openProductDetail('${product.id}')">
+        <div class="image-track" onscroll="sliderScrolled(this)">
+          ${images.map((img,i) => `
+            <img class="product-image" src="${img}"
+              alt="${product.name} - ${i+1}" draggable="false">
+          `).join("")}
         </div>
 
-    </section>
+        ${isOnSale ? `<span class="sale-label">İNDİRİM</span>` : ""}
 
-    <!-- COLLECTIONS -->
-
-    <section class="section" id="collections">
-
-        <div class="section-head">
-            <h2>KOLEKSİYONLAR</h2>
+        <div class="image-dots">
+          ${images.map((img,i) => `
+            <button type="button"
+              class="image-dot ${i===0?"active":""}"
+              aria-label="${i+1}. fotoğraf"
+              onclick="changeImage(event,${i})"></button>
+          `).join("")}
         </div>
 
-        <div class="categories">
+        <button type="button" class="card-arrow prev is-hidden"
+          onclick="moveProductImage(event,-1)">‹</button>
+        <button type="button" class="card-arrow next"
+          onclick="moveProductImage(event,1)">›</button>
+      </div>
 
-            <a class="category" href="girls.html">
-                <img
-                    src="images/girls-category.webp"
-                    alt="Kız çocuk koleksiyonu"
-                >
+      <p class="product-name">${product.name}</p>
 
-                <span>KIZ ÇOCUK</span>
-            </a>
+      <p class="product-price">
+        ${isOnSale
+          ? `<span class="old-price">${formatPrice(product.price)}</span>
+             <span class="sale-price">${formatPrice(price)}</span>`
+          : formatPrice(price)}
+      </p>
 
-            <a class="category" href="boys.html">
-                <img
-                    src="images/boys-category.webp"
-                    alt="Erkek çocuk koleksiyonu"
-                >
+      <div class="product-actions">
+        <button onclick="openProductDetail('${product.id}')">ÜRÜNÜ İNCELE</button>
+      </div>
+    </div>
+  `;
+}
 
-                <span>ERKEK ÇOCUK</span>
-            </a>
+/* ÜRÜNLERİ GÖSTER */
 
+function renderProducts() {
+  const newestGrid = document.getElementById("newest-products");
+  const discountGrid = document.getElementById("discount-products");
+
+  const newestProducts = [...allProducts].reverse();
+
+  const discountedProducts = allProducts.filter(product =>
+    product.salePrice && product.salePrice < product.price
+  );
+
+  newestGrid.innerHTML = newestProducts.length
+    ? newestProducts.map(renderProductCard).join("")
+    : "<p>Henüz ürün eklenmedi.</p>";
+
+  discountGrid.innerHTML = discountedProducts.length
+    ? discountedProducts.map(renderProductCard).join("")
+    : "<p>Şu anda indirimli ürün bulunmuyor.</p>";
+
+  document.querySelectorAll(".image-track").forEach(track => {
+    updateSliderControls(track);
+  });
+}
+
+/* FOTOĞRAF KAYDIRMA */
+
+function getImageIndex(track) {
+  const width = track.clientWidth;
+  const total = track.querySelectorAll(".product-image").length;
+  if (!width || !total) return 0;
+
+  return Math.max(0,Math.min(total-1,Math.round(track.scrollLeft/width)));
+}
+
+function updateSliderControls(track) {
+  const wrap = track.closest(".product-image-wrap");
+  if (!wrap) return;
+
+  const total = track.querySelectorAll(".product-image").length;
+  const index = getImageIndex(track);
+
+  wrap.querySelectorAll(".image-dot").forEach((dot,i) => {
+    dot.classList.toggle("active",i===index);
+  });
+
+  const prev = wrap.querySelector(".card-arrow.prev");
+  const next = wrap.querySelector(".card-arrow.next");
+
+  if (prev) prev.classList.toggle("is-hidden",index===0 || total<=1);
+  if (next) next.classList.toggle("is-hidden",index>=total-1 || total<=1);
+}
+
+function sliderScrolled(track) {
+  updateSliderControls(track);
+}
+
+function changeImage(event,index) {
+  event.stopPropagation();
+
+  const wrap = event.currentTarget.closest(".product-image-wrap");
+  const track = wrap.querySelector(".image-track");
+
+  track.scrollTo({
+    left:index*track.clientWidth,
+    behavior:"smooth"
+  });
+}
+
+function moveProductImage(event,direction) {
+  event.stopPropagation();
+
+  const wrap = event.currentTarget.closest(".product-image-wrap");
+  const track = wrap.querySelector(".image-track");
+
+  const total = track.querySelectorAll(".product-image").length;
+  const current = getImageIndex(track);
+  const next = Math.max(0,Math.min(total-1,current+direction));
+
+  track.scrollTo({
+    left:next*track.clientWidth,
+    behavior:"smooth"
+  });
+}
+
+/* ÜRÜN DETAY EKRANI */
+
+function openProductDetail(productId) {
+  const product = allProducts.find(p => p.id === productId);
+  if (!product) return;
+
+  selectedProduct = product;
+  selectedSize = null;
+  selectedColor = getProductColor(product);
+
+  const images = Array.isArray(product.images) ? product.images : [];
+
+  document.getElementById("detail-title").textContent = product.name;
+  document.getElementById("detail-price").textContent = formatPrice(getProductPrice(product));
+
+  const mainImage = document.getElementById("detail-main-image");
+  mainImage.src = images[0] || "";
+  mainImage.alt = product.name;
+
+  document.getElementById("detail-thumbs").innerHTML = images.map((img,i) => `
+    <img src="${img}" class="${i===0?"active":""}"
+      alt="${product.name} görsel ${i+1}"
+      onclick="selectDetailImage('${img}',this)">
+  `).join("");
+
+  renderSizeOptions();
+  renderColorOptions();
+
+  document.getElementById("detail-overlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDetail() {
+  document.getElementById("detail-overlay").classList.remove("open");
+  document.body.style.overflow = "";
+  selectedProduct = null;
+}
+
+function selectDetailImage(src,element) {
+  document.getElementById("detail-main-image").src = src;
+
+  document.querySelectorAll(".detail-thumbs img").forEach(img => {
+    img.classList.remove("active");
+  });
+
+  element.classList.add("active");
+}
+
+/* BEDEN SEÇİMİ */
+
+function renderSizeOptions() {
+  const grid = document.getElementById("size-grid");
+
+  grid.innerHTML = SIZES.map(size => `
+    <button type="button"
+      class="size-option ${selectedSize===size?"selected":""}"
+      onclick="selectSize('${size}')">${size}</button>
+  `).join("");
+}
+
+function selectSize(size) {
+  selectedSize = size;
+  renderSizeOptions();
+}
+
+/* RENK SEÇİMİ */
+
+function renderColorOptions() {
+  const color = selectedColor;
+
+  document.getElementById("selected-color-name").textContent = color.name;
+
+  document.getElementById("color-options").innerHTML = `
+    <button type="button" class="color-option selected"
+      onclick="selectColor()">
+      <span class="color-swatch" style="background:${color.hex}"></span>
+      ${color.name}
+      <span>✓</span>
+    </button>
+  `;
+}
+
+function selectColor() {
+  renderColorOptions();
+}
+
+/* BİLDİRİM */
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  },2600);
+}
+
+/* SEPETE EKLE */
+
+function addSelectedProductToCart() {
+  if (!selectedProduct) return;
+
+  if (!selectedSize) {
+    showToast("Lütfen önce beden seçin.");
+    document.getElementById("size-grid").scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+    return;
+  }
+
+  const product = selectedProduct;
+  const price = getProductPrice(product);
+  const cart = getCart();
+
+  const variantKey = product.id + "|" + selectedSize + "|" + selectedColor.name;
+
+  const existing = cart.find(item => item.variantKey === variantKey);
+
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({
+      variantKey:variantKey,
+      id:product.id,
+      name:product.name,
+      price:price,
+      image:product.images && product.images.length ? product.images[0] : "",
+      size:selectedSize,
+      color:selectedColor.name,
+      quantity:1
+    });
+  }
+
+  if (!saveCart(cart)) return;
+
+  updateCartButton();
+  renderCart();
+
+  showToast("✓ " + product.name + " sepetinize eklendi.");
+
+  closeDetail();
+}
+
+/* SEPET GÖRÜNÜMÜ */
+
+function updateCartButton() {
+  const button = document.getElementById("cart-button");
+  const cart = getCart();
+  const hasItems = cart.some(item => item.quantity > 0);
+
+  button.classList.toggle("has-items",hasItems);
+}
+
+function renderCart() {
+  const content = document.getElementById("cart-content");
+  const cart = getCart();
+
+  if (!cart.length) {
+    content.innerHTML = `<p class="cart-empty">Sepetiniz şu anda boş.</p>`;
+    return;
+  }
+
+  let total = 0;
+
+  const itemsHTML = cart.map(item => {
+    const itemTotal = Number(item.price) * Number(item.quantity);
+    total += itemTotal;
+
+    return `
+      <div class="cart-item">
+        <img src="${item.image}" alt="${item.name}">
+
+        <div class="cart-item-info">
+          <p class="cart-item-name">${item.name}</p>
+          <p>${formatPrice(item.price)}</p>
+          <p>Beden: ${item.size || "Belirtilmemiş"}</p>
+          <p>Renk: ${item.color || "Belirtilmemiş"}</p>
+
+          <div class="cart-quantity">
+            <button onclick="changeCartQuantity('${item.variantKey}',-1)">−</button>
+            <span>${item.quantity}</span>
+            <button onclick="changeCartQuantity('${item.variantKey}',1)">+</button>
+          </div>
+
+          <button onclick="removeFromCart('${item.variantKey}')">
+            SEPETTEN KALDIR
+          </button>
         </div>
+      </div>
+    `;
+  }).join("");
 
-    </section>
+  content.innerHTML = itemsHTML + `
+    <div class="cart-total">
+      <strong>TOPLAM</strong>
+      <strong>${formatPrice(total)}</strong>
+    </div>
+  `;
+}
 
-    <!-- NEW PRODUCTS -->
+/* SEPET ADETİ */
 
-    <section class="product-section" id="new-products">
+function changeCartQuantity(variantKey,change) {
+  let cart = getCart();
 
-        <div class="section-head">
+  const item = cart.find(item => item.variantKey === variantKey);
+  if (!item) return;
 
-            <h2>EN YENİ ÜRÜNLERİ KEŞFET</h2>
+  item.quantity += change;
 
-            <a href="girls.html">
-                TÜM ÜRÜNLER →
-            </a>
+  if (item.quantity <= 0) {
+    cart = cart.filter(item => item.variantKey !== variantKey);
+  }
 
-        </div>
+  if (!saveCart(cart)) return;
 
-        <div class="product-grid" id="newest-products"></div>
+  updateCartButton();
+  renderCart();
+}
 
-    </section>
+/* SEPETTEN KALDIR */
 
-    <!-- SALE PRODUCTS -->
+function removeFromCart(variantKey) {
+  const cart = getCart().filter(item => item.variantKey !== variantKey);
 
-    <section class="product-section" id="sale-products">
+  if (!saveCart(cart)) return;
 
-        <div class="section-head">
+  updateCartButton();
+  renderCart();
+}
 
-            <h2>İNDİRİMDEKİLER</h2>
+/* SEPETİ AÇ / KAPAT */
 
-            <a href="#sale-products">
-                ÜRÜNLERİ KEŞFET →
-            </a>
+function openCart() {
+  document.getElementById("cart-panel").classList.add("open");
+  document.getElementById("cart-backdrop").classList.add("open");
+  renderCart();
+}
 
-        </div>
+function closeCart() {
+  document.getElementById("cart-panel").classList.remove("open");
+  document.getElementById("cart-backdrop").classList.remove("open");
+}
 
-        <div class="product-grid" id="discount-products"></div>
+/* ESC TUŞU */
 
-    </section>
+document.addEventListener("keydown",event => {
+  if (event.key === "Escape") {
+    closeDetail();
+    closeCart();
+  }
+});
 
-    <!-- ABOUT -->
+/* BAŞLAT */
 
-    <section class="about">
+renderProducts();
+updateCartButton();
+renderCart();
 
-        <h2>Çocukluğun en güzel anlarına.</h2>
-
-        <p>
-            ENTE, çocukların özgürce keşfettiği ve büyüdüğü
-            her ana eşlik etmek için tasarlandı.
-            Sade çizgiler, zamansız parçalar ve küçük detaylar.
-        </p>
-
-    </section>
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <div>ENTE © 2026</div>
-
-        <div>ÇOCUK GİYİM</div>
-
-        <div>TÜM HAKLARI SAKLIDIR</div>
-
-    </footer>
-
-    <!-- SHOPPING CART -->
-
-    <aside class="cart-panel" id="cart-panel">
-
-        <div class="cart-top">
-
-            <strong>SEPETİM</strong>
-
-            <button
-                onclick="closeCart()"
-                aria-label="Sepeti kapat"
-            >
-                ×
-            </button>
-
-        </div>
-
-        <div id="cart-content"></div>
-
-    </aside>
-
-    <!-- JAVASCRIPT -->
-
-    <script src="products.js"></script>
-
-    <script>
-
-        // GENERAL SETTINGS
-
-        const CART_STORAGE_KEY = "enteCart";
-
-        let swipeClickBlockedUntil = 0;
-
-        const allProducts = [
-            ...(ENTE_PRODUCTS.girls || []),
-            ...(ENTE_PRODUCTS.boys || [])
-        ];
-
-
-        // PRICE FUNCTIONS
-
-        function formatPrice(price) {
-
-            return Number(price).toLocaleString("tr-TR", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }) + " TL";
-
-        }
-
-
-        function getProductPrice(product) {
-
-            return product.salePrice &&
-                product.salePrice < product.price
-                ? product.salePrice
-                : product.price;
-
-        }
-
-
-        // CART STORAGE
-
-        function getCart() {
-
-            try {
-
-                const saved = localStorage.getItem(CART_STORAGE_KEY);
-
-                const cart = saved
-                    ? JSON.parse(saved)
-                    : [];
-
-                return Array.isArray(cart) ? cart : [];
-
-            } catch (error) {
-
-                console.error(error);
-
-                return [];
-
-            }
-
-        }
-
-
-        function saveCart(cart) {
-
-            try {
-
-                localStorage.setItem(
-                    CART_STORAGE_KEY,
-                    JSON.stringify(cart)
-                );
-
-                return true;
-
-            } catch (error) {
-
-                console.error(error);
-
-                alert("Sepet kaydedilemedi.");
-
-                return false;
-
-            }
-
-        }
-
-
-        // PRODUCT COLORS
-
-        function getProductColors(product) {
-
-            return typeof enteGetProductColors === "function"
-                ? enteGetProductColors(product)
-                : (product.color ? [product.color] : []);
-
-        }
-
-
-        function renderColorDots(product) {
-
-            const colors = getProductColors(product);
-
-            if (!colors.length) return "";
-
-            return `
-                <div
-                    class="product-colors"
-                    aria-label="Mevcut renkler"
-                >
-
-                    ${colors.map((color, i) => `
-
-                        <button
-                            type="button"
-                            class="color-swatch"
-                            style="--swatch:${color.hex || '#bdbdbd'}"
-                            aria-label="${color.name || 'Ürün rengi'}"
-                            onclick="openColorFromCard(
-                                event,
-                                '${color.productId || product.id}',
-                                '${encodeURIComponent(color.name || '')}'
-                            )"
-                        ></button>
-
-                    `).join("")}
-
-                </div>
-            `;
-
-        }
-
-
-        // PRODUCT CARDS
-
-        function renderProductCard(product) {
-
-            const images = Array.isArray(product.images)
-                ? product.images
-                : [];
-
-            const price = getProductPrice(product);
-
-            const isOnSale = price < product.price;
-
-            return `
-
-                <article class="product">
-
-                    <div
-                        class="product-image-wrap"
-                        onclick="openProductFromCard(event, '${product.id}')"
-                    >
-
-                        <div
-                            class="image-track"
-                            onscroll="sliderScrolled(this)"
-                        >
-
-                            ${images.map((img, i) => `
-
-                                <img
-                                    class="product-image"
-                                    src="${img}"
-                                    alt="${product.name} - ${i + 1}"
-                                    draggable="false"
-                                >
-
-                            `).join("")}
-
-                        </div>
-
-
-                        ${isOnSale
-                            ? '<span class="sale-label">İNDİRİM</span>'
-                            : ''
-                        }
-
-
-                        <div class="image-dots">
-
-                            ${images.map((img, i) => `
-
-                                <button
-                                    class="image-dot ${i === 0 ? 'active' : ''}"
-                                    aria-label="${i + 1}. fotoğraf"
-                                    onclick="changeImage(event, ${i})"
-                                ></button>
-
-                            `).join("")}
-
-                        </div>
-
-
-                        <button
-                            class="card-arrow prev is-hidden"
-                            onclick="moveProductImage(event, -1)"
-                        >
-                            ‹
-                        </button>
-
-                        <button
-                            class="card-arrow next"
-                            onclick="moveProductImage(event, 1)"
-                        >
-                            ›
-                        </button>
-
-                    </div>
-
-
-                    <a
-                        class="product-name"
-                        href="product.html?id=${encodeURIComponent(product.id)}"
-                        title="${product.name}"
-                    >
-                        ${product.name}
-                    </a>
-
-
-                    <p class="product-price">
-
-                        ${isOnSale
-                            ? `
-                                <span class="old-price">
-                                    ${formatPrice(product.price)}
-                                </span>
-
-                                <span class="sale-price">
-                                    ${formatPrice(price)}
-                                </span>
-                            `
-                            : formatPrice(price)
-                        }
-
-                    </p>
-
-
-                    ${renderColorDots(product)}
-
-                </article>
-
-            `;
-
-        }
-
-
-        // RENDER PRODUCTS
-
-        function renderProducts() {
-
-            const newest = [...allProducts].reverse();
-
-            const sale = allProducts.filter(
-                p => p.salePrice && p.salePrice < p.price
-            );
-
-
-            document.getElementById("newest-products").innerHTML =
-                newest.length
-                    ? newest.map(renderProductCard).join("")
-                    : "<p>Henüz ürün eklenmedi.</p>";
-
-
-            document.getElementById("discount-products").innerHTML =
-                sale.length
-                    ? sale.map(renderProductCard).join("")
-                    : "<p>Şu anda indirimli ürün bulunmuyor.</p>";
-
-
-            document.querySelectorAll(".image-track").forEach(
-                setupMouseDrag
-            );
-
-        }
-
-
-        // IMAGE SLIDER
-
-        function getImageIndex(track) {
-
-            return track.clientWidth
-                ? Math.max(
-                    0,
-                    Math.min(
-                        track.querySelectorAll(".product-image").length - 1,
-                        Math.round(track.scrollLeft / track.clientWidth)
-                    )
-                )
-                : 0;
-
-        }
-
-
-        function updateSliderControls(track) {
-
-            const wrap = track.closest(".product-image-wrap");
-
-            if (!wrap) return;
-
-            const index = getImageIndex(track);
-
-            const total = track.querySelectorAll(".product-image").length;
-
-
-            wrap.querySelectorAll(".image-dot").forEach((dot, i) => {
-
-                dot.classList.toggle("active", i === index);
-
-            });
-
-
-            wrap.querySelector(".card-arrow.prev")
-                ?.classList.toggle(
-                    "is-hidden",
-                    index === 0 || total <= 1
-                );
-
-
-            wrap.querySelector(".card-arrow.next")
-                ?.classList.toggle(
-                    "is-hidden",
-                    index >= total - 1 || total <= 1
-                );
-
-        }
-
-
-        function sliderScrolled(track) {
-
-            updateSliderControls(track);
-
-        }
-
-
-        function changeImage(event, index) {
-
-            event.stopPropagation();
-
-            const track = event.currentTarget
-                .closest(".product-image-wrap")
-                .querySelector(".image-track");
-
-
-            track.scrollTo({
-                left: index * track.clientWidth,
-                behavior: "smooth"
-            });
-
-        }
-
-
-        function moveProductImage(event, direction) {
-
-            event.stopPropagation();
-
-            const track = event.currentTarget
-                .closest(".product-image-wrap")
-                .querySelector(".image-track");
-
-
-            track.scrollTo({
-
-                left: Math.max(
-                    0,
-                    Math.min(
-                        track.scrollWidth - track.clientWidth,
-                        track.scrollLeft + direction * track.clientWidth
-                    )
-                ),
-
-                behavior: "smooth"
-
-            });
-
-        }
-
-
-        // MOUSE DRAG
-
-        function setupMouseDrag(track) {
-
-            updateSliderControls(track);
-
-            track.addEventListener("scroll", () => {
-                updateSliderControls(track);
-            });
-
-
-            let startX = 0;
-            let startScroll = 0;
-            let dragging = false;
-            let moved = false;
-
-
-            track.addEventListener("pointerdown", e => {
-
-                if (e.pointerType !== "mouse" || e.button !== 0) {
-                    return;
-                }
-
-                dragging = true;
-                moved = false;
-
-                startX = e.clientX;
-                startScroll = track.scrollLeft;
-
-                track.setPointerCapture(e.pointerId);
-
-            });
-
-
-            track.addEventListener("pointermove", e => {
-
-                if (!dragging) return;
-
-                const distance = e.clientX - startX;
-
-                if (Math.abs(distance) > 4) {
-                    moved = true;
-                }
-
-                if (moved) {
-                    track.scrollLeft = startScroll - distance;
-                }
-
-            });
-
-
-            function stop() {
-
-                if (!dragging) return;
-
-                dragging = false;
-
-                if (moved) {
-                    swipeClickBlockedUntil = Date.now() + 350;
-                }
-
-            }
-
-
-            track.addEventListener("pointerup", stop);
-
-            track.addEventListener("pointercancel", stop);
-
-            track.addEventListener("lostpointercapture", stop);
-
-        }
-
-
-        // PRODUCT PAGE NAVIGATION
-
-        function openProductFromCard(event, id) {
-
-            if (Date.now() < swipeClickBlockedUntil) return;
-
-            if (event.target.closest("button")) return;
-
-            location.href =
-                "product.html?id=" + encodeURIComponent(id);
-
-        }
-
-
-        function openColorFromCard(event, id, colorName) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-            location.href =
-                "product.html?id=" + encodeURIComponent(id) +
-                (colorName ? "&color=" + colorName : "");
-
-        }
-
-
-        // CART BUTTON
-
-        function updateCartButton() {
-
-            document.getElementById("cart-button")
-                .classList.toggle(
-                    "has-items",
-                    getCart().some(item => item.quantity > 0)
-                );
-
-        }
-
-
-        // RENDER CART
-
-        function renderCart() {
-
-            const cart = getCart();
-
-            const content = document.getElementById("cart-content");
-
-
-            if (!cart.length) {
-
-                content.innerHTML = `
-                    <p style="margin-top:30px;font-size:13px">
-                        Sepetiniz şu anda boş.
-                    </p>
-                `;
-
-                return;
-
-            }
-
-
-            let total = 0;
-
-
-            content.innerHTML = cart.map((item, index) => {
-
-                total +=
-                    Number(item.price || 0) *
-                    Number(item.quantity || 0);
-
-
-                return `
-
-                    <div class="cart-item">
-
-                        <img
-                            src="${item.image || item.images?.[0] || ''}"
-                            alt="${item.name || 'Ürün'}"
-                        >
-
-                        <div>
-
-                            <p>
-                                <strong>
-                                    ${item.name || 'Ürün'}
-                                </strong>
-                            </p>
-
-                            <p>
-                                ${formatPrice(item.price || 0)}
-                            </p>
-
-                            <p>
-                                Beden: ${item.size || '—'}
-                                ·
-                                Renk: ${item.color || '—'}
-                            </p>
-
-                            <p>
-                                Adet: ${item.quantity || 1}
-                            </p>
-
-                            <button onclick="removeFromCart(${index})">
-                                SEPETTEN KALDIR
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }).join("") + `
-
-                <div class="cart-total">
-
-                    <strong>
-                        TOPLAM: ${formatPrice(total)}
-                    </strong>
-
-                </div>
-
-            `;
-
-        }
-
-
-        // REMOVE FROM CART
-
-        function removeFromCart(index) {
-
-            const cart = getCart();
-
-            cart.splice(index, 1);
-
-
-            if (saveCart(cart)) {
-
-                updateCartButton();
-
-                renderCart();
-
-            }
-
-        }
-
-
-        // OPEN AND CLOSE CART
-
-        function openCart() {
-
-            document.getElementById("cart-panel")
-                .classList.add("open");
-
-            renderCart();
-
-        }
-
-
-        function closeCart() {
-
-            document.getElementById("cart-panel")
-                .classList.remove("open");
-
-        }
-
-
-        // STORAGE LISTENER
-
-        window.addEventListener("storage", e => {
-
-            if (e.key === CART_STORAGE_KEY) {
-                updateCartButton();
-            }
-
-        });
-
-
-        // INITIALIZE WEBSITE
-
-        renderProducts();
-
-        updateCartButton();
-
-    </script>
+</script>
 
 </body>
-
 </html>
