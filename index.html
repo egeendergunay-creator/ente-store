@@ -1,62 +1,104 @@
-
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF8F5">
 <title>ENTE — Çocuk Giyim</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;color:#24231f;background:#fff}
+:root{
+--cream:#FAF8F5;
+--sage:#A3B18A;
+--sage-light:#DCE2D8;
+--sage-dark:#68785C;
+--sage-hover:#59694F;
+--charcoal:#2B2D2F;
+--muted:#77786F;
+--border:#E9E6DF;
+--earth:#B49A7C;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box
+}
+
+html{
+scroll-behavior:smooth
+}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+color:var(--charcoal);
+background:var(--cream)
+}
+
+button,a{
+-webkit-tap-highlight-color:transparent
+}
 
 /* HEADER */
+
 header{
-height:75px;
+height:76px;
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:0 6%;
-border-bottom:1px solid #eee;
+border-bottom:1px solid var(--border);
 position:sticky;
 top:0;
 z-index:50;
-background:#fff;
+background:rgba(250,248,245,.96);
+backdrop-filter:blur(12px)
 }
 
 .logo{
 font-size:29px;
 letter-spacing:7px;
 font-weight:600;
-color:#24231f;
+color:var(--charcoal);
 text-decoration:none
 }
 
-nav{display:flex;gap:25px}
+nav{
+display:flex;
+gap:27px;
+align-items:center
+}
+
 nav a{
-font-size:11px;
+font-size:10px;
 text-decoration:none;
-color:#292929;
-letter-spacing:1.5px
+color:var(--charcoal);
+letter-spacing:1.4px;
+transition:color .2s
+}
+
+nav a:hover{
+color:var(--sage-dark)
 }
 
 .cart-button{
 position:relative;
-width:38px;
-height:38px;
+width:40px;
+height:40px;
 display:flex;
 align-items:center;
 justify-content:center;
 border:0;
 background:none;
-color:#24231f;
-cursor:pointer;
+color:var(--charcoal);
+cursor:pointer
 }
 
 .cart-button svg{
 width:24px;
 height:24px;
-display:block;
+display:block
 }
 
 .cart-dot{
@@ -66,77 +108,131 @@ right:3px;
 width:8px;
 height:8px;
 border-radius:50%;
-background:#24231f;
+background:var(--sage-dark);
 display:none;
-border:1px solid #fff;
+border:1px solid var(--cream)
 }
 
-.cart-button.has-items .cart-dot{display:block}
+.cart-button.has-items .cart-dot{
+display:block
+}
 
 /* HERO */
+
 .hero{
-height:570px;
-background:#e9e4dc;
+min-height:570px;
+padding:100px 8%;
 display:flex;
 align-items:center;
-padding:8%
+justify-content:center;
+text-align:center;
+background:var(--cream);
+position:relative;
+overflow:hidden
 }
 
-.hero-content{max-width:390px}
-.hero small{letter-spacing:3px;font-size:10px}
-.hero h1{
-font-size:54px;
-font-weight:400;
-line-height:1.1;
-margin:22px 0
+.hero-content{
+width:100%;
+max-width:1000px
 }
-.hero p{font-size:13px;line-height:1.8;color:#555}
+
+.hero-label{
+font-size:10px;
+letter-spacing:4px;
+color:var(--sage-dark)
+}
+
+.hero-wordmark{
+font-size:clamp(100px,23vw,270px);
+font-weight:500;
+letter-spacing:.08em;
+line-height:.95;
+margin:30px 0 24px;
+color:var(--charcoal)
+}
+
+.hero h1{
+font-size:clamp(23px,3vw,34px);
+font-weight:400;
+letter-spacing:1px;
+line-height:1.4;
+margin-bottom:15px
+}
+
+.hero p{
+font-size:13px;
+line-height:1.9;
+color:var(--muted);
+max-width:450px;
+margin:auto
+}
 
 .shop{
 display:inline-block;
-margin-top:28px;
-background:#24231f;
-color:white;
-padding:15px 30px;
+margin-top:30px;
+background:var(--sage-dark);
+color:#fff;
+padding:15px 32px;
 text-decoration:none;
-font-size:11px;
-letter-spacing:2px
+font-size:10px;
+letter-spacing:2px;
+transition:background .25s,transform .25s
 }
 
-/* SECTIONS */
-.section,.product-section{padding:75px 6%}
+.shop:hover{
+background:var(--sage-hover);
+transform:translateY(-2px)
+}
+
+/* GENERAL SECTIONS */
+
+.section,
+.product-section{
+padding:85px 6%
+}
 
 .section-head{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:30px
-}
-
-.section h2,.product-section h2{
-font-size:25px;
-font-weight:400;
-letter-spacing:1px
-}
-
-.section-head a{font-size:11px;color:#333}
-
-/* CATEGORIES */
-.categories{
-display:grid;
-grid-template-columns:repeat(4,1fr);
+margin-bottom:32px;
 gap:15px
 }
 
+.section-head h2{
+font-size:25px;
+font-weight:400;
+letter-spacing:.5px
+}
+
+.section-head a{
+font-size:10px;
+letter-spacing:1px;
+color:var(--sage-dark);
+text-decoration:none
+}
+
+.section-head a:hover{
+text-decoration:underline
+}
+
+/* COLLECTIONS */
+
+.categories{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:20px
+}
+
 .category{
-height:380px;
+height:470px;
 position:relative;
 overflow:hidden;
 display:flex;
 align-items:flex-end;
 text-decoration:none;
-color:white;
-background:#e9e5df
+color:#fff;
+background:var(--sage-light)
 }
 
 .category img{
@@ -145,41 +241,50 @@ inset:0;
 width:100%;
 height:100%;
 object-fit:cover;
-transition:transform .6s ease
+transition:transform .7s ease
 }
 
 .category::after{
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(to top,rgba(0,0,0,.48),rgba(0,0,0,0) 55%)
+background:linear-gradient(
+to top,
+rgba(30,35,29,.48),
+rgba(30,35,29,0) 65%
+)
 }
 
 .category span{
 position:relative;
 z-index:1;
-padding:22px;
+padding:27px;
 font-size:14px;
 letter-spacing:2px
 }
 
-.category:hover img{transform:scale(1.04)}
-
-/* PRODUCTS */
-.product-grid{
-display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:20px
+.category:hover img{
+transform:scale(1.045)
 }
 
-.product{max-width:470px;min-width:0}
+/* PRODUCT GRID */
+
+.product-grid{
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:30px 18px
+}
+
+.product{
+min-width:0
+}
 
 .product-image-wrap{
 position:relative;
 width:100%;
 aspect-ratio:3/4;
 overflow:hidden;
-background:#f5f5f3
+background:var(--sage-light)
 }
 
 .image-track{
@@ -197,7 +302,9 @@ scrollbar-width:none;
 cursor:grab
 }
 
-.image-track::-webkit-scrollbar{display:none}
+.image-track::-webkit-scrollbar{
+display:none
+}
 
 .image-track.dragging{
 cursor:grabbing;
@@ -227,8 +334,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 gap:7px;
-z-index:10;
-pointer-events:auto
+z-index:10
 }
 
 .image-dot{
@@ -241,63 +347,76 @@ padding:0;
 background:rgba(255,255,255,.85);
 border:1px solid rgba(50,50,50,.35);
 cursor:pointer;
-transition:
-width .35s cubic-bezier(.22,1,.36,1),
-flex-basis .35s cubic-bezier(.22,1,.36,1),
-background .3s ease,
-border-color .3s ease,
-transform .3s ease
+transition:all .3s ease
 }
 
 .image-dot.active{
 width:21px;
 min-width:21px;
 flex-basis:21px;
-background:#24231f;
-border-color:#24231f
+background:var(--charcoal);
+border-color:var(--charcoal)
 }
-
-.image-dot:active{transform:scale(.85)}
 
 .card-arrow{
 position:absolute;
 top:50%;
 transform:translateY(-50%);
-width:40px;
-height:40px;
+width:38px;
+height:38px;
 border-radius:50%;
 border:1px solid rgba(255,255,255,.55);
-background:rgba(55,55,55,.72);
-backdrop-filter:blur(6px);
--webkit-backdrop-filter:blur(6px);
+background:rgba(43,45,47,.68);
 color:#fff;
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:21px;
-font-weight:500;
 cursor:pointer;
 z-index:20;
-box-shadow:0 2px 12px rgba(0,0,0,.18);
-transition:background .25s ease,transform .25s ease
+transition:background .25s,transform .25s
 }
 
 .card-arrow:hover{
-background:rgba(35,35,35,.9);
-transform:translateY(-50%) scale(1.08)
+background:var(--charcoal);
+transform:translateY(-50%) scale(1.07)
 }
 
-.card-arrow.prev{left:12px}
-.card-arrow.next{right:12px}
+.card-arrow.prev{left:10px}
+.card-arrow.next{right:10px}
 .card-arrow.is-hidden{display:none}
 
 .product-name{
-font-size:13px;
-margin-top:13px;
-letter-spacing:1px
+font-size:12px;
+margin-top:14px;
+line-height:1.6
 }
 
-.product-price{font-size:12px;margin-top:8px}
+.product-price{
+font-size:12px;
+margin-top:8px;
+font-weight:600
+}
+
+.product-price-old{
+font-size:11px;
+color:#999;
+text-decoration:line-through;
+font-weight:400;
+margin-right:7px
+}
+
+.sale-label{
+position:absolute;
+top:12px;
+left:12px;
+z-index:15;
+background:var(--earth);
+color:#fff;
+padding:7px 10px;
+font-size:9px;
+letter-spacing:1px
+}
 
 .product-actions{
 display:flex;
@@ -306,81 +425,131 @@ margin-top:13px
 }
 
 .product-actions button{
-background:#24231f;
-color:white;
-border:1px solid #24231f;
-padding:12px 17px;
+width:100%;
+background:var(--sage-dark);
+color:#fff;
+border:1px solid var(--sage-dark);
+padding:13px 12px;
 font-size:10px;
-letter-spacing:1px;
-cursor:pointer
+letter-spacing:1.2px;
+cursor:pointer;
+transition:background .25s,border-color .25s
+}
+
+.product-actions button:hover{
+background:var(--sage-hover);
+border-color:var(--sage-hover)
+}
+
+.empty-products{
+grid-column:1/-1;
+font-size:13px;
+color:var(--muted);
+padding:25px 0
+}
+
+/* SALE SECTION */
+
+.sale-section{
+background:var(--sage-light);
+padding-top:75px;
+padding-bottom:80px
+}
+
+.sale-section .section-head a{
+color:var(--sage-dark)
 }
 
 /* ABOUT */
+
 .about{
-background:#f5f3ef;
+background:#EDEFE8;
 text-align:center;
-padding:75px 20px
+padding:90px 20px
+}
+
+.about-label{
+font-size:10px;
+letter-spacing:3px;
+color:var(--sage-dark);
+margin-bottom:20px
 }
 
 .about h2{
-font-size:27px;
+font-size:30px;
 font-weight:400;
 margin-bottom:18px
 }
 
 .about p{
 font-size:13px;
-color:#666;
+color:#65685F;
 line-height:1.9;
-max-width:470px;
+max-width:490px;
 margin:auto
 }
 
 /* FOOTER */
+
 footer{
-padding:35px 6%;
-background:#24231f;
-color:#fff;
+padding:40px 6%;
+background:var(--charcoal);
+color:var(--cream);
 display:flex;
 justify-content:space-between;
-font-size:11px;
-letter-spacing:1px
+font-size:10px;
+letter-spacing:1.2px
 }
 
 /* GALLERY */
+
 .gallery{
 display:none;
 position:fixed;
 inset:0;
-background:#fff;
+background:var(--cream);
 z-index:100;
 overflow-y:auto;
 padding:25px
 }
 
-.gallery.open{display:block}
+.gallery.open{
+display:block
+}
 
 .gallery-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:20px
+margin-bottom:25px;
+max-width:1000px;
+margin-left:auto;
+margin-right:auto
 }
 
-.gallery-top button,.cart-top button{
+.gallery-top strong{
+font-size:22px;
+letter-spacing:5px
+}
+
+.gallery-top button,
+.cart-top button{
 border:0;
 background:none;
 font-size:27px;
 cursor:pointer;
-color:#24231f
+color:var(--charcoal)
 }
 
-.gallery-main{max-width:650px;margin:auto}
+.gallery-main{
+max-width:650px;
+margin:auto
+}
 
 .gallery-main img{
 width:100%;
 display:block;
-max-height:75vh;
+max-height:72vh;
 object-fit:contain
 }
 
@@ -401,10 +570,11 @@ opacity:.6
 
 .gallery-thumbs img.active{
 opacity:1;
-border:1px solid #24231f
+border:1px solid var(--sage-dark)
 }
 
 /* CART */
+
 .cart-panel{
 display:none;
 position:fixed;
@@ -412,101 +582,223 @@ z-index:110;
 right:0;
 top:0;
 height:100%;
-width:min(390px,100%);
-background:white;
+width:min(410px,100%);
+background:var(--cream);
 box-shadow:0 0 0 100vmax #0006;
-padding:25px;
+padding:27px;
 overflow-y:auto
 }
 
-.cart-panel.open{display:block}
+.cart-panel.open{
+display:block
+}
 
 .cart-top{
 display:flex;
 justify-content:space-between;
-align-items:center
+align-items:center;
+padding-bottom:20px;
+border-bottom:1px solid var(--border)
+}
+
+.cart-top strong{
+font-size:16px;
+font-weight:400;
+letter-spacing:2px
 }
 
 .cart-item{
 display:flex;
 gap:15px;
-margin-top:30px
+margin-top:24px;
+padding-bottom:20px;
+border-bottom:1px solid var(--border)
 }
 
 .cart-item img{
 width:85px;
 height:110px;
-object-fit:cover
+object-fit:cover;
+background:var(--sage-light)
 }
 
-.cart-item p{font-size:12px;line-height:1.8}
-.cart-item a{color:#888}
+.cart-item-info{
+flex:1
+}
+
+.cart-item p{
+font-size:12px;
+line-height:1.8
+}
+
+.cart-item a{
+color:var(--muted);
+font-size:11px
+}
 
 .cart-total{
-border-top:1px solid #ddd;
+border-top:1px solid var(--border);
 margin-top:25px;
 padding-top:18px;
-font-size:13px
+font-size:14px;
+display:flex;
+justify-content:space-between
 }
 
-/* TABLET */
-@media(max-width:900px){
-.categories{grid-template-columns:repeat(2,1fr)}
-.category{height:340px}
+.empty-cart{
+margin-top:30px;
+font-size:13px;
+color:var(--muted)
 }
 
-/* MOBILE */
-@media(max-width:650px){
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+.product-grid{
+grid-template-columns:repeat(3,minmax(0,1fr))
+}
+
+.category{
+height:390px
+}
+}
+
+@media(max-width:700px){
 header{
-height:65px;
-padding:0 5%;
+height:66px;
+padding:0 5%
 }
 
-.logo{font-size:24px}
+.logo{
+font-size:24px;
+letter-spacing:5px
+}
 
-nav{gap:10px}
-nav a{font-size:9px}
+nav{
+gap:12px
+}
+
+nav a{
+font-size:8px;
+letter-spacing:.6px
+}
 
 .cart-button{
 width:32px;
-height:36px;
+height:36px
 }
 
 .cart-button svg{
-width:22px;
-height:22px;
-}
-
-.cart-dot{
-top:2px;
-right:0;
+width:21px;
+height:21px
 }
 
 .hero{
-height:480px;
-padding:8%
+min-height:470px;
+padding:75px 5%
 }
 
-.hero h1{font-size:43px}
+.hero-wordmark{
+font-size:clamp(85px,23vw,150px);
+margin:25px 0
+}
+
+.hero h1{
+font-size:24px
+}
+
+.hero p{
+font-size:12px
+}
+
+.section,
+.product-section{
+padding:60px 5%
+}
+
+.section-head{
+align-items:flex-start;
+margin-bottom:24px
+}
+
+.section-head h2{
+font-size:20px
+}
+
+.section-head a{
+font-size:9px;
+white-space:nowrap;
+padding-top:7px
+}
 
 .categories{
-grid-template-columns:repeat(2,1fr);
-gap:10px
+gap:11px
 }
 
-.category{height:260px}
-.category span{padding:14px;font-size:12px}
+.category{
+height:280px
+}
 
-.section,.product-section{padding:55px 5%}
-.product-grid{gap:10px}
-.product-name{font-size:11px}
+.category span{
+padding:15px;
+font-size:11px
+}
 
-.product-actions{flex-direction:column}
-.product-actions button{padding:11px 8px}
+.product-grid{
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:25px 11px
+}
 
-.card-arrow{display:none}
+.product-name{
+font-size:11px;
+margin-top:10px
+}
 
-footer{gap:15px;flex-direction:column}
+.product-price{
+font-size:11px
+}
+
+.product-actions button{
+padding:12px 5px;
+font-size:9px
+}
+
+.card-arrow{
+display:none
+}
+
+.sale-section{
+padding-top:55px;
+padding-bottom:60px
+}
+
+.about{
+padding:70px 22px
+}
+
+.about h2{
+font-size:25px
+}
+
+footer{
+gap:13px;
+flex-direction:column;
+padding:30px 5%
+}
+}
+
+@media(max-width:390px){
+nav{
+gap:8px
+}
+
+nav a{
+font-size:7px
+}
+
+.logo{
+font-size:21px
+}
 }
 </style>
 </head>
@@ -514,13 +806,13 @@ footer{gap:15px;flex-direction:column}
 <body>
 
 <header>
+
 <a class="logo" href="index.html">ENTE</a>
 
 <nav>
 <a href="girls.html">KIZ ÇOCUK</a>
 <a href="boys.html">ERKEK ÇOCUK</a>
-<a href="unisex.html">UNISEX</a>
-<a href="new-season.html">YENİ SEZON</a>
+<a href="sale.html">İNDİRİMDEKİLER</a>
 </nav>
 
 <button class="cart-button" id="cart-button"
@@ -533,26 +825,44 @@ stroke-linecap="round" stroke-linejoin="round">
 <path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/>
 <circle cx="9.5" cy="20" r="1.2"/>
 <circle cx="18" cy="20" r="1.2"/>
+
 </svg>
 
 <span class="cart-dot"></span>
+
 </button>
+
 </header>
 
+<!-- HERO -->
+
 <section class="hero">
+
 <div class="hero-content">
-<small>ENTE İLKBAHAR / YAZ 2026</small>
-<h1>Küçük detaylar.<br>Büyük anlar.</h1>
-<p>Çocukluğun en güzel anlarına eşlik eden, özenle seçilmiş parçalar.</p>
+
+<small class="hero-label">ENTE İLKBAHAR / YAZ 2026</small>
+
+<div class="hero-wordmark">ENTE</div>
+
+<h1>Küçük detaylar. Büyük anlar.</h1>
+
+<p>
+Çocukluğun en güzel anlarına eşlik eden,
+özenle seçilmiş parçalar.
+</p>
+
 <a class="shop" href="#collections">KOLEKSİYONU KEŞFET</a>
+
 </div>
+
 </section>
+
+<!-- COLLECTIONS -->
 
 <section class="section" id="collections">
 
 <div class="section-head">
 <h2>Koleksiyonlar</h2>
-<a href="new-season.html">TÜMÜNÜ KEŞFET →</a>
 </div>
 
 <div class="categories">
@@ -567,34 +877,52 @@ stroke-linecap="round" stroke-linejoin="round">
 <span>ERKEK ÇOCUK</span>
 </a>
 
-<a class="category" href="unisex.html">
-<img src="images/unisex-category.jpg" alt="Unisex koleksiyonu">
-<span>UNISEX</span>
-</a>
-
-<a class="category" href="new-season.html">
-<img src="images/new-season-category.jpg" alt="Yeni sezon koleksiyonu">
-<span>YENİ SEZON</span>
-</a>
-
 </div>
+
 </section>
 
-<section class="product-section" id="girl-products">
+<!-- NEWEST PRODUCTS -->
+
+<section class="product-section" id="new-products">
 
 <div class="section-head">
-<h2>Kız Çocuk — Öne Çıkanlar</h2>
-<a href="girls.html">TÜMÜNÜ KEŞFET →</a>
+<h2>EN YENİ ÜRÜNLERİ KEŞFET</h2>
 </div>
 
-<div class="product-grid" id="girls-products"></div>
+<div class="product-grid" id="newest-products"></div>
 
 </section>
+
+<!-- SALE PRODUCTS -->
+
+<section class="product-section sale-section" id="sale-products">
+
+<div class="section-head">
+<h2>İNDİRİMDEKİLER</h2>
+<a href="sale.html">TÜM İNDİRİMLER →</a>
+</div>
+
+<div class="product-grid" id="discount-products"></div>
+
+</section>
+
+<!-- ABOUT -->
 
 <section class="about">
+
+<p class="about-label">ENTE'NİN DÜNYASI</p>
+
 <h2>Küçük anlar için tasarlandı.</h2>
-<p>ENTE, çocukların özgürce keşfettiği ve büyüdüğü her ana eşlik etmek için tasarlandı. Sade çizgiler, zamansız parçalar ve küçük detaylar.</p>
+
+<p>
+ENTE, çocukların özgürce keşfettiği ve büyüdüğü
+her ana eşlik etmek için tasarlandı.
+Sade çizgiler, zamansız parçalar ve küçük detaylar.
+</p>
+
 </section>
+
+<!-- FOOTER -->
 
 <footer>
 <div>ENTE © 2026</div>
@@ -603,6 +931,7 @@ stroke-linecap="round" stroke-linejoin="round">
 </footer>
 
 <!-- GALLERY -->
+
 <div class="gallery" id="gallery">
 
 <div class="gallery-top">
@@ -618,6 +947,7 @@ stroke-linecap="round" stroke-linejoin="round">
 </div>
 
 <!-- CART -->
+
 <div class="cart-panel" id="cart-panel">
 
 <div class="cart-top">
@@ -633,10 +963,22 @@ stroke-linecap="round" stroke-linejoin="round">
 
 <script>
 
-/* VARIABLES */
+/* PRODUCT DATA */
 
-const products = ENTE_PRODUCTS.girls;
-const grid = document.getElementById("girls-products");
+const girlsProducts =
+(typeof ENTE_PRODUCTS !== "undefined" && Array.isArray(ENTE_PRODUCTS.girls))
+? ENTE_PRODUCTS.girls
+: [];
+
+const boysProducts =
+(typeof ENTE_PRODUCTS !== "undefined" && Array.isArray(ENTE_PRODUCTS.boys))
+? ENTE_PRODUCTS.boys
+: [];
+
+const allProducts = [...girlsProducts,...boysProducts].reverse();
+
+const newestGrid = document.getElementById("newest-products");
+const discountGrid = document.getElementById("discount-products");
 
 let swipeClickBlockedUntil = 0;
 
@@ -650,6 +992,23 @@ return Number(price).toLocaleString("tr-TR",{
 minimumFractionDigits:2,
 maximumFractionDigits:2
 })+" TL";
+
+}
+
+function getProductPrice(product){
+
+return Number(
+product.salePrice && product.salePrice < product.price
+? product.salePrice
+: product.price
+);
+
+}
+
+function isDiscounted(product){
+
+return Number(product.salePrice)>0 &&
+Number(product.salePrice)<Number(product.price);
 
 }
 
@@ -683,7 +1042,7 @@ return true;
 }catch(error){
 
 console.error("Sepet kaydedilemedi:",error);
-alert("Sepet kaydedilemedi.");
+alert("Sepet kaydedilemedi. Lütfen tekrar deneyin.");
 
 return false;
 
@@ -691,39 +1050,48 @@ return false;
 
 }
 
-/* PRODUCTS */
+/* PRODUCT CARD */
 
-function renderProducts(){
-
-grid.innerHTML = products.map((product,index) => {
+function renderProductCard(product,index){
 
 const images = Array.isArray(product.images) ? product.images : [];
 
+if(!images.length) return "";
+
+const discounted = isDiscounted(product);
+const currentPrice = getProductPrice(product);
+
 return `
 
-<div class="product">
+<article class="product">
 
 <div class="product-image-wrap"
 onclick="openProductFromCard(event,'${product.id}')">
 
-<div class="image-track" data-product-index="${index}"
+${discounted ? '<span class="sale-label">İNDİRİM</span>' : ''}
+
+<div class="image-track"
+data-product-index="${index}"
 onscroll="sliderScrolled(this)">
 
 ${images.map((img,i)=>`
 <img class="product-image"
-src="${img}" alt="${product.name} - ${i+1}"
+src="${img}"
+alt="${product.name} - ${i+1}"
 draggable="false">
 `).join("")}
 
 </div>
 
 <div class="image-dots">
+
 ${images.map((img,i)=>`
 <button type="button"
 class="image-dot ${i===0?'active':''}"
 aria-label="${i+1}. fotoğraf"
 onclick="changeImage(event,${index},${i})"></button>
 `).join("")}
+
 </div>
 
 <button type="button" class="card-arrow prev is-hidden"
@@ -735,21 +1103,51 @@ onclick="moveProductImage(event,1)">›</button>
 </div>
 
 <p class="product-name">${product.name}</p>
-<p class="product-price">${formatPrice(product.price)}</p>
+
+<p class="product-price">
+
+${discounted
+? `<span class="product-price-old">${formatPrice(product.price)}</span>`
+: ''
+}
+
+${formatPrice(currentPrice)}
+
+</p>
 
 <div class="product-actions">
-<button onclick="addToCart('${product.id}',event)">SEPETE EKLE</button>
-</div>
+
+<button onclick="addToCart('${product.id}',event)">
+SEPETE EKLE
+</button>
 
 </div>
+
+</article>
 
 `;
 
-}).join("");
+}
+
+/* RENDER PRODUCTS */
+
+function renderProducts(){
+
+newestGrid.innerHTML = allProducts.length
+? allProducts.map((product,index)=>renderProductCard(product,index)).join("")
+: '<p class="empty-products">Henüz ürün eklenmedi.</p>';
+
+const discountedProducts = allProducts.filter(isDiscounted);
+
+discountGrid.innerHTML = discountedProducts.length
+? discountedProducts.map((product,index)=>renderProductCard(product,index)).join("")
+: '<p class="empty-products">Şu anda indirimde ürün bulunmuyor.</p>';
 
 document.querySelectorAll(".image-track").forEach(track=>{
+
 updateSliderControls(track);
 setupMouseDrag(track);
+
 });
 
 }
@@ -798,11 +1196,12 @@ updateSliderControls(track);
 
 function changeImage(event,productIndex,imageIndex){
 
+event.preventDefault();
 event.stopPropagation();
 
-const track = document.querySelector(
-`.image-track[data-product-index="${productIndex}"]`
-);
+const track = event.currentTarget
+.closest(".product-image-wrap")
+.querySelector(".image-track");
 
 if(!track) return;
 
@@ -815,6 +1214,7 @@ behavior:"smooth"
 
 function moveProductImage(event,direction){
 
+event.preventDefault();
 event.stopPropagation();
 
 const wrap = event.currentTarget.closest(".product-image-wrap");
@@ -902,8 +1302,8 @@ openGallery(productId);
 
 function openGallery(productId){
 
-const product = products.find(p=>p.id===productId);
-if(!product) return;
+const product = allProducts.find(p=>p.id===productId);
+if(!product || !product.images || !product.images.length) return;
 
 const gallery = document.getElementById("gallery");
 const main = document.getElementById("gallery-main-image");
@@ -913,7 +1313,8 @@ main.src = product.images[0];
 
 thumbs.innerHTML = product.images.map((img,i)=>`
 <img src="${img}" class="${i===0?'active':''}"
-onclick="selectGalleryImage('${img}',this)" alt="Ürün görseli ${i+1}">
+onclick="selectGalleryImage('${img}',this)"
+alt="Ürün görseli ${i+1}">
 `).join("");
 
 gallery.classList.add("open");
@@ -946,7 +1347,7 @@ function addToCart(productId,event){
 
 if(event) event.stopPropagation();
 
-const product = products.find(p=>p.id===productId);
+const product = allProducts.find(p=>p.id===productId);
 if(!product) return;
 
 const cart = getCart();
@@ -962,7 +1363,8 @@ existing.quantity++;
 cart.push({
 id:product.id,
 name:product.name,
-price:product.price,
+price:getProductPrice(product),
+originalPrice:Number(product.price),
 image:product.images[0],
 quantity:1
 });
@@ -995,7 +1397,7 @@ const content = document.getElementById("cart-content");
 
 if(!cart.length){
 
-content.innerHTML="<p style='margin-top:30px;font-size:13px'>Sepetiniz şu anda boş.</p>";
+content.innerHTML='<p class="empty-cart">Sepetiniz şu anda boş.</p>';
 
 }else{
 
@@ -1005,7 +1407,7 @@ content.innerHTML=cart.map(item=>`
 
 <img src="${item.image || (item.images && item.images[0]) || ''}" alt="${item.name}">
 
-<div>
+<div class="cart-item-info">
 
 <p>${item.name}</p>
 
@@ -1025,11 +1427,14 @@ content.innerHTML=cart.map(item=>`
 
 `).join("");
 
-}
+content.innerHTML += `
+<div class="cart-total">
+<span>TOPLAM</span>
+<strong>${formatPrice(total)}</strong>
+</div>
+`;
 
-content.innerHTML += cart.length
-? `<div class="cart-total">TOPLAM: ${formatPrice(total)}</div>`
-: "";
+}
 
 }
 
@@ -1052,12 +1457,14 @@ function openCart(){
 updateCart();
 
 document.getElementById("cart-panel").classList.add("open");
+document.body.style.overflow="hidden";
 
 }
 
 function closeCart(){
 
 document.getElementById("cart-panel").classList.remove("open");
+document.body.style.overflow="";
 
 }
 
@@ -1107,3 +1514,4 @@ updateCart();
 
 </body>
 </html>
+```
