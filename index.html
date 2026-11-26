@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -9,52 +10,170 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;color:#24231f;background:#fff}
 
+/* HEADER */
 header{
-height:75px;display:flex;align-items:center;justify-content:space-between;
-padding:0 6%;border-bottom:1px solid #eee
+height:75px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 6%;
+border-bottom:1px solid #eee;
+position:sticky;
+top:0;
+z-index:50;
+background:#fff;
 }
-.logo{font-size:29px;letter-spacing:7px;font-weight:600;color:#24231f;text-decoration:none}
-nav{display:flex;gap:25px}
-nav a{font-size:11px;text-decoration:none;color:#292929;letter-spacing:1.5px}
-.icons{font-size:19px;cursor:pointer;border:0;background:none;color:#24231f}
 
-.hero{
-height:570px;background:#e9e4dc;display:flex;align-items:center;padding:8%
+.logo{
+font-size:29px;
+letter-spacing:7px;
+font-weight:600;
+color:#24231f;
+text-decoration:none
 }
+
+nav{display:flex;gap:25px}
+nav a{
+font-size:11px;
+text-decoration:none;
+color:#292929;
+letter-spacing:1.5px
+}
+
+.cart-button{
+position:relative;
+width:38px;
+height:38px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:0;
+background:none;
+color:#24231f;
+cursor:pointer;
+}
+
+.cart-button svg{
+width:24px;
+height:24px;
+display:block;
+}
+
+.cart-dot{
+position:absolute;
+top:3px;
+right:3px;
+width:8px;
+height:8px;
+border-radius:50%;
+background:#24231f;
+display:none;
+border:1px solid #fff;
+}
+
+.cart-button.has-items .cart-dot{
+display:block;
+}
+
+/* HERO */
+.hero{
+height:570px;
+background:#e9e4dc;
+display:flex;
+align-items:center;
+padding:8%
+}
+
 .hero-content{max-width:390px}
 .hero small{letter-spacing:3px;font-size:10px}
-.hero h1{font-size:54px;font-weight:400;line-height:1.1;margin:22px 0}
+.hero h1{
+font-size:54px;
+font-weight:400;
+line-height:1.1;
+margin:22px 0
+}
 .hero p{font-size:13px;line-height:1.8;color:#555}
+
 .shop{
-display:inline-block;margin-top:28px;background:#24231f;color:white;
-padding:15px 30px;text-decoration:none;font-size:11px;letter-spacing:2px
+display:inline-block;
+margin-top:28px;
+background:#24231f;
+color:white;
+padding:15px 30px;
+text-decoration:none;
+font-size:11px;
+letter-spacing:2px
 }
 
+/* SECTIONS */
 .section,.product-section{padding:75px 6%}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.section h2,.product-section h2{font-size:25px;font-weight:400;letter-spacing:1px}
+
+.section-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px
+}
+
+.section h2,.product-section h2{
+font-size:25px;
+font-weight:400;
+letter-spacing:1px
+}
+
 .section-head a{font-size:11px;color:#333}
 
-.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+/* CATEGORIES */
+.categories{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px
+}
+
 .category{
-height:380px;position:relative;overflow:hidden;display:flex;align-items:flex-end;
-text-decoration:none;color:white;background:#e9e5df
+height:380px;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:flex-end;
+text-decoration:none;
+color:white;
+background:#e9e5df
 }
+
 .category img{
-position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform .6s ease
 }
+
 .category::after{
-content:"";position:absolute;inset:0;
+content:"";
+position:absolute;
+inset:0;
 background:linear-gradient(to top,rgba(0,0,0,.48),rgba(0,0,0,0) 55%)
 }
-.category span{position:relative;z-index:1;padding:22px;font-size:14px;letter-spacing:2px}
+
+.category span{
+position:relative;
+z-index:1;
+padding:22px;
+font-size:14px;
+letter-spacing:2px
+}
+
 .category:hover img{transform:scale(1.04)}
 
+/* PRODUCTS */
 .product-grid{
 display:grid;
 grid-template-columns:repeat(2,minmax(0,1fr));
 gap:20px
 }
+
 .product{max-width:470px;min-width:0}
 
 .product-image-wrap{
@@ -62,7 +181,7 @@ position:relative;
 width:100%;
 aspect-ratio:3/4;
 overflow:hidden;
-background:#f5f5f3;
+background:#f5f5f3
 }
 
 .image-track{
@@ -77,14 +196,15 @@ scroll-behavior:smooth;
 overscroll-behavior-x:contain;
 touch-action:pan-x pan-y;
 scrollbar-width:none;
-cursor:grab;
+cursor:grab
 }
 
 .image-track::-webkit-scrollbar{display:none}
+
 .image-track.dragging{
 cursor:grabbing;
 scroll-behavior:auto;
-scroll-snap-type:none;
+scroll-snap-type:none
 }
 
 .product-image{
@@ -97,7 +217,7 @@ scroll-snap-align:start;
 scroll-snap-stop:always;
 user-select:none;
 -webkit-user-drag:none;
-pointer-events:none;
+pointer-events:none
 }
 
 .image-dots{
@@ -110,7 +230,7 @@ justify-content:center;
 align-items:center;
 gap:7px;
 z-index:10;
-pointer-events:auto;
+pointer-events:auto
 }
 
 .image-dot{
@@ -128,7 +248,7 @@ width .35s cubic-bezier(.22,1,.36,1),
 flex-basis .35s cubic-bezier(.22,1,.36,1),
 background .3s ease,
 border-color .3s ease,
-transform .3s ease;
+transform .3s ease
 }
 
 .image-dot.active{
@@ -136,7 +256,7 @@ width:21px;
 min-width:21px;
 flex-basis:21px;
 background:#24231f;
-border-color:#24231f;
+border-color:#24231f
 }
 
 .image-dot:active{transform:scale(.85)}
@@ -161,87 +281,234 @@ font-weight:500;
 cursor:pointer;
 z-index:20;
 box-shadow:0 2px 12px rgba(0,0,0,.18);
-transition:background .25s ease,transform .25s ease;
+transition:background .25s ease,transform .25s ease
 }
 
 .card-arrow:hover{
 background:rgba(35,35,35,.9);
-transform:translateY(-50%) scale(1.08);
+transform:translateY(-50%) scale(1.08)
 }
 
 .card-arrow.prev{left:12px}
 .card-arrow.next{right:12px}
 .card-arrow.is-hidden{display:none}
 
-.product-name{font-size:13px;margin-top:13px;letter-spacing:1px}
-.product-price{font-size:12px;margin-top:8px}
-.product-actions{display:flex;gap:10px;margin-top:13px}
-.product-actions button{
-background:#24231f;color:white;border:1px solid #24231f;
-padding:12px 17px;font-size:10px;letter-spacing:1px;cursor:pointer
+.product-name{
+font-size:13px;
+margin-top:13px;
+letter-spacing:1px
 }
 
-.about{background:#f5f3ef;text-align:center;padding:75px 20px}
-.about h2{font-size:27px;font-weight:400;margin-bottom:18px}
-.about p{font-size:13px;color:#666;line-height:1.9;max-width:470px;margin:auto}
+.product-price{font-size:12px;margin-top:8px}
 
+.product-actions{
+display:flex;
+gap:10px;
+margin-top:13px
+}
+
+.product-actions button{
+background:#24231f;
+color:white;
+border:1px solid #24231f;
+padding:12px 17px;
+font-size:10px;
+letter-spacing:1px;
+cursor:pointer
+}
+
+/* ABOUT */
+.about{
+background:#f5f3ef;
+text-align:center;
+padding:75px 20px
+}
+
+.about h2{
+font-size:27px;
+font-weight:400;
+margin-bottom:18px
+}
+
+.about p{
+font-size:13px;
+color:#666;
+line-height:1.9;
+max-width:470px;
+margin:auto
+}
+
+/* FOOTER */
 footer{
-padding:35px 6%;background:#24231f;color:#fff;display:flex;
-justify-content:space-between;font-size:11px;letter-spacing:1px
+padding:35px 6%;
+background:#24231f;
+color:#fff;
+display:flex;
+justify-content:space-between;
+font-size:11px;
+letter-spacing:1px
 }
 
 /* GALLERY */
 .gallery{
-display:none;position:fixed;inset:0;background:#fff;z-index:20;
-overflow-y:auto;padding:25px
+display:none;
+position:fixed;
+inset:0;
+background:#fff;
+z-index:100;
+overflow-y:auto;
+padding:25px
 }
+
 .gallery.open{display:block}
-.gallery-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.gallery-top button,.cart-top button{
-border:0;background:none;font-size:27px;cursor:pointer;color:#24231f
+
+.gallery-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px
 }
+
+.gallery-top button,.cart-top button{
+border:0;
+background:none;
+font-size:27px;
+cursor:pointer;
+color:#24231f
+}
+
 .gallery-main{max-width:650px;margin:auto}
-.gallery-main img{width:100%;display:block;max-height:75vh;object-fit:contain}
-.gallery-thumbs{display:flex;justify-content:center;gap:10px;margin-top:15px}
-.gallery-thumbs img{width:65px;height:80px;object-fit:cover;cursor:pointer;opacity:.6}
-.gallery-thumbs img.active{opacity:1;border:1px solid #24231f}
+
+.gallery-main img{
+width:100%;
+display:block;
+max-height:75vh;
+object-fit:contain
+}
+
+.gallery-thumbs{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:15px
+}
+
+.gallery-thumbs img{
+width:65px;
+height:80px;
+object-fit:cover;
+cursor:pointer;
+opacity:.6
+}
+
+.gallery-thumbs img.active{
+opacity:1;
+border:1px solid #24231f
+}
 
 /* CART */
 .cart-panel{
-display:none;position:fixed;z-index:30;right:0;top:0;height:100%;
-width:min(390px,100%);background:white;box-shadow:0 0 0 100vmax #0006;
-padding:25px;overflow-y:auto
+display:none;
+position:fixed;
+z-index:110;
+right:0;
+top:0;
+height:100%;
+width:min(390px,100%);
+background:white;
+box-shadow:0 0 0 100vmax #0006;
+padding:25px;
+overflow-y:auto
 }
+
 .cart-panel.open{display:block}
-.cart-top{display:flex;justify-content:space-between;align-items:center}
-.cart-item{display:flex;gap:15px;margin-top:30px}
-.cart-item img{width:85px;height:110px;object-fit:cover}
+
+.cart-top{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.cart-item{
+display:flex;
+gap:15px;
+margin-top:30px
+}
+
+.cart-item img{
+width:85px;
+height:110px;
+object-fit:cover
+}
+
 .cart-item p{font-size:12px;line-height:1.8}
 .cart-item a{color:#888}
-.cart-total{border-top:1px solid #ddd;margin-top:25px;padding-top:18px;font-size:13px}
 
+.cart-total{
+border-top:1px solid #ddd;
+margin-top:25px;
+padding-top:18px;
+font-size:13px
+}
+
+/* TABLET */
 @media(max-width:900px){
 .categories{grid-template-columns:repeat(2,1fr)}
 .category{height:340px}
 }
 
+/* MOBILE */
 @media(max-width:650px){
-header{height:65px;padding:0 5%}
+
+header{
+height:65px;
+padding:0 5%;
+}
+
 .logo{font-size:24px}
+
 nav{gap:10px}
 nav a{font-size:9px}
-.icons{font-size:16px}
-.hero{height:480px;padding:8%}
+
+.cart-button{
+width:32px;
+height:36px;
+}
+
+.cart-button svg{
+width:22px;
+height:22px;
+}
+
+.cart-dot{
+top:2px;
+right:0;
+}
+
+.hero{
+height:480px;
+padding:8%
+}
+
 .hero h1{font-size:43px}
-.categories{grid-template-columns:repeat(2,1fr);gap:10px}
+
+.categories{
+grid-template-columns:repeat(2,1fr);
+gap:10px
+}
+
 .category{height:260px}
 .category span{padding:14px;font-size:12px}
+
 .section,.product-section{padding:55px 5%}
 .product-grid{gap:10px}
 .product-name{font-size:11px}
+
 .product-actions{flex-direction:column}
 .product-actions button{padding:11px 8px}
+
 .card-arrow{display:none}
+
 footer{gap:15px;flex-direction:column}
 }
 </style>
@@ -250,14 +517,33 @@ footer{gap:15px;flex-direction:column}
 <body>
 
 <header>
+
 <a class="logo" href="index.html">ENTE</a>
+
 <nav>
 <a href="girls.html">GIRLS</a>
 <a href="boys.html">BOYS</a>
 <a href="unisex.html">UNISEX</a>
 <a href="new-season.html">NEW SEASON</a>
 </nav>
-<button class="icons" onclick="openCart()">♧ <span id="cart-count">0</span></button>
+
+<button class="cart-button" id="cart-button"
+onclick="openCart()" aria-label="Sepeti aç">
+
+<svg viewBox="0 0 24 24" fill="none"
+stroke="currentColor" stroke-width="1.7"
+stroke-linecap="round" stroke-linejoin="round">
+
+<path d="M2.5 3h2l2.7 12.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H5.1"/>
+<circle cx="9.5" cy="20" r="1.2"/>
+<circle cx="18" cy="20" r="1.2"/>
+
+</svg>
+
+<span class="cart-dot"></span>
+
+</button>
+
 </header>
 
 <section class="hero">
@@ -270,36 +556,46 @@ footer{gap:15px;flex-direction:column}
 </section>
 
 <section class="section" id="collections">
+
 <div class="section-head">
 <h2>Collections</h2>
 <a href="new-season.html">TÜMÜNÜ KEŞFET →</a>
 </div>
+
 <div class="categories">
+
 <a class="category" href="girls.html">
 <img src="images/girls-category.webp" alt="Girls collection">
 <span>GIRLS</span>
 </a>
+
 <a class="category" href="boys.html">
 <img src="images/boys-category.webp" alt="Boys collection">
 <span>BOYS</span>
 </a>
+
 <a class="category" href="unisex.html">
 <img src="images/unisex-category.jpg" alt="Unisex collection">
 <span>UNISEX</span>
 </a>
+
 <a class="category" href="new-season.html">
 <img src="images/new-season-category.jpg" alt="New season collection">
 <span>NEW SEASON</span>
 </a>
+
 </div>
 </section>
 
 <section class="product-section" id="girl-products">
+
 <div class="section-head">
 <h2>Girls — Selected Pieces</h2>
 <a href="girls.html">TÜMÜNÜ KEŞFET →</a>
 </div>
+
 <div class="product-grid" id="girls-products"></div>
+
 </section>
 
 <section class="about">
@@ -313,28 +609,39 @@ footer{gap:15px;flex-direction:column}
 <div>ALL RIGHTS RESERVED</div>
 </footer>
 
+<!-- GALLERY -->
+
 <div class="gallery" id="gallery">
+
 <div class="gallery-top">
 <strong>ENTE</strong>
 <button onclick="closeGallery()">×</button>
 </div>
+
 <div class="gallery-main">
 <img id="gallery-main-image" src="" alt="Product image">
 <div class="gallery-thumbs" id="gallery-thumbs"></div>
 </div>
+
 </div>
 
+<!-- CART -->
+
 <div class="cart-panel" id="cart-panel">
+
 <div class="cart-top">
 <strong>YOUR BAG</strong>
 <button onclick="closeCart()">×</button>
 </div>
+
 <div id="cart-content"></div>
+
 </div>
 
 <script src="products.js"></script>
 
 <script>
+
 /* VARIABLES */
 
 const products = ENTE_PRODUCTS.girls;
@@ -347,10 +654,12 @@ const CART_STORAGE_KEY = "enteCart";
 /* PRICE */
 
 function formatPrice(price){
+
 return Number(price).toLocaleString("tr-TR",{
 minimumFractionDigits:2,
 maximumFractionDigits:2
 })+" TL";
+
 }
 
 /* SHARED CART */
@@ -358,14 +667,17 @@ maximumFractionDigits:2
 function getCart(){
 
 try{
+
 const saved = localStorage.getItem(CART_STORAGE_KEY);
 const cart = saved ? JSON.parse(saved) : [];
 
 return Array.isArray(cart) ? cart : [];
 
 }catch(error){
+
 console.error("Sepet okunamadı:",error);
 return [];
+
 }
 
 }
@@ -373,13 +685,16 @@ return [];
 function saveCart(cart){
 
 try{
+
 localStorage.setItem(CART_STORAGE_KEY,JSON.stringify(cart));
 return true;
 
 }catch(error){
+
 console.error("Sepet kaydedilemedi:",error);
 alert("Sepet kaydedilemedi.");
 return false;
+
 }
 
 }
@@ -393,6 +708,7 @@ grid.innerHTML = products.map((product,index) => {
 const images = Array.isArray(product.images) ? product.images : [];
 
 return `
+
 <div class="product">
 
 <div class="product-image-wrap"
@@ -434,7 +750,9 @@ onclick="moveProductImage(event,1)">›</button>
 </div>
 
 </div>
+
 `;
+
 }).join("");
 
 document.querySelectorAll(".image-track").forEach(track=>{
@@ -672,11 +990,10 @@ function updateCart(){
 
 const cart = getCart();
 
-const count = cart.reduce(
-(sum,item)=>sum+Number(item.quantity||0),0
-);
+const hasItems = cart.length > 0;
 
-document.getElementById("cart-count").textContent=count;
+document.getElementById("cart-button")
+.classList.toggle("has-items",hasItems);
 
 const total = cart.reduce(
 (sum,item)=>sum+Number(item.price||0)*Number(item.quantity||0),0
