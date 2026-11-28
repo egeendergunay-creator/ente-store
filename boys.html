@@ -516,11 +516,14 @@ SEPETİM (<span id="cartCount">0</span>)
 </div>
 
 <script src="products.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="supabase-store.js"></script>
 
 <script>
 /* DEĞİŞKENLER */
 
-const products =
+let products =
 (typeof ENTE_PRODUCTS !== "undefined" && ENTE_PRODUCTS.boys)
 ? ENTE_PRODUCTS.boys
 : [];
@@ -920,7 +923,13 @@ updateCart();
 
 /* BAŞLAT */
 
-renderProducts();
+(async function initializeCategoryPage(){
+  if (window.ENTE_STORE) {
+    const remoteProducts = await window.ENTE_STORE.loadProducts('boys');
+    if (Array.isArray(remoteProducts)) products = remoteProducts;
+  }
+  renderProducts();
+})();
 updateCart();
 
 </script>

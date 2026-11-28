@@ -444,6 +444,9 @@ footer{
 </div>
 
 <script src="products.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="supabase-store.js"></script>
 
 <script>
 /* AYARLAR */
@@ -716,8 +719,11 @@ function selectDetailImage(src,element) {
 
 function renderSizeOptions() {
   const grid = document.getElementById("size-grid");
+  const availableSizes = Array.isArray(selectedProduct?.sizes) && selectedProduct.sizes.length
+    ? selectedProduct.sizes
+    : SIZES;
 
-  grid.innerHTML = SIZES.map(size => `
+  grid.innerHTML = availableSizes.map(size => `
     <button type="button"
       class="size-option ${selectedSize===size?"selected":""}"
       onclick="selectSize('${size}')">${size}</button>
@@ -924,9 +930,15 @@ document.addEventListener("keydown",event => {
 
 /* BAŞLAT */
 
-renderProducts();
-updateCartButton();
-renderCart();
+(async function initializeStorefront(){
+  if (window.ENTE_STORE) {
+    const remoteProducts = await window.ENTE_STORE.loadProducts();
+    if (Array.isArray(remoteProducts)) allProducts = remoteProducts;
+  }
+  renderProducts();
+  updateCartButton();
+  renderCart();
+})();
 
 </script>
 
